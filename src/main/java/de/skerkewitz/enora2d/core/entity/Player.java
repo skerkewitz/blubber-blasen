@@ -12,8 +12,12 @@ import de.skerkewitz.enora2d.core.gfx.Screen;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 import de.skerkewitz.enora2d.core.net.GameClientProvider;
 import de.skerkewitz.enora2d.core.net.packets.Packet02Move;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Player extends MoveableEntity {
+
+  private static final Logger logger = LogManager.getLogger(Player.class);
 
   public static final int JUMP_HEIGHT_IN_PIXEL = 44;
 
@@ -34,6 +38,7 @@ public class Player extends MoveableEntity {
     this.input = input;
     this.username = username;
     this.gameClientProvider = gameClientProvider;
+    this.movingDir = MoveDirection.Right;
   }
 
   public void tick(Level level, int tickTime) {
@@ -60,13 +65,14 @@ public class Player extends MoveableEntity {
       }
     }
 
+    var playerMoveDirection = movingDir;
     if (input.getLeft().isPressed()) {
       xa--;
-      movingDir = MoveDirection.Left;
+      playerMoveDirection = MoveDirection.Left;
     }
     if (input.getRight().isPressed()) {
       xa++;
-      movingDir = MoveDirection.Right;
+      playerMoveDirection = MoveDirection.Right;
     }
 
     if (xa != 0 || ya != 0) {
@@ -76,8 +82,10 @@ public class Player extends MoveableEntity {
       packet.writeData(gameClientProvider.getGameClient());
     } else {
       isMoving = false;
-
     }
+
+    logger.info("Player num steps: " + numSteps);
+    movingDir = playerMoveDirection;
   }
 
   public void render(Screen screen) {
