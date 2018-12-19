@@ -19,9 +19,9 @@ public class Player extends MoveableEntity {
 
   private static final Logger logger = LogManager.getLogger(Player.class);
 
-  public static final int JUMP_HEIGHT_IN_PIXEL = 44;
+  private static final int JUMP_HEIGHT_IN_PIXEL = 44;
 
-  public static final int BUBBLE_SHOOT_DELAY = AbstractGame.secondsToTickTime(0.5);
+  private static final int BUBBLE_SHOOT_DELAY = AbstractGame.secondsToTickTime(0.5);
 
   private InputHandler input;
   private int colour = RgbColorPalette.mergeColorCodes(-1, 111, 145, 543);
@@ -33,7 +33,7 @@ public class Player extends MoveableEntity {
   /** Last tick time we player spawned a bubble. */
   private int lastBubbleSpawnTime = 0;
 
-  public Player(int x, int y, InputHandler input, String username, GameClientProvider gameClientProvider) {
+  Player(int x, int y, InputHandler input, String username, GameClientProvider gameClientProvider) {
     super("Player", x, y, 1, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
     this.input = input;
     this.username = username;
@@ -77,6 +77,7 @@ public class Player extends MoveableEntity {
 
     if (xa != 0 || ya != 0) {
       isMoving = move(level, xa, ya);
+      movingDir = playerMoveDirection;
 
       Packet02Move packet = new Packet02Move(this.getUsername(), this.posX, this.posY, this.numSteps, this.isMoving, this.movingDir);
       packet.writeData(gameClientProvider.getGameClient());
