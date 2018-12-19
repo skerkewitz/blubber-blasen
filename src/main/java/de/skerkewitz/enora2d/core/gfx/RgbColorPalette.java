@@ -2,7 +2,9 @@ package de.skerkewitz.enora2d.core.gfx;
 
 public class RgbColorPalette {
 
-  /** Each channel can habe a value 0 - 6, 255 is transparent. */
+  /**
+   * Each channel can habe a value 0 - 6, 255 is transparent.
+   */
   private int[] rgbColorPaletteIndex = new int[6 * 6 * 6];
 
   public RgbColorPalette() {
@@ -24,10 +26,10 @@ public class RgbColorPalette {
    * @return
    */
   public static int mergeColorCodes(int colour1, int colour2, int colour3, int colour4) {
-      return (encodeColorCode(colour4) << 24)
-              + (encodeColorCode(colour3) << 16)
-              + (encodeColorCode(colour2) << 8)
-              + encodeColorCode(colour1);
+    return (encodeColorCode(colour4) << 24)
+            + (encodeColorCode(colour3) << 16)
+            + (encodeColorCode(colour2) << 8)
+            + encodeColorCode(colour1);
   }
 
   /**
@@ -37,11 +39,11 @@ public class RgbColorPalette {
    * @return
    */
   private static int encodeColorCode(int colour) {
-      if (colour < 0) return 255;
-      int r = colour / 100 % 10;
-      int g = colour / 10 % 10;
-      int b = colour % 10;
-      return r * 36 + g * 6 + b;
+    if (colour < 0) return 255;
+    int r = colour / 100 % 10;
+    int g = colour / 10 % 10;
+    int b = colour % 10;
+    return r * 36 + g * 6 + b;
   }
 
   private void buildRgbColorPaletteIndex() {

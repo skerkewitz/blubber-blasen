@@ -1,7 +1,7 @@
 package de.skerkewitz.enora2d.backend.awt.game;
 
-import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.backend.awt.input.KeyboardInputHandler;
+import de.skerkewitz.enora2d.core.game.AbstractGame;
 
 import javax.swing.*;
 import java.awt.*;

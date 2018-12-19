@@ -8,22 +8,22 @@ import de.skerkewitz.enora2d.core.input.InputButton;
  */
 public class KeyboardInputButton implements InputButton {
 
-    private int numTimesPressed = 0;
-    private boolean pressed = false;
+  private int numTimesPressed = 0;
+  private boolean pressed = false;
 
-    @Override
-    public int getNumTimesPressed() {
-        return numTimesPressed;
-    }
+  @Override
+  public int getNumTimesPressed() {
+    return numTimesPressed;
+  }
 
-    @Override
-    public boolean isPressed() {
-        return pressed;
-    }
+  @Override
+  public boolean isPressed() {
+    return pressed;
+  }
 
-    @Override
-    public void toggle(boolean isPressed) {
-        pressed = isPressed;
-        if (isPressed) numTimesPressed++;
-    }
+  @Override
+  public void toggle(boolean isPressed) {
+    pressed = isPressed;
+    if (isPressed) numTimesPressed++;
+  }
 }

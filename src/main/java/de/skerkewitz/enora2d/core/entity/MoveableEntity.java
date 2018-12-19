@@ -7,38 +7,9 @@ public abstract class MoveableEntity extends AbstractEntity {
 
   protected final Rect2i boundingBox;
 
-  public enum MoveDirection {
-    Up, Down, Left, Right;
-
-    public static MoveDirection parseFromInt(int intValue) {
-      for (MoveDirection md: values()) {
-        if (intValue == md.ordinal()) {
-          return md;
-        }
-      }
-
-      throw new IllegalArgumentException("Could not find a MoveDirection with int value " + intValue);
-    }
-  }
-
-  protected String name;
-  protected int speed;
-  protected int numSteps = 0;
-  protected boolean isMoving;
-  protected MoveDirection movingDir = MoveDirection.Up;
-
-  public MoveableEntity(String name, int x, int y, int speed, Rect2i bbox) {
-    super();
-    this.name = name;
-    this.posX = x;
-    this.posY = y;
-    this.speed = speed;
-    this.boundingBox = bbox;
-  }
-
   /**
    * Move the entity the given amount in the width and height direction.
-   *
+   * <p>
    * This method will call hasCollided() internaly to check the entity movement again the world.
    *
    * @param level
@@ -80,14 +51,19 @@ public abstract class MoveableEntity extends AbstractEntity {
     return true;
   }
 
-  /**
-   * True if the object is standing on ground.
-   *
-   * @param level
-   * @return
-   */
-  protected boolean isOnGround(Level level) {
-    return hasCollided(level, 0, +1);
+  protected String name;
+  protected int speed;
+  protected int numSteps = 0;
+  protected boolean isMoving;
+  protected MoveDirection movingDir = MoveDirection.Up;
+
+  public MoveableEntity(String name, int x, int y, int speed, Rect2i bbox) {
+    super();
+    this.name = name;
+    this.posX = x;
+    this.posY = y;
+    this.speed = speed;
+    this.boundingBox = bbox;
   }
 
   public boolean hasCollided(Level level, int xa, int ya) {
@@ -109,13 +85,33 @@ public abstract class MoveableEntity extends AbstractEntity {
       return true;
     }
 
-    if (level.isSolidTile(this.posX, this.posY, xa, ya, xMax, yMax)) {
-      return true;
-    }
+    return level.isSolidTile(this.posX, this.posY, xa, ya, xMax, yMax);
 
-    return false;
   }
 
+  /**
+   * True if the object is standing on ground.
+   *
+   * @param level
+   * @return
+   */
+  protected boolean isOnGround(Level level) {
+    return hasCollided(level, 0, +1);
+  }
+
+  public enum MoveDirection {
+    Up, Down, Left, Right;
+
+    public static MoveDirection parseFromInt(int intValue) {
+      for (MoveDirection md : values()) {
+        if (intValue == md.ordinal()) {
+          return md;
+        }
+      }
+
+      throw new IllegalArgumentException("Could not find a MoveDirection with int value " + intValue);
+    }
+  }
 
 
   public String getName() {

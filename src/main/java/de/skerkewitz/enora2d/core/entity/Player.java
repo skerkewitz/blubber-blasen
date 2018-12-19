@@ -6,12 +6,9 @@ import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Size2i;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.Font;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.gfx.Screen;
 import de.skerkewitz.enora2d.core.input.InputHandler;
-import de.skerkewitz.enora2d.core.net.GameClientProvider;
-import de.skerkewitz.enora2d.core.net.packets.Packet02Move;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,19 +22,17 @@ public class Player extends MoveableEntity {
 
   private InputHandler input;
   private int colour = RgbColorPalette.mergeColorCodes(-1, 111, 145, 543);
-  private String username;
-  private final GameClientProvider gameClientProvider;
 
   private int jumpTickRemaining = 0;
 
-  /** Last tick time we player spawned a bubble. */
+  /**
+   * Last tick time we player spawned a bubble.
+   */
   private int lastBubbleSpawnTime = 0;
 
-  Player(int x, int y, InputHandler input, String username, GameClientProvider gameClientProvider) {
+  public Player(int x, int y, InputHandler input) {
     super("Player", x, y, 1, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
     this.input = input;
-    this.username = username;
-    this.gameClientProvider = gameClientProvider;
     this.movingDir = MoveDirection.Right;
   }
 
@@ -51,7 +46,6 @@ public class Player extends MoveableEntity {
       lastBubbleSpawnTime = tickTime;
       level.spawnEntity(new Bubble("Bubble", this.posX, this.posY, 1));
     }
-
 
 
     if (jumpTickRemaining > 0) {
@@ -77,15 +71,11 @@ public class Player extends MoveableEntity {
 
     if (xa != 0 || ya != 0) {
       isMoving = move(level, xa, ya);
-      movingDir = playerMoveDirection;
-
-      Packet02Move packet = new Packet02Move(this.getUsername(), this.posX, this.posY, this.numSteps, this.isMoving, this.movingDir);
-      packet.writeData(gameClientProvider.getGameClient());
     } else {
       isMoving = false;
     }
 
-    logger.info("Player num steps: " + numSteps);
+    logger.debug("Player num steps: " + numSteps);
     movingDir = playerMoveDirection;
   }
 
@@ -115,15 +105,15 @@ public class Player extends MoveableEntity {
             scale);
 
     screen.render(xOffset + (modifier * flipBottom), yOffset + modifier, xTile + (yTile + 1) * 32, colour,
-              flipBottom, scale);
+            flipBottom, scale);
     screen.render(xOffset + modifier - (modifier * flipBottom), yOffset + modifier, (xTile + 1) + (yTile + 1)
-              * 32, colour, flipBottom, scale);
+            * 32, colour, flipBottom, scale);
 
 
-    if (username != null) {
-      Font.render(username, screen, xOffset - ((username.length() - 1) / 2 * 8), yOffset - 10,
-              RgbColorPalette.mergeColorCodes(-1, -1, -1, 555), 1);
-    }
+//    if (username != null) {
+//      Font.render(username, screen, xOffset - ((username.length() - 1) / 2 * 8), yOffset - 10,
+//              RgbColorPalette.mergeColorCodes(-1, -1, -1, 555), 1);
+//    }
   }
 
   public boolean hasCollided(Level level, int xa, int ya) {
@@ -152,9 +142,5 @@ public class Player extends MoveableEntity {
       }
     }
     return false;
-  }
-
-  public String getUsername() {
-    return this.username;
   }
 }

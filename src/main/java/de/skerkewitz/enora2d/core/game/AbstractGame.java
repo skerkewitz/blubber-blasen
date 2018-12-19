@@ -4,17 +4,12 @@ import de.skerkewitz.blubberblase.entity.Bubble;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
 import de.skerkewitz.enora2d.core.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.Player;
-import de.skerkewitz.enora2d.core.entity.PlayerMP;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
 import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.gfx.Screen;
 import de.skerkewitz.enora2d.core.input.InputHandler;
-import de.skerkewitz.enora2d.core.net.GameClient;
-import de.skerkewitz.enora2d.core.net.GameClientProvider;
-import de.skerkewitz.enora2d.core.net.GameServer;
-import de.skerkewitz.enora2d.core.net.packets.Packet00Login;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +17,7 @@ import java.awt.*;
 import java.io.IOException;
 
 
-public abstract class AbstractGame extends Canvas implements Runnable, Game, GameClientProvider {
+public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
   private static final Logger logger = LogManager.getLogger(AbstractGame.class);
   public static final double TARGET_FPS = 60D;
@@ -36,8 +31,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game, Gam
   public InputHandler input;
   public WindowHandler windowHandler;
   public Player player;
-  public GameClient gameClient;
-  public GameServer socketServer;
+
   public boolean debug = true;
   private Thread thread;
   private int[] frameBufferPixels;
@@ -65,18 +59,10 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game, Gam
 
     level = new Level();
 
-    player = new PlayerMP(4 *8, 26 * 8, input, "Tropper", null, -1, this);
+    player = new Player(4 * 8, 26 * 8, input);
     level.spawnEntity(player);
     level.spawnEntity(new Bubble("Bubble", 8 * 8, 24 * 8, 1));
-
-
-    Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.posX, player.posY);
-    if (socketServer != null) {
-      socketServer.addConnection((PlayerMP) player, loginPacket);
-    }
-    loginPacket.writeData(gameClient);
   }
-
 
 
   @Override
@@ -85,12 +71,6 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game, Gam
 
     thread = new Thread(this, gameConfig.name + "_main");
     thread.start();
-
-    socketServer = new GameServer(this);
-    socketServer.start();
-
-    gameClient = new GameClient(this, "localhost");
-    gameClient.start();
   }
 
   @Override
@@ -206,11 +186,6 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game, Gam
           frameBufferPixels[x + y * gameConfig.width] = rgbColorPalette.rgbValueForIndex(colourCode);
       }
     }
-  }
-
-  @Override
-  public GameClient getGameClient() {
-    return gameClient;
   }
 
   /**

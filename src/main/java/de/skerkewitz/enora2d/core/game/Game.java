@@ -36,7 +36,7 @@ public interface Game {
       this.scale = scale;
       this.name = name;
 
-      displayDimensions= new Dimension(width * scale, height * scale);
+      displayDimensions = new Dimension(width * scale, height * scale);
     }
   }
 }

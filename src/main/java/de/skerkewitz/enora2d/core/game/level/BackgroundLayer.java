@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class BackgroundLayer {
 
-  private final static int mapData[] = {
+  private final static int[] mapData = {
           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
           1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
           1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -120,14 +120,18 @@ public class BackgroundLayer {
     }
   }
 
-  /** Get a tile in tile space. */
+  /**
+   * Get a tile in tile space.
+   */
   public Tile getTile(int x, int y) {
     if (0 > x || x >= tileWidth || 0 > y || y >= tileHeight)
       return TileContainer.VOID;
     return TileContainer.tiles[tiles[x + y * tileWidth]];
   }
 
-  /** Get a tile in pixel space. */
+  /**
+   * Get a tile in pixel space.
+   */
   public Tile getTilePixelSpace(int pixelSpaceX, int pixelSpaceY) {
     return getTile(pixelSpaceX >> 8, pixelSpaceY >> 3);
   }

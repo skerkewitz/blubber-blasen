@@ -2,8 +2,6 @@ package de.skerkewitz.enora2d.core.game.level;
 
 import de.skerkewitz.enora2d.core.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.EntityContainer;
-import de.skerkewitz.enora2d.core.entity.MoveableEntity;
-import de.skerkewitz.enora2d.core.entity.PlayerMP;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
 public class Level {
@@ -43,29 +41,6 @@ public class Level {
     entityContainer.addEntity(entity);
   }
 
-  public void removePlayerMP(String username) {
-//    int index = 0;
-//    for (Entity e : getEntities()) {
-//      if (e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username)) {
-//        break;
-//      }
-//      index++;
-//    }
-//    this.getEntities().remove(index);
-  }
-
-  public void movePlayer(String username, int x, int y, int numSteps, boolean isMoving, MoveableEntity.MoveDirection movingDir) {
-
-    var player = entityContainer.findFirst((Entity e) -> e instanceof PlayerMP && ((PlayerMP) e).getUsername().equals(username));
-    if (player.isPresent()) {
-      PlayerMP playerMP = (PlayerMP) player.get();
-      playerMP.posX = x;
-      playerMP.posY = y;
-      playerMP.setMoving(isMoving);
-      playerMP.setNumSteps(numSteps);
-      playerMP.setMovingDir(movingDir);
-    }
-  }
 
   public EntityContainer getEntityContainer() {
     return entityContainer;

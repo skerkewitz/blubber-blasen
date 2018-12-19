@@ -6,6 +6,7 @@ import de.skerkewitz.enora2d.core.gfx.Screen;
 public interface Entity {
 
   boolean isExpired();
+
   boolean isAlive();
 
   class ObjectAttributes {
