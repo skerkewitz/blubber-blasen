@@ -21,7 +21,7 @@ public class Packet02Move extends Packet {
         this.y = Integer.parseInt(dataArray[2]);
         this.numSteps = Integer.parseInt(dataArray[3]);
         this.isMoving = Integer.parseInt(dataArray[4]) == 1;
-        this.movingDir = MoveableEntity.MoveDirection.Up; // XXX SKerkeiwtz fix me Integer.parseInt(dataArray[5]);
+        this.movingDir = MoveableEntity.MoveDirection.parseFromInt(Integer.parseInt(dataArray[5]));
     }
 
     public Packet02Move(String username, int x, int y, int numSteps, boolean isMoving, MoveableEntity.MoveDirection movingDir) {
@@ -47,7 +47,7 @@ public class Packet02Move extends Packet {
     @Override
     public byte[] getData() {
         return ("02" + this.username + "," + this.x + "," + this.y + "," + this.numSteps + "," + (isMoving ? 1 : 0)
-                + "," + this.movingDir).getBytes();
+                + "," + this.movingDir.ordinal()).getBytes();
 
     }
 

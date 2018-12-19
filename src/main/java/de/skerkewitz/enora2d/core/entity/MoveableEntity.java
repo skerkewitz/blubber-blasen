@@ -8,7 +8,17 @@ public abstract class MoveableEntity extends AbstractEntity {
   protected final Rect2i boundingBox;
 
   public enum MoveDirection {
-    Up, Down, Left, Right
+    Up, Down, Left, Right;
+
+    public static MoveDirection parseFromInt(int intValue) {
+      for (MoveDirection md: values()) {
+        if (intValue == md.ordinal()) {
+          return md;
+        }
+      }
+
+      throw new IllegalArgumentException("Could not find a MoveDirection with int value " + intValue);
+    }
   }
 
   protected String name;
@@ -41,7 +51,9 @@ public abstract class MoveableEntity extends AbstractEntity {
     if (xa != 0 && ya != 0) {
       var seconds = move(level, 0, ya);
       var first = move(level, xa, 0);
-      numSteps--;
+      if (first && seconds) {
+        numSteps--;
+      }
       return first || seconds;
     }
 
