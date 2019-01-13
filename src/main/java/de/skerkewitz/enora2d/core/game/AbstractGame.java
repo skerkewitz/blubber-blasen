@@ -2,13 +2,13 @@ package de.skerkewitz.enora2d.core.game;
 
 import de.skerkewitz.blubberblase.entity.Bubble;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
+import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
 import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.ImageData;
-import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
-import de.skerkewitz.enora2d.core.gfx.Screen;
+import de.skerkewitz.enora2d.core.gfx.*;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +40,8 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
 
   public Level level;
+  private SpriteSheet spritesheet;
+  private Screen.Sprite sprite;
 
   public AbstractGame(GameConfig config) {
     super();
@@ -56,6 +58,9 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     frameBufferPixels = getFrameBufferPixel();
 
     screen = new Screen(gameConfig.width, gameConfig.height, new ImageData("/sprite_sheet.png"));
+
+    spritesheet = new SpriteSheet();
+    sprite = new Screen.Sprite(1, spritesheet);
 
     level = new Level();
 
@@ -105,7 +110,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
       long now = System.nanoTime();
       delta += (now - lastTime) / nsPerTick;
       lastTime = now;
-      boolean shouldRender = true;
+      boolean shouldRender = false;
 
       while (delta >= 1) {
         ticks++;
@@ -145,20 +150,20 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     if (xOffset < 0) {
       xOffset = 0;
     }
-    if (xOffset > ((backgroundLayer.tileWidth << 3) - screen.pixelWidth)) {
-      xOffset = ((backgroundLayer.tileWidth << 3) - screen.pixelWidth);
+    if (xOffset > ((backgroundLayer.tileWidth << 3) - screen.imageData.width)) {
+      xOffset = ((backgroundLayer.tileWidth << 3) - screen.imageData.width);
     }
     if (yOffset < 0) {
       yOffset = 0;
     }
-    if (yOffset > ((backgroundLayer.tileHeight << 3) - screen.pixelHeight)) {
-      yOffset = ((backgroundLayer.tileHeight << 3) - screen.pixelHeight);
+    if (yOffset > ((backgroundLayer.tileHeight << 3) - screen.imageData.height)) {
+      yOffset = ((backgroundLayer.tileHeight << 3) - screen.imageData.height);
     }
 
     screen.setOffset(xOffset, yOffset);
 
-    for (int y = (yOffset >> 3); y < (yOffset + screen.pixelHeight >> 3) + 1; y++) {
-      for (int x = (xOffset >> 3); x < (xOffset + screen.pixelWidth >> 3) + 1; x++) {
+    for (int y = (yOffset >> 3); y < (yOffset + screen.imageData.height >> 3) + 1; y++) {
+      for (int x = (xOffset >> 3); x < (xOffset + screen.imageData.width >> 3) + 1; x++) {
         backgroundLayer.getTile(x, y).render(screen, backgroundLayer, x << 3, y << 3);
       }
     }
@@ -168,8 +173,8 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   @Override
   public void render() {
 
-    int xOffset = player.posX - (screen.pixelWidth / 2);
-    int yOffset = player.posY - (screen.pixelHeight / 2);
+    int xOffset = player.posX - (screen.imageData.width / 2);
+    int yOffset = player.posY - (screen.imageData.height / 2);
 
     /* Render the backgroundLayer into the screen. */
     renderLevel(level.backgroundLayer, xOffset, yOffset);
@@ -178,12 +183,15 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     /* Render all the entities. */
     level.getEntityContainer().forEach((Entity e) -> e.render(screen));
 
+    Renderer.renderSubImage(sprite.sheet.imageData, new Rect2i(5, 5, 16, 16), RgbColorPalette.mergeColorCodes(-1, 005, 410, 445), screen.imageData, new Point2i(50, 50), false, false);
+
     /* Render the screen into the framebuffer. */
-    for (int y = 0; y < screen.pixelHeight; y++) {
-      for (int x = 0; x < screen.pixelWidth; x++) {
-        int colourCode = screen.pixels[x + y * screen.pixelWidth];
-        if (colourCode < 255)
+    for (int y = 0; y < screen.imageData.height; y++) {
+      for (int x = 0; x < screen.imageData.width; x++) {
+        int colourCode = screen.imageData.pixels[x + y * screen.imageData.width];
+        if (colourCode < 255) {
           frameBufferPixels[x + y * gameConfig.width] = rgbColorPalette.rgbValueForIndex(colourCode);
+        }
       }
     }
   }

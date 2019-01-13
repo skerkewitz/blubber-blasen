@@ -16,4 +16,10 @@ public class Rect2i {
     this.origin = origin;
     this.size = size2i;
   }
+
+  public Rect2i(int x, int y, int width, int height) {
+    this.origin = new Point2i(x, y);
+    this.size = new Size2i(width, height);
+  }
+
 }
