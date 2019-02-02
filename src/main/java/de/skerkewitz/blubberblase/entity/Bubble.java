@@ -14,8 +14,8 @@ public class Bubble extends MoveableEntity {
 
   public final static int MAX_LIFETIME_IN_TICKS = 100;
 
-  public Bubble(String name, int x, int y, int speed) {
-    super(name, x, y, speed, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
+  public Bubble(int x, int y, int speed) {
+    super("Bubble", x, y, speed, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
   }
 
   @Override

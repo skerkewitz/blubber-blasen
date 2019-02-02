@@ -32,10 +32,18 @@ public class Level {
       return false;
     }
 
-    Tile lastTile = backgroundLayer.getTile((px + x) >> 3, (py + y) >> 3);
-    Tile newTile = backgroundLayer.getTile((px + x + xa) >> 3, (py + y + ya) >> 3);
+    Tile lastTile = getTileAtPosition(px + x, py + y);
+    Tile newTile = getTileAtPosition(px + x + xa, py + y + ya);
     return !lastTile.equals(newTile) && newTile.isSolid();
   }
+
+  /**
+   * Returns the tile at the given pixel position.
+   */
+  public Tile getTileAtPosition(int x, int y) {
+    return backgroundLayer.getTile(x >> 3, y >> 3);
+  }
+
 
   public void spawnEntity(Entity entity) {
     entityContainer.addEntity(entity);
