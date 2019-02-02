@@ -8,6 +8,11 @@ public abstract class MoveableEntity extends AbstractEntity {
   protected final Rect2i boundingBox;
 
   /**
+   * How many more ticks can this entity stay in jump mode?
+   */
+  protected int jumpTickRemaining = 0;
+
+  /**
    * Move the entity the given amount in the width and height direction.
    * <p>
    * This method will call hasCollided() internaly to check the entity movement again the world.

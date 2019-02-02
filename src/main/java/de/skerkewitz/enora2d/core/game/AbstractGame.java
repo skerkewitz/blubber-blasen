@@ -1,14 +1,16 @@
 package de.skerkewitz.enora2d.core.game;
 
 import de.skerkewitz.blubberblase.entity.Bubble;
+import de.skerkewitz.blubberblase.entity.ZenChan;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
-import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
 import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.*;
+import de.skerkewitz.enora2d.core.gfx.ImageData;
+import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
+import de.skerkewitz.enora2d.core.gfx.Screen;
+import de.skerkewitz.enora2d.core.gfx.SpriteSheet;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,6 +45,9 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   private SpriteSheet spritesheet;
   private Screen.Sprite sprite;
 
+  public static final int TICKTIME_1s = AbstractGame.secondsToTickTime(1);
+  public static final int TICKTIME_5s = AbstractGame.secondsToTickTime(5);
+
   public AbstractGame(GameConfig config) {
     super();
     this.gameConfig = config;
@@ -66,7 +71,8 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
     player = new Player(4 * 8, 26 * 8, input);
     level.spawnEntity(player);
-    level.spawnEntity(new Bubble("Bubble", 8 * 8, 24 * 8, 1));
+    level.spawnEntity(new Bubble(8 * 8, 24 * 8, 1));
+    level.spawnEntity(new ZenChan(8 * 8, 24 * 8, 1, sprite));
   }
 
 
@@ -179,11 +185,8 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     /* Render the backgroundLayer into the screen. */
     renderLevel(level.backgroundLayer, xOffset, yOffset);
 
-
     /* Render all the entities. */
     level.getEntityContainer().forEach((Entity e) -> e.render(screen));
-
-    Renderer.renderSubImage(sprite.sheet.imageData, new Rect2i(5, 5, 16, 16), RgbColorPalette.mergeColorCodes(-1, 005, 410, 445), screen.imageData, new Point2i(50, 50), false, false);
 
     /* Render the screen into the framebuffer. */
     for (int y = 0; y < screen.imageData.height; y++) {

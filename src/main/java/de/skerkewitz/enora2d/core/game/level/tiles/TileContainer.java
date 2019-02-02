@@ -5,7 +5,7 @@ import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 public class TileContainer {
 
   public static final Tile[] tiles = new Tile[256];
-  public static final Tile VOID = new BasicSolidTile(0, 0, 0, RgbColorPalette.mergeColorCodes(000, -1, -1, -1), 0xFF000000);
+  public static final Tile VOID = new BasicTile(0, 0, 0, RgbColorPalette.mergeColorCodes(000, -1, -1, -1), 0xFF000000);
   public static final Tile STONE = new BasicSolidTile(1, 1, 0, RgbColorPalette.mergeColorCodes(-1, 5, -1, -1), 0xFF555555);
   public static final Tile GRASS = new BasicTile(2, 2, 0, RgbColorPalette.mergeColorCodes(-1, 131, 141, -1), 0xFF00FF00);
 

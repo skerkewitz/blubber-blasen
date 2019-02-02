@@ -23,8 +23,6 @@ public class Player extends MoveableEntity {
   private InputHandler input;
   private int colour = RgbColorPalette.mergeColorCodes(-1, 111, 145, 543);
 
-  private int jumpTickRemaining = 0;
-
   /**
    * Last tick time we player spawned a bubble.
    */
@@ -44,7 +42,7 @@ public class Player extends MoveableEntity {
 
     if (lastBubbleSpawnTime + BUBBLE_SHOOT_DELAY < tickTime && input.getFireA().isPressed()) {
       lastBubbleSpawnTime = tickTime;
-      level.spawnEntity(new Bubble("Bubble", this.posX, this.posY, 1));
+      level.spawnEntity(new Bubble(this.posX, this.posY, 1));
     }
 
 
