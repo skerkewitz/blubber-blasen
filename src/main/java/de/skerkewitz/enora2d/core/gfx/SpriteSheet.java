@@ -11,8 +11,8 @@ public class SpriteSheet {
   public final Size2i inset;
 
 
-  public SpriteSheet() throws IOException {
-    imageData = new ImageData("/Enemies.png");
+  public SpriteSheet(ImageData imageData) throws IOException {
+    this.imageData = imageData;
     inset = new Size2i(5, 5);
   }
 }
