@@ -1,6 +1,7 @@
 package de.skerkewitz.enora2d.core.game;
 
 import de.skerkewitz.blubberblase.entity.Bubble;
+import de.skerkewitz.blubberblase.entity.Bubblun;
 import de.skerkewitz.blubberblase.entity.ZenChan;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
 import de.skerkewitz.enora2d.core.entity.Entity;
@@ -64,12 +65,15 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
     screen = new Screen(gameConfig.width, gameConfig.height, new ImageData("/sprite_sheet.png"));
 
-    spritesheet = new SpriteSheet();
+    spritesheet = new SpriteSheet(new ImageData("/Enemies.png"));
     sprite = new Screen.Sprite(1, spritesheet);
 
     level = new Level();
 
-    player = new Player(4 * 8, 26 * 8, input);
+    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
+    var bob_sprite = new Screen.Sprite(1, sheet);
+
+    player = new Bubblun(4 * 8, 25 * 8, input, bob_sprite);
     level.spawnEntity(player);
     level.spawnEntity(new Bubble(8 * 8, 24 * 8, 1));
     level.spawnEntity(new ZenChan(8 * 8, 24 * 8, 1, sprite));
