@@ -2,7 +2,7 @@ package de.skerkewitz.enora2d.core.entity;
 
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.ecs.component.Transform;
+import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.game.level.Level;
 
 public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
@@ -65,7 +65,7 @@ public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
       movingDir = MoveDirection.Right;
 
     /* Update player position. */
-    Point2i position = getComponent(Transform.class).position;
+    Point2i position = getComponent(TransformComponent.class).position;
     position.x += xa * speed;
     position.y += ya * speed;
 
@@ -79,21 +79,21 @@ public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
     int yMin = boundingBox.origin.y;
     int yMax = boundingBox.size.width;
 
-    Transform transform = getComponent(Transform.class);
+    TransformComponent transformComponent = getComponent(TransformComponent.class);
 
-    if (level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMin, yMin)) {
+    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMin)) {
       return true;
     }
 
-    if (level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMax, yMin)) {
+    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMin)) {
       return true;
     }
 
-    if (level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMin, yMax)) {
+    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMax)) {
       return true;
     }
 
-    return level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMax, yMax);
+    return level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMax);
 
   }
 
@@ -108,7 +108,7 @@ public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
   }
 
   public enum MoveDirection {
-    Up, Down, Left, Right;
+    Idle, Up, Down, Left, Right;
 
     public static MoveDirection parseFromInt(int intValue) {
       for (MoveDirection md : values()) {

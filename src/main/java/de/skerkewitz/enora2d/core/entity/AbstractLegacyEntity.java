@@ -9,14 +9,6 @@ public abstract class AbstractLegacyEntity extends DefaultEntity implements Lega
   protected int tickCount = 0;
 
 
-  protected AbstractLegacyEntity() {
-    init();
-  }
-
-  @Override
-  public final void init() {
-  }
-
   @Override
   public void tick(Level level, int tickTime) {
     tickCount += 1;

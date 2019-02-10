@@ -5,14 +5,14 @@ import de.skerkewitz.enora2d.common.Point2i;
 /**
  * The transform of an entity in world space.
  */
-public class Transform implements Component {
+public class TransformComponent implements Component {
   public Point2i position;
 
-  public Transform() {
+  public TransformComponent() {
     this.position = Point2i.ZERO;
   }
 
-  public Transform(Point2i position) {
+  public TransformComponent(Point2i position) {
     this.position = position;
   }
 }

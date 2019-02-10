@@ -47,7 +47,9 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   public static final int TICKTIME_1s = AbstractGame.secondsToTickTime(1);
   public static final int TICKTIME_5s = AbstractGame.secondsToTickTime(5);
   private boolean paused = false;
+
   private RenderSpriteSystem renderSpriteSystem;
+
 
   public AbstractGame(GameConfig config) {
     super();
@@ -66,13 +68,12 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     screen = new Screen(gameConfig.width, gameConfig.height, new ImageData("/sprite_sheet.png"));
 
     renderSpriteSystem = new RenderSpriteSystem(screen);
-
     level = new Level();
 
     player = (Player) EntityFactory.spawnBubblun(input);
-    level.spawnEntity(player);
-    level.spawnEntity(EntityFactory.spawnBubble(8 * 8, 24 * 8, 1));
-    level.spawnEntity(EntityFactory.spawnZenChan());
+    level.addEntity(player);
+    level.addEntity(EntityFactory.spawnBubble(0, 8 * 8, 24 * 8, 1));
+    level.addEntity(EntityFactory.spawnZenChan());
   }
 
 
@@ -210,16 +211,12 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   @Override
   public void render() {
 
-//    int xOffset = player.posX - (screen.screenImageData.width / 2);
-//    int yOffset = player.posY - (screen.screenImageData.height / 2);
-
     /* Render the backgroundLayer into the screen. */
     renderLevel(level.backgroundLayer, 0, 0);
 
     /* Render all the entities. */
 
     renderSpriteSystem.update(tickTime, level.getEntityContainer().stream());
-
 
     /* Render the screen into the framebuffer. */
     for (int y = 0; y < screen.screenImageData.height; y++) {

@@ -6,7 +6,7 @@ import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Size2i;
 import de.skerkewitz.enora2d.core.ecs.component.SpriteComponent;
-import de.skerkewitz.enora2d.core.ecs.component.Transform;
+import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
@@ -67,13 +67,13 @@ public class ZenChan extends MoveableLegacyEntity {
 
     var playerMoveDirection = movingDir;
     if (playerMoveDirection == MoveDirection.Left) {
-      Transform transform = getComponent(Transform.class);
-      if (level.getTileAtPosition(transform.position.x - 1, transform.position.y).isSolid()) {
+      TransformComponent transformComponent = getComponent(TransformComponent.class);
+      if (level.getTileAtPosition(transformComponent.position.x - 1, transformComponent.position.y).isSolid()) {
         playerMoveDirection = MoveDirection.Right;
       }
     } else if (playerMoveDirection == MoveDirection.Right) {
-      Transform transform = getComponent(Transform.class);
-      if (level.getTileAtPosition(transform.position.x + 1 + boundingBox.size.width, transform.position.y).isSolid()) {
+      TransformComponent transformComponent = getComponent(TransformComponent.class);
+      if (level.getTileAtPosition(transformComponent.position.x + 1 + boundingBox.size.width, transformComponent.position.y).isSolid()) {
         playerMoveDirection = MoveDirection.Left;
       }
     }
@@ -94,9 +94,9 @@ public class ZenChan extends MoveableLegacyEntity {
     movingDir = playerMoveDirection;
 
 
-    Transform transform = getComponent(Transform.class);
-    if (transform.position.y < 8) {
-      transform.position.y = 8;
+    TransformComponent transformComponent = getComponent(TransformComponent.class);
+    if (transformComponent.position.y < 8) {
+      transformComponent.position.y = 8;
     }
 
     frameSourceRect = (tickTime / frameAnimationSpeed) % 2 == 0 ? sourceRect : sourceRect2;

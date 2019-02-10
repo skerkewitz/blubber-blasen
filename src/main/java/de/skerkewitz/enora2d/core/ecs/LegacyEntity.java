@@ -17,7 +17,5 @@ public interface LegacyEntity extends Entity {
 
   // Size (8x8, 16x16), pos, prio, flipv, fliph, first tile, color palette
 
-  void init();
-
   void tick(Level level, int tickTime);
 }

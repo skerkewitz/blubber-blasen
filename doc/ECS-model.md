@@ -8,4 +8,12 @@ Every "thing" in the game is an legacyEntity. And legacyEntity is nothing more t
 
 Next you have components. Components are nothing more then data classes to hold the state for a certain functionality. You can assign any legacyEntity any number of component.   
 
-Lastly you have Systems. A system checks if an legacyEntity has certain components and perform some action on those component. If an legacyEntity does not provide the needed components it is simply ignored by the system.     
+Lastly you have Systems. A system checks if an legacyEntity has certain components and perform some action on those component. If an legacyEntity does not provide the needed components it is simply ignored by the system.
+
+# Basic rules
+
+* Component have no functions
+* Systems have no state
+* Shared code lives in Utils
+* Complex side effects should be deferred
+* Systems can't call other systems     

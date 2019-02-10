@@ -1,7 +1,7 @@
 package de.skerkewitz.enora2d.core.ecs.system;
 
 import de.skerkewitz.enora2d.core.ecs.component.SpriteComponent;
-import de.skerkewitz.enora2d.core.ecs.component.Transform;
+import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
@@ -28,7 +28,7 @@ public class RenderSpriteSystem {
   public void update(int tickTime, Stream<Entity> stream) {
     getTuples(stream)
             .filter(tuple -> tuple.spriteComponent.renderSprite != null)
-            .forEach(tuple -> renderSprite(tuple.transform, tuple.spriteComponent));
+            .forEach(tuple -> renderSprite(tuple.transformComponent, tuple.spriteComponent));
   }
 
 
@@ -36,11 +36,11 @@ public class RenderSpriteSystem {
     this.screen = screen;
   }
 
-  private void renderSprite(Transform transform, SpriteComponent sprite) {
+  private void renderSprite(TransformComponent transformComponent, SpriteComponent sprite) {
     try {
       ImageData imageData = imageDataContainer.getResourceForName(sprite.renderSprite.namedResource);
       Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
-              screen.screenImageData, transform.position, sprite.flipX, sprite.flipY);
+              screen.screenImageData, transformComponent.position, sprite.flipX, sprite.flipY);
     } catch (IOException e) {
       logger.error("Error rendering sprite because of: " + e, e);
     }
@@ -53,20 +53,20 @@ public class RenderSpriteSystem {
   /**
    * Declares the component needed by this system.
    */
-  public static class Tuple {
-    public Entity entity;
-    public Transform transform;
-    public SpriteComponent spriteComponent;
+  static class Tuple {
+    Entity entity;
+    TransformComponent transformComponent;
+    SpriteComponent spriteComponent;
 
-    public Tuple(Entity entity, Transform transform, SpriteComponent spriteComponent) {
+    Tuple(Entity entity, TransformComponent transformComponent, SpriteComponent spriteComponent) {
       this.entity = entity;
-      this.transform = transform;
+      this.transformComponent = transformComponent;
       this.spriteComponent = spriteComponent;
     }
 
     static Tuple map(Entity entity) {
       var sprite = entity.getComponent(SpriteComponent.class);
-      var transform = entity.getComponent(Transform.class);
+      var transform = entity.getComponent(TransformComponent.class);
       if (sprite != null && transform != null) {
         return new Tuple(entity, transform, sprite);
       } else {

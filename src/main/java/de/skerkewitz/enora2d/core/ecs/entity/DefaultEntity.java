@@ -12,7 +12,7 @@ public class DefaultEntity implements Entity {
 
   private final List<Component> components = new ArrayList<>();
 
-  protected boolean expired;
+  private boolean expired;
 
   /**
    * Add the given component to the list of component for this entity.
@@ -34,6 +34,11 @@ public class DefaultEntity implements Entity {
     }
 
     return null;
+  }
+
+  @Override
+  public void expired() {
+    expired = true;
   }
 
   @Override

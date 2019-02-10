@@ -3,6 +3,9 @@ package de.skerkewitz.enora2d.core.game.level;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
+import de.skerkewitz.enora2d.core.ecs.system.AiSystem;
+import de.skerkewitz.enora2d.core.ecs.system.LifeTimeSystem;
+import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
 public class Level {
@@ -10,6 +13,11 @@ public class Level {
   public BackgroundLayer backgroundLayer;
 
   private final EntityContainer entityContainer;
+
+  private MovementSystem movementSystem = new MovementSystem();
+  private AiSystem aiSystem = new AiSystem();
+  private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
+
 
   public Level() {
     //backgroundLayer = new BackgroundLayer("/levels/water_test_level.png");
@@ -19,10 +27,20 @@ public class Level {
 
   public void tick(int tickTime) {
 
-    /* Tick all entities. */
-    entityContainer.forEach((Entity e) -> ((LegacyEntity) e).tick(this, tickTime));
-
+    /* Update life time of entities and purge dead entities. */
+    lifeTimeSystem.update(tickTime, entityContainer.stream());
     entityContainer.purgeExpired();
+
+    /* Tick legacy entities. */
+    entityContainer.forEach((Entity e) -> {
+      if (e instanceof LegacyEntity) {
+        ((LegacyEntity) e).tick(this, tickTime);
+      }
+    });
+    entityContainer.purgeExpired();
+
+    aiSystem.update(tickTime, entityContainer.stream());
+    movementSystem.update(tickTime, entityContainer.stream());
 
     /* Tick background layer. */
     backgroundLayer.tick(tickTime);
@@ -46,8 +64,8 @@ public class Level {
   }
 
 
-  public void spawnEntity(Entity legacyEntity) {
-    entityContainer.addEntity(legacyEntity);
+  public void addEntity(Entity entity) {
+    entityContainer.addEntity(entity);
   }
 
 
