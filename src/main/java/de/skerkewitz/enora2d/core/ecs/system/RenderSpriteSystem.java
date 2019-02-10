@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * A system to render all SpriteComponents.
@@ -23,32 +25,52 @@ public class RenderSpriteSystem {
 
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
 
+  public void update(int tickTime, Stream<Entity> stream) {
+    getTuples(stream)
+            .filter(tuple -> tuple.spriteComponent.renderSprite != null)
+            .forEach(tuple -> renderSprite(tuple.transform, tuple.spriteComponent));
+  }
+
+
   public RenderSpriteSystem(Screen screen) {
     this.screen = screen;
   }
 
-  public void update(int tickTime, Iterable<Entity> iterator) {
-    iterator.forEach((Entity e) -> {
-
-      /* If we have a sprite component then render it. */
-      var sprite = e.getComponent(SpriteComponent.class);
-      var transform = e.getComponent(Transform.class);
-      if (sprite != null && transform != null) {
-        renderSprite(transform, sprite);
-      }
-    });
+  private void renderSprite(Transform transform, SpriteComponent sprite) {
+    try {
+      ImageData imageData = imageDataContainer.getResourceForName(sprite.renderSprite.namedResource);
+      Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
+              screen.screenImageData, transform.position, sprite.flipX, sprite.flipY);
+    } catch (IOException e) {
+      logger.error("Error rendering sprite because of: " + e, e);
+    }
   }
 
-  private void renderSprite(Transform transform, SpriteComponent sprite) {
-    if (sprite.renderSprite == null) {
-      logger.warn("Entity found without valid renderSprite, ignoring...");
-    } else {
-      try {
-        ImageData imageData = imageDataContainer.getResourceForName(sprite.renderSprite.namedResource);
-        Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
-                screen.screenImageData, transform.position, sprite.flipX, sprite.flipY);
-      } catch (IOException e) {
-        e.printStackTrace();
+  private Stream<Tuple> getTuples(Stream<Entity> stream) {
+    return stream.map(Tuple::map).filter(Objects::nonNull);
+  }
+
+  /**
+   * Declares the component needed by this system.
+   */
+  public static class Tuple {
+    public Entity entity;
+    public Transform transform;
+    public SpriteComponent spriteComponent;
+
+    public Tuple(Entity entity, Transform transform, SpriteComponent spriteComponent) {
+      this.entity = entity;
+      this.transform = transform;
+      this.spriteComponent = spriteComponent;
+    }
+
+    static Tuple map(Entity entity) {
+      var sprite = entity.getComponent(SpriteComponent.class);
+      var transform = entity.getComponent(Transform.class);
+      if (sprite != null && transform != null) {
+        return new Tuple(entity, transform, sprite);
+      } else {
+        return null;
       }
     }
   }

@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EntityContainer {
 
@@ -29,8 +30,8 @@ public class EntityContainer {
     return entities.stream().filter(predicate).findFirst();
   }
 
-  public Iterable<Entity> iterator() {
-    return entities;
+  public Stream<Entity> stream() {
+    return entities.stream();
   }
 
   public void forEach(Consumer<? super Entity> action) {

@@ -218,7 +218,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
     /* Render all the entities. */
 
-    renderSpriteSystem.update(tickTime, level.getEntityContainer().iterator());
+    renderSpriteSystem.update(tickTime, level.getEntityContainer().stream());
 
 
     /* Render the screen into the framebuffer. */
