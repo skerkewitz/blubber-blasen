@@ -1,9 +1,11 @@
 package de.skerkewitz.enora2d.core.entity;
 
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
+import de.skerkewitz.enora2d.core.ecs.component.Transform;
 import de.skerkewitz.enora2d.core.game.level.Level;
 
-public abstract class MoveableEntity extends AbstractEntity {
+public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
 
   protected final Rect2i boundingBox;
 
@@ -11,6 +13,19 @@ public abstract class MoveableEntity extends AbstractEntity {
    * How many more ticks can this entity stay in jump mode?
    */
   protected int jumpTickRemaining = 0;
+
+  public MoveableLegacyEntity(String name, int speed, Rect2i bbox) {
+    super();
+    this.name = name;
+    this.speed = speed;
+    this.boundingBox = bbox;
+  }
+
+  protected String name;
+  protected int speed;
+  protected int numSteps = 0;
+  protected boolean isMoving;
+  protected MoveDirection movingDir = MoveDirection.Up;
 
   /**
    * Move the entity the given amount in the width and height direction.
@@ -50,25 +65,11 @@ public abstract class MoveableEntity extends AbstractEntity {
       movingDir = MoveDirection.Right;
 
     /* Update player position. */
-    posX += xa * speed;
-    posY += ya * speed;
+    Point2i position = getComponent(Transform.class).position;
+    position.x += xa * speed;
+    position.y += ya * speed;
 
     return true;
-  }
-
-  protected String name;
-  protected int speed;
-  protected int numSteps = 0;
-  protected boolean isMoving;
-  protected MoveDirection movingDir = MoveDirection.Up;
-
-  public MoveableEntity(String name, int x, int y, int speed, Rect2i bbox) {
-    super();
-    this.name = name;
-    this.posX = x;
-    this.posY = y;
-    this.speed = speed;
-    this.boundingBox = bbox;
   }
 
   public boolean hasCollided(Level level, int xa, int ya) {
@@ -78,19 +79,21 @@ public abstract class MoveableEntity extends AbstractEntity {
     int yMin = boundingBox.origin.y;
     int yMax = boundingBox.size.width;
 
-    if (level.isSolidTile(this.posX, this.posY, xa, ya, xMin, yMin)) {
+    Transform transform = getComponent(Transform.class);
+
+    if (level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMin, yMin)) {
       return true;
     }
 
-    if (level.isSolidTile(this.posX, this.posY, xa, ya, xMax, yMin)) {
+    if (level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMax, yMin)) {
       return true;
     }
 
-    if (level.isSolidTile(this.posX, this.posY, xa, ya, xMin, yMax)) {
+    if (level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMin, yMax)) {
       return true;
     }
 
-    return level.isSolidTile(this.posX, this.posY, xa, ya, xMax, yMax);
+    return level.isSolidTile(transform.position.x, transform.position.y, xa, ya, xMax, yMax);
 
   }
 

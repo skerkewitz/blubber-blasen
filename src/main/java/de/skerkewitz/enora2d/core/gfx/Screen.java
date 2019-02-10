@@ -14,12 +14,12 @@ public class Screen {
   private int xOffset = 0;
   private int yOffset = 0;
 
-  public final ImageData imageData;
+  public final ImageData screenImageData;
 
   public ImageData sheet;
 
   public Screen(int pixelWidth, int pixelHeight, ImageData sheet) {
-    this.imageData = new ImageData(pixelWidth, pixelHeight, new int[pixelWidth * pixelHeight]);
+    this.screenImageData = new ImageData(pixelWidth, pixelHeight, new int[pixelWidth * pixelHeight]);
     this.sheet = sheet;
   }
 
@@ -34,7 +34,7 @@ public class Screen {
     int xTile = tile % 32;
     int yTile = tile / 32;
 
-    Renderer.renderSubImage(sheet, new Rect2i(xTile * 8, yTile * 8, 8, 8), colour, imageData, new Point2i(xPos, yPos), mirrorX, mirrorY);
+    Renderer.renderSubImage(sheet, new Rect2i(xTile * 8, yTile * 8, 8, 8), colour, screenImageData, new Point2i(xPos, yPos), mirrorX, mirrorY);
   }
 
   public void setOffset(int xOffset, int yOffset) {

@@ -1,7 +1,8 @@
 package de.skerkewitz.enora2d.core.game.level;
 
-import de.skerkewitz.enora2d.core.entity.Entity;
-import de.skerkewitz.enora2d.core.entity.EntityContainer;
+import de.skerkewitz.enora2d.core.ecs.EntityContainer;
+import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
+import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
 public class Level {
@@ -19,7 +20,7 @@ public class Level {
   public void tick(int tickTime) {
 
     /* Tick all entities. */
-    entityContainer.forEach((Entity e) -> e.tick(this, tickTime));
+    entityContainer.forEach((Entity e) -> ((LegacyEntity) e).tick(this, tickTime));
 
     entityContainer.purgeExpired();
 
@@ -45,12 +46,14 @@ public class Level {
   }
 
 
-  public void spawnEntity(Entity entity) {
-    entityContainer.addEntity(entity);
+  public void spawnEntity(Entity legacyEntity) {
+    entityContainer.addEntity(legacyEntity);
   }
 
 
   public EntityContainer getEntityContainer() {
     return entityContainer;
   }
+
+
 }

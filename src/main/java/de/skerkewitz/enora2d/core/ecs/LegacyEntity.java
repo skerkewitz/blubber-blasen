@@ -1,13 +1,12 @@
-package de.skerkewitz.enora2d.core.entity;
+package de.skerkewitz.enora2d.core.ecs;
 
+import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.Screen;
 
-public interface Entity {
-
-  boolean isExpired();
-
-  boolean isAlive();
+/**
+ * Any entity in the game.
+ */
+public interface LegacyEntity extends Entity {
 
   class ObjectAttributes {
 
@@ -21,6 +20,4 @@ public interface Entity {
   void init();
 
   void tick(Level level, int tickTime);
-
-  void render(Screen screen);
 }

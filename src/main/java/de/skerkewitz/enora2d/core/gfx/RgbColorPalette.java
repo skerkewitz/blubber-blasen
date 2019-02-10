@@ -2,6 +2,9 @@ package de.skerkewitz.enora2d.core.gfx;
 
 public class RgbColorPalette {
 
+  public static final int GREEN = 050;
+  public static final int WHITE = 555;
+  public static final int NONE = -1;
   /**
    * Each channel can habe a value 0 - 6, 255 is transparent.
    */

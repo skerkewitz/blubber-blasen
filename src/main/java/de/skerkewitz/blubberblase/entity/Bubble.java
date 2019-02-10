@@ -3,35 +3,16 @@ package de.skerkewitz.blubberblase.entity;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Size2i;
-import de.skerkewitz.enora2d.core.entity.MoveableEntity;
+import de.skerkewitz.enora2d.core.ecs.component.Transform;
+import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
-import de.skerkewitz.enora2d.core.gfx.Screen;
 
-public class Bubble extends MoveableEntity {
-
-  private int colour = RgbColorPalette.mergeColorCodes(-1, 050, -1, 555);
+public class Bubble extends MoveableLegacyEntity {
 
   public final static int MAX_LIFETIME_IN_TICKS = 100;
 
-  public Bubble(int x, int y, int speed) {
-    super("Bubble", x, y, speed, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
-  }
-
-  @Override
-  public void render(Screen screen) {
-
-    int xTile = 0;
-    int yTile = 25;
-
-    int modifier = 8 * scale;
-    int xOffset = posX;
-    int yOffset = posY;
-
-    screen.render(xOffset, yOffset, xTile + yTile * 32, colour, 0, scale);
-    screen.render(xOffset + modifier, yOffset, (xTile + 1) + yTile * 32, colour, 0, scale);
-    screen.render(xOffset, yOffset + modifier, xTile + (yTile + 1) * 32, colour, 0, scale);
-    screen.render(xOffset + modifier, yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, colour, 0, scale);
+  Bubble(int speed) {
+    super("Bubble", speed, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
   }
 
   @Override
@@ -74,8 +55,9 @@ public class Bubble extends MoveableEntity {
         break;
     }
 
-    if (this.posY < 8) {
-      this.posY = 8;
+    Transform transform = getComponent(Transform.class);
+    if (transform.position.y < 8) {
+      transform.position.y = 8;
     }
   }
 }
