@@ -1,6 +1,7 @@
 package de.skerkewitz.enora2d.core.game.level;
 
 import de.skerkewitz.blubberblase.esc.systems.AiSystem;
+import de.skerkewitz.blubberblase.esc.systems.AnimationSystem;
 import de.skerkewitz.blubberblase.esc.systems.LifeTimeSystem;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
@@ -17,6 +18,7 @@ public class Level {
   private MovementSystem movementSystem = new MovementSystem();
   private AiSystem aiSystem = new AiSystem();
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
+  private AnimationSystem animationSystem = new AnimationSystem();
 
 
   public Level() {
@@ -41,6 +43,8 @@ public class Level {
 
     aiSystem.update(tickTime, entityContainer.stream());
     movementSystem.update(tickTime, entityContainer.stream());
+
+    animationSystem.update(tickTime, entityContainer.stream());
 
     /* Tick background layer. */
     backgroundLayer.tick(tickTime);

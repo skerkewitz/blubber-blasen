@@ -1,15 +1,13 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
-import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
+import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
-import de.skerkewitz.enora2d.common.Dice;
-import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.common.Size2i;
+import de.skerkewitz.enora2d.common.*;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import org.apache.logging.log4j.LogManager;
@@ -24,17 +22,16 @@ public class ZenChan extends MoveableLegacyEntity {
   private static final Logger logger = LogManager.getLogger(ZenChan.class);
   private static final int JUMP_HEIGHT_IN_PIXEL = 44;
 
-  private Rect2i sourceRect;
-  private Rect2i sourceRect2;
+  public static final int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(-1, 005, 410, 445);
+  public static final int FRAME_ANIMATION_SPEED = AbstractGame.secondsToTickTime(0.25);
 
-  private Rect2i frameSourceRect;
-
-  private int frameAnimationSpeed = AbstractGame.secondsToTickTime(0.25);
+  public static Animation ANIMATION_IDLE = new Animation("idle", FRAME_ANIMATION_SPEED,
+          new RenderSprite(new Square2i16(5, 5), Ressources.SpriteSheet_Enemies),
+          new RenderSprite(new Square2i16(10 + 16, 5), Ressources.SpriteSheet_Enemies)
+  );
 
   public ZenChan(int speed) {
     super("ZenChan", speed, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
-    sourceRect = new Rect2i(5, 5, 16, 16);
-    sourceRect2 = new Rect2i(10 + 16, 5, 16, 16);
     movingDir = Dice.chance(0.5f) ? MoveDirection.Right : MoveDirection.Left;
   }
 
@@ -99,10 +96,7 @@ public class ZenChan extends MoveableLegacyEntity {
       transformComponent.position.y = 8;
     }
 
-    frameSourceRect = (tickTime / frameAnimationSpeed) % 2 == 0 ? sourceRect : sourceRect2;
-    SpriteComponent spriteComponent = getComponent(SpriteComponent.class);
-    spriteComponent.flipX = movingDir == MoveDirection.Right;
-    spriteComponent.colorPalette = RgbColorPalette.mergeColorCodes(-1, 005, 410, 445);
-    spriteComponent.renderSprite = new RenderSprite(frameSourceRect, Ressources.SpriteSheet_Enemies);
+    AnimationComponent animationComponent = getComponent(AnimationComponent.class);
+    animationComponent.flipX = movingDir == MoveDirection.Right;
   }
 }

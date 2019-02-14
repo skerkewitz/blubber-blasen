@@ -1,8 +1,8 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
-import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
-import de.skerkewitz.enora2d.common.Rect2i;
+import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
+import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
@@ -19,22 +19,23 @@ public class Bubblun extends Player {
   public static final int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(-1, 050, 421, 445);
   public static final int FRAME_ANIMATION_SPEED = AbstractGame.secondsToTickTime(0.25);
 
-  private Animation animation = new Animation("idle", FRAME_ANIMATION_SPEED);
+  public static Animation ANIMATION_IDLE = new Animation("idle", FRAME_ANIMATION_SPEED,
+          new RenderSprite(new Square2i16(0, 7 * 8), Ressources.SpriteSheet),
+          new RenderSprite(new Square2i16(16, 7 * 8), Ressources.SpriteSheet)
+  );
 
   public Bubblun(InputHandler input) {
     super(input);
     movingDir = MoveDirection.Right;
-
-    animation.addFrame(new RenderSprite(new Rect2i(0, 7 * 8, 16, 16), Ressources.SpriteSheet));
-    animation.addFrame(new RenderSprite(new Rect2i(16, 7 * 8, 16, 16), Ressources.SpriteSheet));
   }
 
   @Override
   public void tick(Level level, int tickTime) {
     super.tick(level, tickTime);
 
-    SpriteComponent spriteComponent = getComponent(SpriteComponent.class);
-    spriteComponent.flipX = movingDir == MoveDirection.Left;
-    spriteComponent.renderSprite = animation.currentFrame(tickTime, 0);
+    AnimationComponent animationComponent = getComponent(AnimationComponent.class);
+    animationComponent.animation = ANIMATION_IDLE;
+    animationComponent.currentAnimationStartTimeTick = 0;
+    animationComponent.flipX = movingDir == MoveDirection.Left;
   }
 }

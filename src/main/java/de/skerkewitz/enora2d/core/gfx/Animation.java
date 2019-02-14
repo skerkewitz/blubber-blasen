@@ -1,6 +1,7 @@
 package de.skerkewitz.enora2d.core.gfx;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Animation {
@@ -12,6 +13,11 @@ public class Animation {
   public Animation(String name, int animationSpeedInTicks) {
     this.animationSpeedInTicks = animationSpeedInTicks;
     this.name = name;
+  }
+
+  public Animation(String name, int animationSpeedInTicks, RenderSprite... frames) {
+    this(name, animationSpeedInTicks);
+    this.frames.addAll(Arrays.asList(frames));
   }
 
   public void addFrame(RenderSprite sprite) {
