@@ -1,8 +1,8 @@
 package de.skerkewitz.enora2d.core.entity;
 
+import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.game.level.Level;
 
 public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {

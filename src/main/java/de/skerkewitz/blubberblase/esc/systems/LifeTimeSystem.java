@@ -1,6 +1,6 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
-import de.skerkewitz.enora2d.core.ecs.component.LifeTimeComponent;
+import de.skerkewitz.blubberblase.esc.component.LifeTimeComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;

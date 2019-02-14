@@ -1,8 +1,8 @@
 package de.skerkewitz.enora2d.core.ecs.system;
 
+import de.skerkewitz.blubberblase.esc.component.MovementComponent;
+import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.core.ecs.component.MovementComponent;
-import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

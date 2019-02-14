@@ -1,6 +1,7 @@
-package de.skerkewitz.enora2d.core.ecs.component;
+package de.skerkewitz.blubberblase.esc.component;
 
 import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.core.ecs.component.Component;
 
 /**
  * The transform of an entity in world space.

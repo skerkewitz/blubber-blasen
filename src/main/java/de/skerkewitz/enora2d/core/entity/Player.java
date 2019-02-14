@@ -1,10 +1,10 @@
 package de.skerkewitz.enora2d.core.entity;
 
 import de.skerkewitz.blubberblase.entity.EntityFactory;
+import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Size2i;
-import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
@@ -43,7 +43,7 @@ public abstract class Player extends MoveableLegacyEntity {
     if (lastBubbleSpawnTime + BUBBLE_SHOOT_DELAY < tickTime && input.getFireA().isPressed()) {
       lastBubbleSpawnTime = tickTime;
       TransformComponent transformComponent = getComponent(TransformComponent.class);
-      level.addEntity(EntityFactory.spawnBubble(tickTime, transformComponent.position.x, transformComponent.position.y, 1));
+      level.addEntity(EntityFactory.spawnBubble(tickTime, transformComponent.position.x, transformComponent.position.y));
     }
 
 

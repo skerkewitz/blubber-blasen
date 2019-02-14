@@ -1,12 +1,12 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
+import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
+import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Dice;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Size2i;
-import de.skerkewitz.enora2d.core.ecs.component.SpriteComponent;
-import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;

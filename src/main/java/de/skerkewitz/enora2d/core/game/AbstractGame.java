@@ -72,7 +72,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
     player = (Player) EntityFactory.spawnBubblun(input);
     level.addEntity(player);
-    level.addEntity(EntityFactory.spawnBubble(0, 8 * 8, 24 * 8, 1));
+    level.addEntity(EntityFactory.spawnBubble(0, 8 * 8, 24 * 8));
     level.addEntity(EntityFactory.spawnZenChan());
   }
 

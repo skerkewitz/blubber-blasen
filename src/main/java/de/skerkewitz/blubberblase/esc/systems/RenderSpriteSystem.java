@@ -1,7 +1,7 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
-import de.skerkewitz.enora2d.core.ecs.component.SpriteComponent;
-import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
+import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
+import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;

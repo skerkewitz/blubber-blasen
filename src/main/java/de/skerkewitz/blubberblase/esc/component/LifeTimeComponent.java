@@ -1,4 +1,6 @@
-package de.skerkewitz.enora2d.core.ecs.component;
+package de.skerkewitz.blubberblase.esc.component;
+
+import de.skerkewitz.enora2d.core.ecs.component.Component;
 
 public class LifeTimeComponent implements Component {
 
