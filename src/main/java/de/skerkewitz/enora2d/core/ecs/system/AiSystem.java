@@ -19,11 +19,12 @@ public class AiSystem {
   private static final Logger logger = LogManager.getLogger(AiSystem.class);
 
   public void update(int tickTime, Stream<Entity> stream) {
-    getTuples(stream)
-            .forEach(tuple -> thinkEntity(tickTime, tuple.transformComponent, tuple.movementComponent));
+    getTuples(stream).forEach(tuple -> execute(tickTime, tuple));
   }
 
-  private void thinkEntity(int tickTime, TransformComponent transformComponent, MovementComponent movementComponent) {
+  private void execute(int tickTime, Tuple t) {
+    TransformComponent transformComponent = t.transformComponent;
+    MovementComponent movementComponent = t.movementComponent;
     if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 8 * 4) {
       movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
     }
