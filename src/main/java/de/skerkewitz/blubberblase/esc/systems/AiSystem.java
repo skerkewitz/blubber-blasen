@@ -1,28 +1,27 @@
-package de.skerkewitz.enora2d.core.ecs.system;
+package de.skerkewitz.blubberblase.esc.systems;
 
 import de.skerkewitz.enora2d.core.ecs.component.AiComponent;
 import de.skerkewitz.enora2d.core.ecs.component.MovementComponent;
 import de.skerkewitz.enora2d.core.ecs.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
+import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
-import java.util.stream.Stream;
-
 /**
  * A system to render all SpriteComponents.
  */
-public class AiSystem {
+public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.TupleFactory> {
 
   private static final Logger logger = LogManager.getLogger(AiSystem.class);
 
-  public void update(int tickTime, Stream<Entity> stream) {
-    getTuples(stream).forEach(tuple -> execute(tickTime, tuple));
+  public AiSystem() {
+    super(new TupleFactory());
   }
 
-  private void execute(int tickTime, Tuple t) {
+  public void execute(int tickTime, Tuple t) {
     TransformComponent transformComponent = t.transformComponent;
     MovementComponent movementComponent = t.movementComponent;
     if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 8 * 4) {
@@ -30,14 +29,10 @@ public class AiSystem {
     }
   }
 
-  private Stream<Tuple> getTuples(Stream<Entity> stream) {
-    return stream.map(Tuple::map).filter(Objects::nonNull);
-  }
-
   /**
    * Declares the component needed by this system.
    */
-  static class Tuple {
+  static class Tuple implements ComponentSystem.Tuple {
     Entity entity;
     AiComponent aiComponent;
     TransformComponent transformComponent;
@@ -49,8 +44,11 @@ public class AiSystem {
       this.movementComponent = movementComponent;
       this.aiComponent = aiComponent;
     }
+  }
 
-    static Tuple map(Entity entity) {
+  static class TupleFactory implements ComponentSystem.TupleFactory<Tuple> {
+
+    public Tuple map(Entity entity) {
       var movementComponent = entity.getComponent(MovementComponent.class);
       var transformComponent = entity.getComponent(TransformComponent.class);
       var aiComponent = entity.getComponent(AiComponent.class);
@@ -61,4 +59,6 @@ public class AiSystem {
       }
     }
   }
+
+
 }

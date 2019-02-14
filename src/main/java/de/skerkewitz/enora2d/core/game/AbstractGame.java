@@ -1,8 +1,8 @@
 package de.skerkewitz.enora2d.core.game;
 
 import de.skerkewitz.blubberblase.entity.EntityFactory;
+import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
-import de.skerkewitz.enora2d.core.ecs.system.RenderSpriteSystem;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
 import de.skerkewitz.enora2d.core.game.level.Level;

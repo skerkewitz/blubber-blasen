@@ -1,10 +1,10 @@
 package de.skerkewitz.enora2d.core.game.level;
 
+import de.skerkewitz.blubberblase.esc.systems.AiSystem;
+import de.skerkewitz.blubberblase.esc.systems.LifeTimeSystem;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.ecs.system.AiSystem;
-import de.skerkewitz.enora2d.core.ecs.system.LifeTimeSystem;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
