@@ -11,4 +11,10 @@ public class Point2i {
     this.x = x;
     this.y = y;
   }
+
+  public Point2i(Point2i p) {
+    this(p.x, p.y);
+  }
+
+
 }
