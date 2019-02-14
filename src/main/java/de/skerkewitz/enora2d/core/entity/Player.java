@@ -43,7 +43,7 @@ public abstract class Player extends MoveableLegacyEntity {
     if (lastBubbleSpawnTime + BUBBLE_SHOOT_DELAY < tickTime && input.getFireA().isPressed()) {
       lastBubbleSpawnTime = tickTime;
       TransformComponent transformComponent = getComponent(TransformComponent.class);
-      level.addEntity(EntityFactory.spawnBubble(tickTime, transformComponent.position.x, transformComponent.position.y));
+      level.addEntity(EntityFactory.spawnBubble(tickTime, transformComponent.position));
     }
 
 

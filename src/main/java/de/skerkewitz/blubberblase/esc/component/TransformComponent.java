@@ -16,4 +16,6 @@ public class TransformComponent implements Component {
   public TransformComponent(Point2i position) {
     this.position = position;
   }
+
+
 }

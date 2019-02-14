@@ -33,9 +33,9 @@ public class EntityFactory {
     return bubblun;
   }
 
-  public static Entity spawnBubble(int tickTime, int posX, int posY) {
+  public static Entity spawnBubble(int tickTime, Point2i position) {
     Entity bubble = newEntity();
-    bubble.addComponent(new TransformComponent(new Point2i(posX, posY)));
+    bubble.addComponent(new TransformComponent(position));
     bubble.addComponent(new SpriteComponent());
     bubble.addComponent(new AiComponent());
     bubble.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));

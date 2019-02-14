@@ -90,7 +90,6 @@ public class ZenChan extends MoveableLegacyEntity {
     logger.debug("Player num steps: " + numSteps);
     movingDir = playerMoveDirection;
 
-
     TransformComponent transformComponent = getComponent(TransformComponent.class);
     if (transformComponent.position.y < 8) {
       transformComponent.position.y = 8;

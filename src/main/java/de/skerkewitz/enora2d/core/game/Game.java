@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 
 public interface Game {
+
   int[] getFrameBufferPixel();
 
   void init() throws IOException;

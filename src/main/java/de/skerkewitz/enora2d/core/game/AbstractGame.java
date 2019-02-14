@@ -1,7 +1,5 @@
 package de.skerkewitz.enora2d.core.game;
 
-import de.skerkewitz.blubberblase.entity.EntityFactory;
-import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
@@ -9,7 +7,6 @@ import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.gfx.Screen;
-import de.skerkewitz.enora2d.core.gfx.SpriteSheet;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,23 +30,16 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   public WindowHandler windowHandler;
   public Player player;
 
-  public boolean debug = true;
   private Thread thread;
   private int[] frameBufferPixels;
 
-  private Screen screen;
-
+  protected Screen screen;
 
   public Level level;
-  private SpriteSheet spritesheet;
-  private Screen.Sprite sprite;
 
   public static final int TICKTIME_1s = AbstractGame.secondsToTickTime(1);
   public static final int TICKTIME_5s = AbstractGame.secondsToTickTime(5);
   private boolean paused = false;
-
-  private RenderSpriteSystem renderSpriteSystem;
-
 
   public AbstractGame(GameConfig config) {
     super();
@@ -62,25 +52,14 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
   @Override
   public void init() throws IOException {
-
     frameBufferPixels = getFrameBufferPixel();
-
     screen = new Screen(gameConfig.width, gameConfig.height, new ImageData("/sprite_sheet.png"));
-
-    renderSpriteSystem = new RenderSpriteSystem(screen);
-    level = new Level();
-
-    player = (Player) EntityFactory.spawnBubblun(input);
-    level.addEntity(player);
-    level.addEntity(EntityFactory.spawnBubble(0, 8 * 8, 24 * 8));
-    level.addEntity(EntityFactory.spawnZenChan());
   }
 
 
   @Override
   public synchronized void start() {
     running = true;
-
     thread = new Thread(this, gameConfig.name + "_gameLoop");
     thread.start();
   }
@@ -183,8 +162,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     level.tick(tickTime);
   }
 
-
-  private void renderLevel(BackgroundLayer backgroundLayer, int xOffset, int yOffset) {
+  protected void renderLevel(BackgroundLayer backgroundLayer, int xOffset, int yOffset) {
     if (xOffset < 0) {
       xOffset = 0;
     }
@@ -210,13 +188,6 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
   @Override
   public void render() {
-
-    /* Render the backgroundLayer into the screen. */
-    renderLevel(level.backgroundLayer, 0, 0);
-
-    /* Render all the entities. */
-
-    renderSpriteSystem.update(tickTime, level.getEntityContainer().stream());
 
     /* Render the screen into the framebuffer. */
     for (int y = 0; y < screen.screenImageData.height; y++) {

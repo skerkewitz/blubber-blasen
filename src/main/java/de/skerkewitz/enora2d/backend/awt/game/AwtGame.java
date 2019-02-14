@@ -29,6 +29,12 @@ public class AwtGame extends AbstractGame {
     return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
   }
 
+  @Override
+  public synchronized void start() {
+    initBackend();
+    super.start();
+  }
+
   public void initBackend() {
     setMinimumSize(gameConfig.displayDimensions);
     setMaximumSize(gameConfig.displayDimensions);
