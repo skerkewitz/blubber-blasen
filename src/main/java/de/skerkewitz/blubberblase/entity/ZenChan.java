@@ -2,8 +2,11 @@ package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
+import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
-import de.skerkewitz.enora2d.common.*;
+import de.skerkewitz.enora2d.common.Dice;
+import de.skerkewitz.enora2d.common.Rect2i;
+import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
@@ -31,7 +34,7 @@ public class ZenChan extends MoveableLegacyEntity {
   );
 
   public ZenChan(int speed) {
-    super("ZenChan", speed, new Rect2i(new Point2i(0, 0), new Size2i(15, 15)));
+    super("ZenChan", speed);
     movingDir = Dice.chance(0.5f) ? MoveDirection.Right : MoveDirection.Left;
   }
 
@@ -57,7 +60,7 @@ public class ZenChan extends MoveableLegacyEntity {
       ya += 2;
 
       /* There is a 50/50 change every 5s that he will jump if possible. */
-      if (tickTime % AbstractGame.TICKTIME_5s == 0 && Dice.chance(0.5f) && isOnGround(level)) {
+      if (tickTime % AbstractGame.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, level)) {
         jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
       }
     }
@@ -70,6 +73,8 @@ public class ZenChan extends MoveableLegacyEntity {
       }
     } else if (playerMoveDirection == MoveDirection.Right) {
       TransformComponent transformComponent = getComponent(TransformComponent.class);
+      final BoundingBoxComponent boundingBoxComponent = getComponent(BoundingBoxComponent.class);
+      final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
       if (level.getTileAtPosition(transformComponent.position.x + 1 + boundingBox.size.width, transformComponent.position.y).isSolid()) {
         playerMoveDirection = MoveDirection.Left;
       }

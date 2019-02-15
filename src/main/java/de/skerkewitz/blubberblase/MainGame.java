@@ -38,7 +38,7 @@ public class MainGame extends AwtGame {
 
     /* Render all the entities. */
 
-    renderSpriteSystem.update(getTickTime(), level.getEntityContainer().stream());
+    renderSpriteSystem.update(getTickTime(), level, level.getEntityContainer().stream());
 
     super.render();
   }

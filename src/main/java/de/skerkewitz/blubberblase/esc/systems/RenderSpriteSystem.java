@@ -5,6 +5,7 @@ import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
+import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 import de.skerkewitz.enora2d.core.gfx.Renderer;
@@ -31,13 +32,13 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   }
 
   @Override
-  public void execute(int tickTime, Tuple tuple) {
+  public void execute(int tickTime, Tuple tuple, Level level) {
     TransformComponent transformComponent = tuple.transformComponent;
     SpriteComponent sprite = tuple.spriteComponent;
     try {
       ImageData imageData = imageDataContainer.getResourceForName(sprite.renderSprite.namedResource);
       Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
-              screen.screenImageData, transformComponent.position, sprite.flipX, sprite.flipY);
+              screen.screenImageData, transformComponent.position.plus(sprite.pivotPoint), sprite.flipX, sprite.flipY);
     } catch (IOException e) {
       logger.error("Error rendering sprite because of: " + e, e);
     }

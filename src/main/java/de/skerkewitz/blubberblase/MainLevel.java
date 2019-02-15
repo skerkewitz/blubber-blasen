@@ -2,6 +2,7 @@ package de.skerkewitz.blubberblase;
 
 import de.skerkewitz.blubberblase.esc.systems.AiSystem;
 import de.skerkewitz.blubberblase.esc.systems.AnimationSystem;
+import de.skerkewitz.blubberblase.esc.systems.GroundDataSystemSystem;
 import de.skerkewitz.blubberblase.esc.systems.LifeTimeSystem;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
@@ -14,13 +15,15 @@ public class MainLevel extends Level {
   private AiSystem aiSystem = new AiSystem();
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
   private AnimationSystem animationSystem = new AnimationSystem();
-
+  private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
 
   public void tick(int tickTime) {
 
     /* Update life time of entities and purge dead entities. */
-    lifeTimeSystem.update(tickTime, entityContainer.stream());
+    lifeTimeSystem.update(tickTime, this, entityContainer.stream());
     entityContainer.purgeExpired();
+
+    groundDataSystemSystem.update(tickTime, this, entityContainer.stream());
 
     /* Tick legacy entities. */
     entityContainer.forEach((Entity e) -> {
@@ -30,10 +33,10 @@ public class MainLevel extends Level {
     });
     entityContainer.purgeExpired();
 
-    aiSystem.update(tickTime, entityContainer.stream());
+    aiSystem.update(tickTime, this, entityContainer.stream());
     movementSystem.update(tickTime, entityContainer.stream());
 
-    animationSystem.update(tickTime, entityContainer.stream());
+    animationSystem.update(tickTime, this, entityContainer.stream());
 
     /* Tick background layer. */
     backgroundLayer.tick(tickTime);

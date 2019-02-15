@@ -20,8 +20,9 @@ public class EntityFactory {
     Bubblun bubblun = new Bubblun(inputHandler);
     bubblun.addComponent(new TransformComponent(new Point2i(4 * 8, 25 * 8)));
     bubblun.addComponent(new SpriteComponent());
+    bubblun.addComponent(new GroundDataComponent(0, 0, 0));
     bubblun.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
-
+    bubblun.addComponent(new BoundingBoxComponent(new Rect2i(0, 0, 16, 16)));
     AnimationComponent animationComponent = bubblun.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
@@ -29,6 +30,7 @@ public class EntityFactory {
 
     SpriteComponent spriteComponent = bubblun.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubblun.COLOR_PALETTE;
+    spriteComponent.pivotPoint = new Point2i(-8, -15);
 //    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25* 8, 16, 16), new ImageData("/sprite_sheet.png"));
     return bubblun;
   }
@@ -58,6 +60,7 @@ public class EntityFactory {
     zenChan.addComponent(new TransformComponent(new Point2i(8 * 8, 24 * 8)));
     zenChan.addComponent(new SpriteComponent());
     zenChan.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
+    zenChan.addComponent(new BoundingBoxComponent(new Rect2i(0, 0, 15, 15)));
 
     SpriteComponent spriteComponent = zenChan.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;

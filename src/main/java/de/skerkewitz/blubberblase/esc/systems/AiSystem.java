@@ -7,6 +7,7 @@ import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
+import de.skerkewitz.enora2d.core.game.level.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +22,7 @@ public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.Tuple
     super(new TupleFactory());
   }
 
-  public void execute(int tickTime, Tuple t) {
+  public void execute(int tickTime, Tuple t, Level level) {
     TransformComponent transformComponent = t.transformComponent;
     MovementComponent movementComponent = t.movementComponent;
     if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 8 * 4) {

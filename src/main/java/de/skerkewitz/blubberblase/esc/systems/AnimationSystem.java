@@ -5,6 +5,7 @@ import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
+import de.skerkewitz.enora2d.core.game.level.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +21,7 @@ public class AnimationSystem extends BaseComponentSystem<AnimationSystem.Tuple, 
   }
 
   @Override
-  public void execute(int tickTime, Tuple t) {
+  public void execute(int tickTime, Tuple t, Level level) {
     t.spriteComponent.flipX = t.animationComponent.flipX;
     t.spriteComponent.renderSprite = t.animationComponent.animation.currentFrame(tickTime, t.animationComponent.currentAnimationStartTimeTick);
   }

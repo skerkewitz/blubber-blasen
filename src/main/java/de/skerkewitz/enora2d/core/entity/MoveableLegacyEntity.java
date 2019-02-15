@@ -1,24 +1,21 @@
 package de.skerkewitz.enora2d.core.entity;
 
+import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.game.level.Level;
 
 public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
-
-  protected final Rect2i boundingBox;
 
   /**
    * How many more ticks can this entity stay in jump mode?
    */
   protected int jumpTickRemaining = 0;
 
-  public MoveableLegacyEntity(String name, int speed, Rect2i bbox) {
+  public MoveableLegacyEntity(String name, int speed) {
     super();
     this.name = name;
     this.speed = speed;
-    this.boundingBox = bbox;
   }
 
   protected String name;
@@ -49,7 +46,7 @@ public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
     }
 
     /* If there is a collision then we will no update the player pos. */
-    if (ya >= 0 && hasCollided(level, xa, ya)) {
+    if (ya >= 0 && LevelUtils.hasCollided(this, level, xa, ya)) {
       return false;
     }
 
@@ -70,41 +67,6 @@ public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
     position.y += ya * speed;
 
     return true;
-  }
-
-  public boolean hasCollided(Level level, int xa, int ya) {
-
-    int xMin = boundingBox.origin.x;
-    int xMax = boundingBox.size.width;
-    int yMin = boundingBox.origin.y;
-    int yMax = boundingBox.size.width;
-
-    TransformComponent transformComponent = getComponent(TransformComponent.class);
-
-    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMin)) {
-      return true;
-    }
-
-    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMin)) {
-      return true;
-    }
-
-    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMax)) {
-      return true;
-    }
-
-    return level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMax);
-
-  }
-
-  /**
-   * True if the object is standing on ground.
-   *
-   * @param level
-   * @return
-   */
-  protected boolean isOnGround(Level level) {
-    return hasCollided(level, 0, +1);
   }
 
   public enum MoveDirection {

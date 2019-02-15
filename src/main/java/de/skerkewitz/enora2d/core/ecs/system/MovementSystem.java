@@ -52,10 +52,10 @@ public class MovementSystem {
    */
   void move(int xa, int ya, TransformComponent targetTransformComponent, MovementComponent movementComponent) {
 
-    int speed = 1;
     movementComponent.numSteps++;
 
     /* Update player position. */
+    int speed = 1;
     Point2i position = targetTransformComponent.position;
     position.x += xa * speed;
     position.y += ya * speed;

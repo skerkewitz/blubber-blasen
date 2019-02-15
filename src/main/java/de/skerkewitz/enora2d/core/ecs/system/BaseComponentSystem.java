@@ -1,6 +1,7 @@
 package de.skerkewitz.enora2d.core.ecs.system;
 
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
+import de.skerkewitz.enora2d.core.game.level.Level;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -14,12 +15,12 @@ public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends Comp
   }
 
   @Override
-  public void update(int tickTime, Stream<Entity> stream) {
-    getTuples(stream).forEach(tuple -> execute(tickTime, tuple));
+  public void update(int tickTime, Level level, Stream<Entity> stream) {
+    getTuples(stream).forEach(tuple -> execute(tickTime, tuple, level));
   }
 
   @Override
-  public void execute(int tickTime, T t) {
+  public void execute(int tickTime, T t, Level level) {
 
   }
 

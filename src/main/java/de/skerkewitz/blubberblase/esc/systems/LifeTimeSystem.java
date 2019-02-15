@@ -4,6 +4,7 @@ import de.skerkewitz.blubberblase.esc.component.LifeTimeComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
+import de.skerkewitz.enora2d.core.game.level.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +19,7 @@ public class LifeTimeSystem extends BaseComponentSystem<LifeTimeSystem.Tuple, Li
     super(new LifeTimeSystem.TupleFactory());
   }
 
-  public void execute(int tickTime, LifeTimeSystem.Tuple t) {
+  public void execute(int tickTime, Tuple t, Level level) {
     t.lifetimeComponent.lifeTimeTC++;
     if (t.lifetimeComponent.maxLifeTimeTC > 0 && t.lifetimeComponent.lifeTimeTC > t.lifetimeComponent.maxLifeTimeTC) {
       t.entity.expired();
