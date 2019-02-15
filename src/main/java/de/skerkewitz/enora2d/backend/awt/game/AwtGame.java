@@ -25,7 +25,7 @@ public class AwtGame extends AbstractGame {
    */
   private float[] blurMatrix = new float[]{
           1f / 16f, 1f / 8f, 1f / 16f,
-          1f / 8f, 1f / 4f, 1f / 8f,
+          1f / 8f, 1f / 16f, 1f / 8f,
           1f / 16f, 1f / 8f, 1f / 16f
   };
   private Kernel blurKernel = new Kernel(3, 3, blurMatrix);
@@ -88,10 +88,12 @@ public class AwtGame extends AbstractGame {
 
     int screenWidth = getWidth();
     int screenHeight = getHeight();
-    BufferedImage upScaleImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_RGB);
-    upScaleImage.getGraphics().drawImage(image, 0, 0, screenWidth, screenHeight, null);
+    int upScaledWith = image.getWidth() * 4;
+    int upScaledHeight = image.getHeight() * 4;
+    BufferedImage upScaleImage = new BufferedImage(upScaledWith, upScaledHeight, BufferedImage.TYPE_INT_RGB);
+    upScaleImage.getGraphics().drawImage(image, 0, 0, upScaledWith, upScaledHeight, null);
 
-    BufferedImage blurredImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_RGB);
+    BufferedImage blurredImage = new BufferedImage(upScaledWith, upScaledHeight, BufferedImage.TYPE_INT_RGB);
     blurConvolveOp.filter(upScaleImage, blurredImage);
     g.drawImage(blurredImage, 0, 0, screenWidth, screenHeight, null);
 
