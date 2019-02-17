@@ -4,6 +4,7 @@ import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.backend.awt.game.AwtGame;
 import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.entity.Player;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class MainGame extends AwtGame {
 
     player = (Player) EntityFactory.spawnBubblun(input);
     level.addEntity(player);
-    level.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8)));
+    level.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
     level.addEntity(EntityFactory.spawnZenChan());
   }
 

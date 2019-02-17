@@ -35,17 +35,18 @@ public class EntityFactory {
     return bubblun;
   }
 
-  public static Entity spawnBubble(int tickTime, Point2i position) {
+  public static Entity spawnBubble(int tickTime, Point2i position, MoveableLegacyEntity.MoveDirection moveDirection) {
     Entity bubble = newEntity();
     bubble.addComponent(new TransformComponent(position));
     bubble.addComponent(new SpriteComponent());
     bubble.addComponent(new AiComponent());
     bubble.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
-    bubble.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Right));
+    bubble.addComponent(new MovementComponent(tickTime, moveDirection));
 
     SpriteComponent spriteComponent = bubble.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
     spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet);
+    spriteComponent.pivotPoint = new Point2i(-8, -8);
     return bubble;
 
 
