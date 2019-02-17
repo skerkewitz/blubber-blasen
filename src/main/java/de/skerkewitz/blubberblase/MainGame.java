@@ -1,6 +1,7 @@
 package de.skerkewitz.blubberblase;
 
 import de.skerkewitz.blubberblase.entity.EntityFactory;
+import de.skerkewitz.blubberblase.esc.systems.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.backend.awt.game.AwtGame;
 import de.skerkewitz.enora2d.common.Point2i;
@@ -12,6 +13,7 @@ import java.io.IOException;
 public class MainGame extends AwtGame {
 
   private RenderSpriteSystem renderSpriteSystem;
+  private RenderDebugSystem renderDebugSystem;
 
   public MainGame(GameConfig config) {
     super(config);
@@ -22,6 +24,7 @@ public class MainGame extends AwtGame {
     super.init();
 
     renderSpriteSystem = new RenderSpriteSystem(screen);
+    renderDebugSystem = new RenderDebugSystem(screen);
 
     level = new MainLevel();
 
@@ -40,6 +43,7 @@ public class MainGame extends AwtGame {
     /* Render all the entities. */
 
     renderSpriteSystem.update(getTickTime(), level, level.getEntityContainer().stream());
+    renderDebugSystem.update(getTickTime(), level, level.getEntityContainer().stream());
 
     super.render();
   }

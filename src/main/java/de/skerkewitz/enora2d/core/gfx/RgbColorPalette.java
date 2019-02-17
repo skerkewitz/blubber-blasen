@@ -41,7 +41,7 @@ public class RgbColorPalette {
    * @param colour
    * @return
    */
-  private static int encodeColorCode(int colour) {
+  public static int encodeColorCode(int colour) {
     if (colour < 0) return 255;
     int r = colour / 100 % 10;
     int g = colour / 10 % 10;

@@ -3,13 +3,13 @@ package de.skerkewitz.enora2d.core.entity;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
+import de.skerkewitz.blubberblase.esc.component.InputComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
-import de.skerkewitz.enora2d.core.input.InputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,16 +21,13 @@ public abstract class Player extends MoveableLegacyEntity {
 
   private static final int BUBBLE_SHOOT_DELAY = AbstractGame.secondsToTickTime(0.5);
 
-  private InputHandler input;
-
   /**
    * Last tick time we player spawned a bubble.
    */
   private int lastBubbleSpawnTime = 0;
 
-  public Player(InputHandler input) {
+  public Player() {
     super("Player", 1);
-    this.input = input;
     this.movingDir = MoveDirection.Right;
   }
 
@@ -41,7 +38,8 @@ public abstract class Player extends MoveableLegacyEntity {
     int ya = 0;
 
     TransformComponent transformComponent = getComponent(TransformComponent.class);
-    if (lastBubbleSpawnTime + BUBBLE_SHOOT_DELAY < tickTime && input.getFireA().isPressed()) {
+    InputComponent inputComponent = getComponent(InputComponent.class);
+    if (lastBubbleSpawnTime + BUBBLE_SHOOT_DELAY < tickTime && inputComponent.shoot) {
       lastBubbleSpawnTime = tickTime;
       var offsetX = movingDir == MoveDirection.Left ? -8 : +8;
       Point2i position = new Point2i(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
@@ -55,7 +53,7 @@ public abstract class Player extends MoveableLegacyEntity {
     } else {
       boolean isOnGround = getComponent(GroundDataComponent.class).isOnGround;
       if (isOnGround) {
-        if (input.getUp().isPressed() && isOnGround) {
+        if (inputComponent.jump && isOnGround) {
           jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
         }
       } else {
@@ -65,11 +63,10 @@ public abstract class Player extends MoveableLegacyEntity {
 
     var moveX = 0;
     var playerMoveDirection = movingDir;
-    if (input.getLeft().isPressed()) {
+    if (inputComponent.horizontal < 0) {
       moveX--;
       playerMoveDirection = MoveDirection.Left;
-    }
-    if (input.getRight().isPressed()) {
+    } else if (inputComponent.horizontal > 0) {
       moveX++;
       playerMoveDirection = MoveDirection.Right;
     }
@@ -81,20 +78,6 @@ public abstract class Player extends MoveableLegacyEntity {
     position.x += moveX * speed;
     position.y += ya * speed;
 
-//    if (input.getLeft().isPressed()) {
-//      xa--;
-//      playerMoveDirection = MoveDirection.Left;
-//    }
-//    if (input.getRight().isPressed()) {
-//      xa++;
-//      playerMoveDirection = MoveDirection.Right;
-//    }
-//
-//    if (xa != 0 || ya != 0) {
-//      isMoving = move(level, xa, ya);
-//    } else {
-//      isMoving = false;
-//    }
 
     logger.debug("Player num steps: " + numSteps);
     movingDir = playerMoveDirection;

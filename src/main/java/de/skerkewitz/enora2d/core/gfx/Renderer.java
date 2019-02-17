@@ -9,6 +9,57 @@ public class Renderer {
     /* Only static methods. */
   }
 
+  public static void renderBoxOutline(ImageData destImg, Rect2i rect, int color) {
+
+    int col = color;
+    if (col >= 255) {
+      return;
+    }
+
+    for (int x = 0; x < rect.size.width + 1; x++) {
+      int srcPixelX = rect.origin.x + x;
+      try {
+        destImg.pixels[(srcPixelX) + (rect.origin.y) * destImg.width] = col;
+      } catch (Exception e) {
+        //e.printStackTrace();
+      }
+      try {
+        destImg.pixels[(srcPixelX) + (rect.origin.y + rect.size.height) * destImg.width] = col;
+      } catch (Exception e) {
+        //e.printStackTrace();
+      }
+    }
+
+    for (int y = 0; y < rect.size.height + 1; y++) {
+      int srcPixelY = rect.origin.y + y;
+      try {
+        destImg.pixels[(rect.origin.x) + (srcPixelY) * destImg.width] = col;
+      } catch (Exception e) {
+        //e.printStackTrace();
+      }
+      try {
+        destImg.pixels[(rect.origin.x + rect.size.width) + (srcPixelY) * destImg.width] = col;
+      } catch (Exception e) {
+        //e.printStackTrace();
+      }
+    }
+
+//    for (int y = 0; y < rect.size.height; y++) {
+//      int srcPixelY = rect.origin.y + y;
+//
+//      for (int x = 0; x < rect.size.width; x++) {
+//        int srcPixelX = rect.origin.x + x;
+//
+//        int col = color;
+//        if (col >= 255) {
+//          continue;
+//        }
+//
+//        destImg.pixels[(srcPixelX) + (srcPixelY) * destImg.width] = col;
+//      }
+//    }
+  }
+
   public static void renderSubImage(ImageData srcImg, Rect2i srcRect, int colour, ImageData destImg, Point2i targetPos, boolean mirrorScrX, boolean mirrorScrY) {
 
     int scale = 1;

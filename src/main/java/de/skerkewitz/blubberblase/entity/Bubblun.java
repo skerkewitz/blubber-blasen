@@ -9,7 +9,6 @@ import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
-import de.skerkewitz.enora2d.core.input.InputHandler;
 
 /**
  * The together with Bob the main protagonist. Bub is the green one.
@@ -24,8 +23,8 @@ public class Bubblun extends Player {
           new RenderSprite(new Square2i16(16, 7 * 8), Ressources.SpriteSheet)
   );
 
-  public Bubblun(InputHandler input) {
-    super(input);
+  public Bubblun() {
+    super();
     movingDir = MoveDirection.Right;
   }
 

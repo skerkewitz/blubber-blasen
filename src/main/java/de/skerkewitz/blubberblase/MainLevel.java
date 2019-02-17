@@ -1,9 +1,6 @@
 package de.skerkewitz.blubberblase;
 
-import de.skerkewitz.blubberblase.esc.systems.AiSystem;
-import de.skerkewitz.blubberblase.esc.systems.AnimationSystem;
-import de.skerkewitz.blubberblase.esc.systems.GroundDataSystemSystem;
-import de.skerkewitz.blubberblase.esc.systems.LifeTimeSystem;
+import de.skerkewitz.blubberblase.esc.systems.*;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
@@ -16,6 +13,7 @@ public class MainLevel extends Level {
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
   private AnimationSystem animationSystem = new AnimationSystem();
   private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
+  private InputSystem inputSystem = new InputSystem();
 
   public void tick(int tickTime) {
 
@@ -24,6 +22,7 @@ public class MainLevel extends Level {
     entityContainer.purgeExpired();
 
     groundDataSystemSystem.update(tickTime, this, entityContainer.stream());
+    inputSystem.update(tickTime, this, entityContainer.stream());
 
     /* Tick legacy entities. */
     entityContainer.forEach((Entity e) -> {

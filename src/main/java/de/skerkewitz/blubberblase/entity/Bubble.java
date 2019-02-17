@@ -6,6 +6,6 @@ public interface Bubble {
 
   int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(RgbColorPalette.NONE, RgbColorPalette.GREEN, RgbColorPalette.NONE, RgbColorPalette.WHITE);
 
-  int MAX_LIFETIME_IN_TICKS = 100;
+  int MAX_LIFETIME_IN_TICKS = 300;
 
 }

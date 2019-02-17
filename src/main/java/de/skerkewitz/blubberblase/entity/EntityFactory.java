@@ -17,12 +17,13 @@ public class EntityFactory {
 
 //    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
 
-    Bubblun bubblun = new Bubblun(inputHandler);
+    Bubblun bubblun = new Bubblun();
     bubblun.addComponent(new TransformComponent(new Point2i(4 * 8, 25 * 8)));
+    bubblun.addComponent(new InputComponent(inputHandler));
     bubblun.addComponent(new SpriteComponent());
     bubblun.addComponent(new GroundDataComponent(0, 0, 0));
     bubblun.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
-    bubblun.addComponent(new BoundingBoxComponent(new Rect2i(0, 0, 16, 16)));
+    bubblun.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
     AnimationComponent animationComponent = bubblun.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
@@ -42,6 +43,7 @@ public class EntityFactory {
     bubble.addComponent(new AiComponent());
     bubble.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
     bubble.addComponent(new MovementComponent(tickTime, moveDirection));
+    bubble.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 16, 16)));
 
     SpriteComponent spriteComponent = bubble.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
