@@ -63,7 +63,9 @@ public class Main {
       renderDebugSystem = new RenderDebugSystem(null);
 
       camera = new OrthographicCamera(config.width, config.height);
+      ((OrthographicCamera) camera).setToOrtho(true);
       viewport = new FitViewport(config.width, config.height, camera);
+
 
       camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
       camera.update();
@@ -77,12 +79,13 @@ public class Main {
 
     @Override
     public void resize(int width, int height) {
-
+      viewport.update(width, height, true);
     }
 
     @Override
     public void render() {
       camera.update();
+
 
       tickTime++;
       world.tick(tickTime, camera.combined);

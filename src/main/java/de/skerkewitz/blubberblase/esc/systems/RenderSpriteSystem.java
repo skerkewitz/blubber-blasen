@@ -62,6 +62,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
       sprite.setSize(16, 16);
       sprite.setPosition(pos.x, pos.y);
       sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, 16, 16);
+      sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
       sprite.draw(spriteBatch);
 
       //      Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
