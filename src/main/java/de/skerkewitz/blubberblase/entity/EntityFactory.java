@@ -24,6 +24,7 @@ public class EntityFactory {
     bubblun.addComponent(new GroundDataComponent(0, 0, 0));
     bubblun.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
     bubblun.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
+    bubblun.addComponent(new CollisionComponent());
     AnimationComponent animationComponent = bubblun.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
@@ -44,6 +45,7 @@ public class EntityFactory {
     bubble.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
     bubble.addComponent(new MovementComponent(tickTime, moveDirection));
     bubble.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 16, 16)));
+    bubble.addComponent(new CollisionComponent());
 
     SpriteComponent spriteComponent = bubble.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
@@ -64,6 +66,7 @@ public class EntityFactory {
     zenChan.addComponent(new SpriteComponent());
     zenChan.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
     zenChan.addComponent(new BoundingBoxComponent(new Rect2i(0, 0, 15, 15)));
+    zenChan.addComponent(new CollisionComponent());
 
     SpriteComponent spriteComponent = zenChan.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;

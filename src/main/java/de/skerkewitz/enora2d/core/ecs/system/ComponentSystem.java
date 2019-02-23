@@ -9,6 +9,8 @@ public interface ComponentSystem<T extends ComponentSystem.Tuple> {
 
   void update(int tickTime, World world, Stream<Entity> stream);
 
+  void executor(int tickTime, World world, Stream<Entity> stream);
+
   void willExecute(int tickTime, World world);
 
   void execute(int tickTime, T t, World world);

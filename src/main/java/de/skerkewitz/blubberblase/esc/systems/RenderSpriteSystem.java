@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * A system to render all SpriteComponents.
  */
-public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.Tuple, RenderSpriteSystem.TupleFactory> {
+public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.Tuple, RenderSpriteSystem.TupleFactory> implements RenderSystem {
 
   private static final Logger logger = LogManager.getLogger(RenderSpriteSystem.class);
 
@@ -76,6 +76,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
     return super.getTuples(stream).filter(tuple -> tuple.spriteComponent.renderSprite != null);
   }
 
+  @Override
   public void applyActiveCamera(Camera camera) {
     this.camera = camera;
   }

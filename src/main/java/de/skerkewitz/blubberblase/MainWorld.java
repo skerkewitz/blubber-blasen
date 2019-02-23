@@ -14,6 +14,8 @@ public class MainWorld extends World {
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
   private AnimationSystem animationSystem = new AnimationSystem();
   private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
+  private CollisionSystem collisionComponent = new CollisionSystem();
+
   private InputSystem inputSystem = new InputSystem();
 
   public MainWorld(GameConfig config) {
@@ -25,6 +27,8 @@ public class MainWorld extends World {
     /* Update life time of entities and purge dead entities. */
     lifeTimeSystem.update(tickTime, this, entityContainer.stream());
     entityContainer.purgeExpired();
+
+    collisionComponent.update(tickTime, this, entityContainer.stream());
 
     groundDataSystemSystem.update(tickTime, this, entityContainer.stream());
     inputSystem.update(tickTime, this, entityContainer.stream());

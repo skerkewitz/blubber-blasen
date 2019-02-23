@@ -28,7 +28,7 @@ class LevelScreen implements Screen {
   private GdxTextureContainer gdxTextureContainer = new GdxTextureContainer();
 
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
-  private RenderDebugSystem renderDebugSystem = new RenderDebugSystem(null);
+  private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
 
   public LevelScreen(GameConfig config, World world) {
     this.config = config;
@@ -60,6 +60,7 @@ class LevelScreen implements Screen {
     renderSpriteSystem.update(tickTime, world, world.getEntityContainer().stream());
 
     if (config.cmd.hasOption("showbbox")) {
+      renderDebugSystem.applyActiveCamera(camera);
       renderDebugSystem.update(tickTime, world, world.getEntityContainer().stream());
     }
   }
