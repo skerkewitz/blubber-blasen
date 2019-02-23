@@ -26,26 +26,26 @@ public class MainGame extends AwtGame {
     renderSpriteSystem = new RenderSpriteSystem(screen);
     renderDebugSystem = new RenderDebugSystem(screen);
 
-    level = new MainLevel();
+    world = new MainWorld();
 
     player = (Player) EntityFactory.spawnBubblun(input);
-    level.addEntity(player);
-    level.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
-    level.addEntity(EntityFactory.spawnZenChan());
+    world.addEntity(player);
+    world.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
+    world.addEntity(EntityFactory.spawnZenChan());
   }
 
   @Override
   public void render() {
 
     /* Render the backgroundLayer into the screen. */
-    renderLevel(level.backgroundLayer, 0, 0);
+    renderLevel(world.backgroundLayer, 0, 0);
 
     /* Render all the entities. */
 
-    renderSpriteSystem.update(getTickTime(), level, level.getEntityContainer().stream());
+    renderSpriteSystem.update(getTickTime(), world, world.getEntityContainer().stream());
 
     if (gameConfig.cmd.hasOption("showbbox")) {
-      renderDebugSystem.update(getTickTime(), level, level.getEntityContainer().stream());
+      renderDebugSystem.update(getTickTime(), world, world.getEntityContainer().stream());
     }
 
     super.render();

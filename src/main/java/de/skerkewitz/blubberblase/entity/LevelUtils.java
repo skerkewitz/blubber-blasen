@@ -4,11 +4,11 @@ import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 
 public class LevelUtils {
 
-  public static boolean hasCollided(Entity entity, Level level, int xa, int ya) {
+  public static boolean hasCollided(Entity entity, World world, int xa, int ya) {
 
     final BoundingBoxComponent boundingBoxComponent = entity.getComponent(BoundingBoxComponent.class);
     final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
@@ -19,29 +19,29 @@ public class LevelUtils {
 
     TransformComponent transformComponent = entity.getComponent(TransformComponent.class);
 
-    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMin)) {
+    if (world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMin)) {
       return true;
     }
 
-    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMin)) {
+    if (world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMin)) {
       return true;
     }
 
-    if (level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMax)) {
+    if (world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMax)) {
       return true;
     }
 
-    return level.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMax);
+    return world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMax);
 
   }
 
   /**
    * True if the object is standing on ground.
    *
-   * @param level
+   * @param world
    * @return
    */
-  public static boolean isOnGround(Entity entity, Level level) {
-    return hasCollided(entity, level, 0, +1);
+  public static boolean isOnGround(Entity entity, World world) {
+    return hasCollided(entity, world, 0, +1);
   }
 }

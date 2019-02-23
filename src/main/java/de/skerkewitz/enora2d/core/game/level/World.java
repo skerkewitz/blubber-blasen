@@ -4,14 +4,14 @@ import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
-public abstract class Level {
+public abstract class World {
 
   public BackgroundLayer backgroundLayer;
 
   protected final EntityContainer entityContainer;
 
 
-  public Level() {
+  public World() {
     //backgroundLayer = new BackgroundLayer("/levels/water_test_level.png");
     entityContainer = new EntityContainer();
     backgroundLayer = new BackgroundLayer(null);

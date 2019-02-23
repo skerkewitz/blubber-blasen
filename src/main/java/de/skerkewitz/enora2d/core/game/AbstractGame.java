@@ -3,7 +3,7 @@ package de.skerkewitz.enora2d.core.game;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.gfx.Screen;
@@ -35,7 +35,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
   protected Screen screen;
 
-  public Level level;
+  public World world;
 
   public static final int TICKTIME_1s = AbstractGame.secondsToTickTime(1);
   public static final int TICKTIME_5s = AbstractGame.secondsToTickTime(5);
@@ -159,7 +159,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   @Override
   public void tick() {
     tickTime++;
-    level.tick(tickTime);
+    world.tick(tickTime);
   }
 
   protected void renderLevel(BackgroundLayer backgroundLayer, int xOffset, int yOffset) {

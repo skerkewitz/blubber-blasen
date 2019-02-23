@@ -13,16 +13,30 @@ application {
 }
 
 dependencies {
-//    compile('commons-io:commons-io:2.4')
-//    compile('org.springframework.boot:spring-boot-starter')
-//    //compile('org.springframework.cloud:spring-cloud-starter-zookeeper-config')
-//    //compile('org.springframework.cloud:spring-cloud-starter-zookeeper-discovery')
-//    //compile('org.springframework.boot:spring-boot-starter-jdbc')
-//    testCompile('org.springframework.boot:spring-boot-starter-test')
-
+    
+    version = '1.0'
+    ext {
+        appName = "BlubberBlase"
+        gdxVersion = '1.9.9'
+        roboVMVersion = '2.3.5'
+        box2DLightsVersion = '1.4'
+        ashleyVersion = '1.7.0'
+        aiVersion = '1.8.0'
+    }
+    
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'

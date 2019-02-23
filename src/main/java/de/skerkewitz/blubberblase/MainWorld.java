@@ -4,9 +4,9 @@ import de.skerkewitz.blubberblase.esc.systems.*;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 
-public class MainLevel extends Level {
+public class MainWorld extends World {
 
   private MovementSystem movementSystem = new MovementSystem();
   private AiSystem aiSystem = new AiSystem();

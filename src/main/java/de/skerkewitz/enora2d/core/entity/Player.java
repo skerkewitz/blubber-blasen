@@ -8,7 +8,7 @@ import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +31,8 @@ public abstract class Player extends MoveableLegacyEntity {
     this.movingDir = MoveDirection.Right;
   }
 
-  public void tick(Level level, int tickTime) {
-    super.tick(level, tickTime);
+  public void tick(World world, int tickTime) {
+    super.tick(world, tickTime);
 
     int xa = 0;
     int ya = 0;
@@ -43,7 +43,7 @@ public abstract class Player extends MoveableLegacyEntity {
       lastBubbleSpawnTime = tickTime;
       var offsetX = movingDir == MoveDirection.Left ? -8 : +8;
       Point2i position = new Point2i(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
-      level.addEntity(EntityFactory.spawnBubble(tickTime, position, movingDir));
+      world.addEntity(EntityFactory.spawnBubble(tickTime, position, movingDir));
     }
 
 
@@ -71,7 +71,7 @@ public abstract class Player extends MoveableLegacyEntity {
       playerMoveDirection = MoveDirection.Right;
     }
 
-    moveX = clipMoveX(moveX, transformComponent.position, getComponent(BoundingBoxComponent.class).getBoundingBox(), level);
+    moveX = clipMoveX(moveX, transformComponent.position, getComponent(BoundingBoxComponent.class).getBoundingBox(), world);
 
     /* Update player position. */
     Point2i position = getComponent(TransformComponent.class).position;
@@ -83,7 +83,7 @@ public abstract class Player extends MoveableLegacyEntity {
     movingDir = playerMoveDirection;
   }
 
-  private int clipMoveX(int moveX, Point2i position, Rect2i boundingBox, Level level) {
+  private int clipMoveX(int moveX, Point2i position, Rect2i boundingBox, World world) {
 
     /* no horizontal movement. */
     if (moveX == 0) {
@@ -100,8 +100,8 @@ public abstract class Player extends MoveableLegacyEntity {
       int ex = position.x - (boundingBox.size.width / 2) + moveX;
       int ey = position.y;
 
-      oldTile = level.getTileAtPosition(ox, oy);
-      newTile = level.getTileAtPosition(ex, ey);
+      oldTile = world.getTileAtPosition(ox, oy);
+      newTile = world.getTileAtPosition(ex, ey);
     } else {
       int ox = position.x + (boundingBox.size.width / 2);
       int oy = position.y;
@@ -109,8 +109,8 @@ public abstract class Player extends MoveableLegacyEntity {
       int ex = position.x + (boundingBox.size.width / 2) + moveX;
       int ey = position.y;
 
-      oldTile = level.getTileAtPosition(ox, oy);
-      newTile = level.getTileAtPosition(ex, ey);
+      oldTile = world.getTileAtPosition(ox, oy);
+      newTile = world.getTileAtPosition(ex, ey);
     }
 
     if (oldTile.isSolid()) {

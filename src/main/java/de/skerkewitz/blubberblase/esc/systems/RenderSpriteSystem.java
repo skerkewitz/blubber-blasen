@@ -5,7 +5,7 @@ import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 import de.skerkewitz.enora2d.core.gfx.Renderer;
@@ -32,7 +32,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   }
 
   @Override
-  public void execute(int tickTime, Tuple tuple, Level level) {
+  public void execute(int tickTime, Tuple tuple, World world) {
     TransformComponent transformComponent = tuple.transformComponent;
     SpriteComponent sprite = tuple.spriteComponent;
     try {

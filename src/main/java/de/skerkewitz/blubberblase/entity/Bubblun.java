@@ -5,7 +5,7 @@ import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
 import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
@@ -29,8 +29,8 @@ public class Bubblun extends Player {
   }
 
   @Override
-  public void tick(Level level, int tickTime) {
-    super.tick(level, tickTime);
+  public void tick(World world, int tickTime) {
+    super.tick(world, tickTime);
 
     AnimationComponent animationComponent = getComponent(AnimationComponent.class);
     animationComponent.animation = ANIMATION_IDLE;

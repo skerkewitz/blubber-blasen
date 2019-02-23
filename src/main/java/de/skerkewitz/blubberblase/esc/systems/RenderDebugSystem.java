@@ -6,7 +6,7 @@ import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 import de.skerkewitz.enora2d.core.gfx.Renderer;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
@@ -30,7 +30,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
   }
 
   @Override
-  public void execute(int tickTime, Tuple t, Level level) {
+  public void execute(int tickTime, Tuple t, World world) {
     TransformComponent transformComponent = t.transformComponent;
     BoundingBoxComponent boundingBoxComponent = t.boundingBoxComponent;
 

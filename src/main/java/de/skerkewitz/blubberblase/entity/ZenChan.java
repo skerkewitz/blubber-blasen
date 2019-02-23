@@ -9,7 +9,7 @@ import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
@@ -39,8 +39,8 @@ public class ZenChan extends MoveableLegacyEntity {
   }
 
   @Override
-  public void tick(Level level, int tickTime) {
-    super.tick(level, tickTime);
+  public void tick(World world, int tickTime) {
+    super.tick(world, tickTime);
 
 //    /* Are we dead? */
 //    if (this.tickCount > MAX_LIFETIME_IN_TICKS) {
@@ -48,7 +48,7 @@ public class ZenChan extends MoveableLegacyEntity {
 //      return;
 //    }
 
-    super.tick(level, tickTime);
+    super.tick(world, tickTime);
 
     int xa = 0;
     int ya = 0;
@@ -60,7 +60,7 @@ public class ZenChan extends MoveableLegacyEntity {
       ya += 2;
 
       /* There is a 50/50 change every 5s that he will jump if possible. */
-      if (tickTime % AbstractGame.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, level)) {
+      if (tickTime % AbstractGame.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, world)) {
         jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
       }
     }
@@ -68,14 +68,14 @@ public class ZenChan extends MoveableLegacyEntity {
     var playerMoveDirection = movingDir;
     if (playerMoveDirection == MoveDirection.Left) {
       TransformComponent transformComponent = getComponent(TransformComponent.class);
-      if (level.getTileAtPosition(transformComponent.position.x - 1, transformComponent.position.y).isSolid()) {
+      if (world.getTileAtPosition(transformComponent.position.x - 1, transformComponent.position.y).isSolid()) {
         playerMoveDirection = MoveDirection.Right;
       }
     } else if (playerMoveDirection == MoveDirection.Right) {
       TransformComponent transformComponent = getComponent(TransformComponent.class);
       final BoundingBoxComponent boundingBoxComponent = getComponent(BoundingBoxComponent.class);
       final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
-      if (level.getTileAtPosition(transformComponent.position.x + 1 + boundingBox.size.width, transformComponent.position.y).isSolid()) {
+      if (world.getTileAtPosition(transformComponent.position.x + 1 + boundingBox.size.width, transformComponent.position.y).isSolid()) {
         playerMoveDirection = MoveDirection.Left;
       }
     }
@@ -87,7 +87,7 @@ public class ZenChan extends MoveableLegacyEntity {
     }
 
     if (xa != 0 || ya != 0) {
-      isMoving = move(level, xa, ya);
+      isMoving = move(world, xa, ya);
     } else {
       isMoving = false;
     }
