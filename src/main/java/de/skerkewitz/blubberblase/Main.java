@@ -2,7 +2,7 @@ package de.skerkewitz.blubberblase;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import de.skerkewitz.enora2d.core.game.Game;
+import de.skerkewitz.enora2d.core.game.GameConfig;
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ public class Main {
   public static void main(String[] args) throws ParseException {
 
     // most SNES games used 256x224 pixels since higher resolutions caused slowdow
-    Game.GameConfig config = new Game.GameConfig(256, 224, 4, "Blubber Blase", args);
+    GameConfig config = new GameConfig(256, 224, 4, "Blubber Blase", args);
 
     LwjglApplicationConfiguration lwjglApplicationConfiguration = new LwjglApplicationConfiguration();
     lwjglApplicationConfiguration.title = config.name;

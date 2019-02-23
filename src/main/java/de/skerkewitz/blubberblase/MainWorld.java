@@ -4,7 +4,7 @@ import de.skerkewitz.blubberblase.esc.systems.*;
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
-import de.skerkewitz.enora2d.core.game.Game;
+import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.level.World;
 
 public class MainWorld extends World {
@@ -16,7 +16,7 @@ public class MainWorld extends World {
   private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
   private InputSystem inputSystem = new InputSystem();
 
-  public MainWorld(Game.GameConfig config) {
+  public MainWorld(GameConfig config) {
 
   }
 

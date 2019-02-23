@@ -8,19 +8,20 @@ import de.skerkewitz.blubberblase.esc.systems.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
-import de.skerkewitz.enora2d.core.game.Game;
+import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.BasicTile;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
-import de.skerkewitz.enora2d.core.input.GdxInputHandler;
+import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
+import de.skerkewitz.enora2d.core.input.InputHandler;
 
 import java.io.IOException;
 
 class LevelScreen implements Screen {
 
-  private final Game.GameConfig config;
+  private final GameConfig config;
   SpriteBatch spriteBatch = new SpriteBatch();
   private World world;
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
@@ -29,13 +30,17 @@ class LevelScreen implements Screen {
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem(null);
 
-  public LevelScreen(Game.GameConfig config, World world) {
+  public LevelScreen(GameConfig config, World world) {
     this.config = config;
     this.world = world;
 
     this.world = new MainWorld(config);
 
-    this.world.addEntity(EntityFactory.spawnBubblun(new GdxInputHandler()));
+//    Controller first = Controllers.getControllers().first();
+//    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
+    InputHandler handler = new GdxKeyboardInputHandler();
+
+    this.world.addEntity(EntityFactory.spawnBubblun(handler));
     this.world.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
     this.world.addEntity(EntityFactory.spawnZenChan());
   }

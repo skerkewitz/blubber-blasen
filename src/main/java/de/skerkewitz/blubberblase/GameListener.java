@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.skerkewitz.enora2d.core.game.Game;
+import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 
 import java.io.IOException;
 
 class GameListener implements ApplicationListener {
 
-  private final Game.GameConfig config;
+  private final GameConfig config;
 
   private int tickTime = 0;
 
@@ -22,7 +22,7 @@ class GameListener implements ApplicationListener {
   private Camera camera;
   private Screen currentScreen;
 
-  public GameListener(Game.GameConfig config) {
+  public GameListener(GameConfig config) {
     this.config = config;
   }
 
@@ -37,6 +37,7 @@ class GameListener implements ApplicationListener {
     camera.update();
 
     currentScreen = new LevelScreen(config, null);
+
   }
 
   @Override

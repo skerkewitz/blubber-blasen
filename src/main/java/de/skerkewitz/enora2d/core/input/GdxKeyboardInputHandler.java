@@ -3,7 +3,7 @@ package de.skerkewitz.enora2d.core.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-public class GdxInputHandler implements InputHandler {
+public class GdxKeyboardInputHandler implements InputHandler {
 
   private InputButton fireA = new GdxInputButton(Input.Keys.SPACE);
   private InputButton up = new GdxInputButton(Input.Keys.UP);
