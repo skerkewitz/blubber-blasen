@@ -7,7 +7,7 @@ import de.skerkewitz.blubberblase.esc.component.InputComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.game.AbstractGame;
+import de.skerkewitz.enora2d.core.game.TimeUtil;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +19,7 @@ public abstract class Player extends MoveableLegacyEntity {
 
   private static final int JUMP_HEIGHT_IN_PIXEL = 44;
 
-  private static final int BUBBLE_SHOOT_DELAY = AbstractGame.secondsToTickTime(0.5);
+  private static final int BUBBLE_SHOOT_DELAY = TimeUtil.secondsToTickTime(0.5);
 
   /**
    * Last tick time we player spawned a bubble.

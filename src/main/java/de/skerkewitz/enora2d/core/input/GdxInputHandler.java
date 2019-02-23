@@ -45,18 +45,9 @@ public class GdxInputHandler implements InputHandler {
     }
 
     @Override
-    public int getNumTimesPressed() {
-      return 0;
-    }
-
-    @Override
     public boolean isPressed() {
       return Gdx.input.isKeyPressed(mappedKey);
     }
 
-    @Override
-    public void toggle(boolean isPressed) {
-
-    }
   }
 }

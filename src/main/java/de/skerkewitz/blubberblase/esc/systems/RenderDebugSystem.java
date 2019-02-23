@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
@@ -20,9 +21,11 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
   private static final Logger logger = LogManager.getLogger(RenderDebugSystem.class);
 
   private ShapeRenderer shapeRenderer = new ShapeRenderer();
+  private Camera camera;
 
-  public RenderDebugSystem() {
+  public RenderDebugSystem(Camera camera) {
     super(new RenderDebugSystem.TupleFactory());
+    this.camera = camera;
   }
 
   @Override
@@ -30,7 +33,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
     super.willExecute(tickTime, world);
 
     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-    shapeRenderer.setProjectionMatrix(world.projectionMatrix);
+    shapeRenderer.setProjectionMatrix(camera.combined);
   }
 
   @Override

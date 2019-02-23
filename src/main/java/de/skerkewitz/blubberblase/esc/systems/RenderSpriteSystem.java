@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
@@ -29,6 +30,8 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   private SpriteBatch spriteBatch = new SpriteBatch();
 
+  private Camera camera = null;
+
   public RenderSpriteSystem() {
     super(new RenderSpriteSystem.TupleFactory());
   }
@@ -37,7 +40,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   public void willExecute(int tickTime, World world) {
     super.willExecute(tickTime, world);
 
-    spriteBatch.setProjectionMatrix(world.projectionMatrix);
+    spriteBatch.setProjectionMatrix(camera.combined);
     spriteBatch.begin();
   }
 
@@ -71,6 +74,10 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   public Stream<Tuple> getTuples(Stream<Entity> stream) {
     return super.getTuples(stream).filter(tuple -> tuple.spriteComponent.renderSprite != null);
+  }
+
+  public void applyActiveCamera(Camera camera) {
+    this.camera = camera;
   }
 
   /**

@@ -111,16 +111,6 @@ public class BackgroundLayer {
     }
   }
 
-
-  public void tick(int tickTime) {
-    for (Tile t : TileContainer.tiles) {
-      if (t == null) {
-        break;
-      }
-      t.tick();
-    }
-  }
-
   /**
    * Get a tile in tile space.
    */

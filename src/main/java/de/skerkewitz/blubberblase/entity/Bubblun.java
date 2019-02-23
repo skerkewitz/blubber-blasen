@@ -4,7 +4,7 @@ import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
 import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.Player;
-import de.skerkewitz.enora2d.core.game.AbstractGame;
+import de.skerkewitz.enora2d.core.game.TimeUtil;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
@@ -16,7 +16,7 @@ import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 public class Bubblun extends Player {
 
   public static final int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(-1, 050, 421, 445);
-  public static final int FRAME_ANIMATION_SPEED = AbstractGame.secondsToTickTime(0.25);
+  public static final int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.25);
 
   public static Animation ANIMATION_IDLE = new Animation("idle", FRAME_ANIMATION_SPEED,
           new RenderSprite(new Square2i16(0, 7 * 8), Ressources.SpriteSheet),

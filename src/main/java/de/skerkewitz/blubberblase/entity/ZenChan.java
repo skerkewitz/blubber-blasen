@@ -8,7 +8,7 @@ import de.skerkewitz.enora2d.common.Dice;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
-import de.skerkewitz.enora2d.core.game.AbstractGame;
+import de.skerkewitz.enora2d.core.game.TimeUtil;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
@@ -26,7 +26,7 @@ public class ZenChan extends MoveableLegacyEntity {
   private static final int JUMP_HEIGHT_IN_PIXEL = 44;
 
   public static final int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(-1, 005, 410, 445);
-  public static final int FRAME_ANIMATION_SPEED = AbstractGame.secondsToTickTime(0.25);
+  public static final int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.25);
 
   public static Animation ANIMATION_IDLE = new Animation("idle", FRAME_ANIMATION_SPEED,
           new RenderSprite(new Square2i16(5, 5), Ressources.SpriteSheet_Enemies),
@@ -60,7 +60,7 @@ public class ZenChan extends MoveableLegacyEntity {
       ya += 2;
 
       /* There is a 50/50 change every 5s that he will jump if possible. */
-      if (tickTime % AbstractGame.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, world)) {
+      if (tickTime % TimeUtil.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, world)) {
         jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
       }
     }

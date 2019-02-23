@@ -1,8 +1,5 @@
 package de.skerkewitz.enora2d.core.game.level.tiles;
 
-import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
-import de.skerkewitz.enora2d.core.gfx.Screen;
-
 public abstract class Tile {
 
   protected byte id;
@@ -36,8 +33,4 @@ public abstract class Tile {
   public int getLevelColour() {
     return levelColour;
   }
-
-  public abstract void tick();
-
-  public abstract void render(Screen screen, BackgroundLayer backgroundLayer, int x, int y);
 }
