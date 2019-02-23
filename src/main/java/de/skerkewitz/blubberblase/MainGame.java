@@ -43,7 +43,10 @@ public class MainGame extends AwtGame {
     /* Render all the entities. */
 
     renderSpriteSystem.update(getTickTime(), level, level.getEntityContainer().stream());
-    renderDebugSystem.update(getTickTime(), level, level.getEntityContainer().stream());
+
+    if (gameConfig.cmd.hasOption("showbbox")) {
+      renderDebugSystem.update(getTickTime(), level, level.getEntityContainer().stream());
+    }
 
     super.render();
   }
