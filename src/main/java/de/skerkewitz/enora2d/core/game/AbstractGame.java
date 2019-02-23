@@ -159,7 +159,7 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   @Override
   public void tick() {
     tickTime++;
-    world.tick(tickTime);
+    world.tick(tickTime, null);
   }
 
   protected void renderLevel(BackgroundLayer backgroundLayer, int xOffset, int yOffset) {

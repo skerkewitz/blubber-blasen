@@ -16,11 +16,23 @@ public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends Comp
 
   @Override
   public void update(int tickTime, World world, Stream<Entity> stream) {
+    willExecute(tickTime, world);
     getTuples(stream).forEach(tuple -> execute(tickTime, tuple, world));
+    didExecute(tickTime, world);
+  }
+
+  @Override
+  public void willExecute(int tickTime, World world) {
+
   }
 
   @Override
   public void execute(int tickTime, T t, World world) {
+
+  }
+
+  @Override
+  public void didExecute(int tickTime, World world) {
 
   }
 

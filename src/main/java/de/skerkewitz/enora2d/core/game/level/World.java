@@ -1,5 +1,6 @@
 package de.skerkewitz.enora2d.core.game.level;
 
+import com.badlogic.gdx.math.Matrix4;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
@@ -10,6 +11,7 @@ public abstract class World {
 
   protected final EntityContainer entityContainer;
 
+  public Matrix4 projectionMatrix = null;
 
   public World() {
     //backgroundLayer = new BackgroundLayer("/levels/water_test_level.png");
@@ -17,7 +19,7 @@ public abstract class World {
     backgroundLayer = new BackgroundLayer(null);
   }
 
-  public abstract void tick(int tickTime);
+  public abstract void tick(int tickTime, Matrix4 combined);
 
   public boolean isSolidTile(int px, int py, int xa, int ya, int x, int y) {
     if (backgroundLayer == null) {
