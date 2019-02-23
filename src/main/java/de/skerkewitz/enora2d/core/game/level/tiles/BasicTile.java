@@ -14,6 +14,10 @@ public class BasicTile extends Tile {
     this.tileColour = tileColour;
   }
 
+  public int getTileColour() {
+    return tileColour;
+  }
+
   public void tick() {
   }
 
@@ -21,4 +25,7 @@ public class BasicTile extends Tile {
     screen.render(x, y, tileId, tileColour, 0x00, 1);
   }
 
+  public int getTileId() {
+    return tileId;
+  }
 }

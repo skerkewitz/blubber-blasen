@@ -7,11 +7,15 @@ import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
 public abstract class World {
 
+  public final int numHorizontalTiles = 32;
+  public final int numVerticalTiles = 28;
+
   public BackgroundLayer backgroundLayer;
 
   protected final EntityContainer entityContainer;
 
   public Matrix4 projectionMatrix = null;
+
 
   public World() {
     //backgroundLayer = new BackgroundLayer("/levels/water_test_level.png");

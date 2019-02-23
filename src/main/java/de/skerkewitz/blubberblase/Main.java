@@ -7,6 +7,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
@@ -15,10 +17,17 @@ import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.Game;
+import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
+import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.game.level.tiles.BasicTile;
+import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
+import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 import de.skerkewitz.enora2d.core.input.GdxInputHandler;
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 public class Main {
 
@@ -32,8 +41,8 @@ public class Main {
 
     LwjglApplicationConfiguration lwjglApplicationConfiguration = new LwjglApplicationConfiguration();
     lwjglApplicationConfiguration.title = config.name;
-    lwjglApplicationConfiguration.width = config.width;
-    lwjglApplicationConfiguration.height = config.height;
+    lwjglApplicationConfiguration.width = config.width * 4;
+    lwjglApplicationConfiguration.height = config.height * 4;
     new LwjglApplication(new GameListener(config), lwjglApplicationConfiguration);
 //
 //    Game game = new MainGame(config);
@@ -51,6 +60,7 @@ public class Main {
 
     private Viewport viewport;
     private Camera camera;
+    private LevelScreen levelScreen;
 
     public GameListener(Game.GameConfig config) {
       this.config = config;
@@ -75,6 +85,8 @@ public class Main {
       world.addEntity(EntityFactory.spawnBubblun(new GdxInputHandler()));
       world.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
       world.addEntity(EntityFactory.spawnZenChan());
+
+      levelScreen = new LevelScreen(world);
     }
 
     @Override
@@ -95,6 +107,11 @@ public class Main {
 
       /* Render the backgroundLayer into the screen. */
 //      renderLevel(world.backgroundLayer, 0, 0);
+      try {
+        levelScreen.render(tickTime);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 
       /* Render all the entities. */
 
@@ -119,5 +136,43 @@ public class Main {
     public void dispose() {
 
     }
+  }
+
+  static class LevelScreen {
+
+    SpriteBatch spriteBatch = new SpriteBatch();
+    private World world;
+    private ImageDataContainer imageDataContainer = new ImageDataContainer();
+    private GdxTextureContainer gdxTextureContainer = new GdxTextureContainer();
+
+
+    public LevelScreen(World world) {
+      this.world = world;
+    }
+
+    public void render(int tickTime) throws IOException {
+
+      BackgroundLayer backgroundLayer = world.backgroundLayer;
+
+      spriteBatch.setProjectionMatrix(world.projectionMatrix);
+      spriteBatch.begin();
+      for (int y = 0; y < world.numVerticalTiles; y++) {
+        for (int x = 0; x < world.numHorizontalTiles; x++) {
+          final BasicTile tile = (BasicTile) backgroundLayer.getTile(x, y);
+
+          int xTile = tile.getTileId() % 32;
+          int yTile = tile.getTileId() / 32;
+
+          Sprite sprite = gdxTextureContainer.getTextureNamedResourceAndPalette(Ressources.SpriteSheet, tile.getTileColour(), imageDataContainer);
+          sprite.setSize(8, 8);
+          sprite.setPosition(x * 8, y * 8);
+          sprite.setRegion(xTile * 8, yTile * 8, 8, 8);
+          sprite.setFlip(false, true);
+          sprite.draw(spriteBatch);
+        }
+      }
+      spriteBatch.end();
+    }
+
   }
 }
