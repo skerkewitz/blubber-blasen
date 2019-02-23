@@ -30,4 +30,5 @@ public class ImageData {
     this.height = height;
     this.pixels = pixels;
   }
+
 }

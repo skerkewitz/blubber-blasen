@@ -1,14 +1,15 @@
 package de.skerkewitz.enora2d.core.game.level;
 
-import de.skerkewitz.enora2d.core.entity.Entity;
-import de.skerkewitz.enora2d.core.entity.EntityContainer;
+import de.skerkewitz.enora2d.core.ecs.EntityContainer;
+import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
-public class Level {
+public abstract class Level {
 
   public BackgroundLayer backgroundLayer;
 
-  private final EntityContainer entityContainer;
+  protected final EntityContainer entityContainer;
+
 
   public Level() {
     //backgroundLayer = new BackgroundLayer("/levels/water_test_level.png");
@@ -16,16 +17,7 @@ public class Level {
     backgroundLayer = new BackgroundLayer(null);
   }
 
-  public void tick(int tickTime) {
-
-    /* Tick all entities. */
-    entityContainer.forEach((Entity e) -> e.tick(this, tickTime));
-
-    entityContainer.purgeExpired();
-
-    /* Tick background layer. */
-    backgroundLayer.tick(tickTime);
-  }
+  public abstract void tick(int tickTime);
 
   public boolean isSolidTile(int px, int py, int xa, int ya, int x, int y) {
     if (backgroundLayer == null) {
@@ -45,7 +37,7 @@ public class Level {
   }
 
 
-  public void spawnEntity(Entity entity) {
+  public void addEntity(Entity entity) {
     entityContainer.addEntity(entity);
   }
 
@@ -53,4 +45,6 @@ public class Level {
   public EntityContainer getEntityContainer() {
     return entityContainer;
   }
+
+
 }

@@ -1,48 +1,40 @@
 package de.skerkewitz.blubberblase.entity;
 
-import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.common.Rect2i;
+import de.skerkewitz.blubberblase.Ressources;
+import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
+import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.AbstractGame;
 import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.Renderer;
+import de.skerkewitz.enora2d.core.gfx.Animation;
+import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
-import de.skerkewitz.enora2d.core.gfx.Screen;
-import de.skerkewitz.enora2d.core.input.InputHandler;
 
 /**
  * The together with Bob the main protagonist. Bub is the green one.
  */
 public class Bubblun extends Player {
 
-  private final Screen.Sprite sprite;
-  private final Rect2i sourceRect;
-  private final Rect2i sourceRect2;
+  public static final int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(-1, 050, 421, 445);
+  public static final int FRAME_ANIMATION_SPEED = AbstractGame.secondsToTickTime(0.25);
 
-  private int colour = RgbColorPalette.mergeColorCodes(-1, 050, 421, 445);
-  private Rect2i frameSourceRect;
+  public static Animation ANIMATION_IDLE = new Animation("idle", FRAME_ANIMATION_SPEED,
+          new RenderSprite(new Square2i16(0, 7 * 8), Ressources.SpriteSheet),
+          new RenderSprite(new Square2i16(16, 7 * 8), Ressources.SpriteSheet)
+  );
 
-  private int frameAnimationSpeed = AbstractGame.secondsToTickTime(0.25);
-
-  public Bubblun(int x, int y, InputHandler input, Screen.Sprite sprite) {
-    super(x, y, input);
-    this.sprite = sprite;
-    sourceRect = new Rect2i(0, 7 * 8, 16, 16);
-    sourceRect2 = new Rect2i(16, 7 * 8, 16, 16);
+  public Bubblun() {
+    super();
     movingDir = MoveDirection.Right;
-  }
-
-  @Override
-  public void render(Screen screen) {
-    Point2i targetPos = new Point2i(posX, posY);
-    var flipX = movingDir == MoveDirection.Left;
-
-    Renderer.renderSubImage(sprite.sheet.imageData, frameSourceRect, colour, screen.imageData, targetPos, flipX, false);
   }
 
   @Override
   public void tick(Level level, int tickTime) {
     super.tick(level, tickTime);
-    frameSourceRect = (tickTime / frameAnimationSpeed) % 2 == 0 ? sourceRect : sourceRect2;
+
+    AnimationComponent animationComponent = getComponent(AnimationComponent.class);
+    animationComponent.animation = ANIMATION_IDLE;
+    animationComponent.currentAnimationStartTimeTick = 0;
+    animationComponent.flipX = movingDir == MoveDirection.Left;
   }
 }

@@ -1,17 +1,12 @@
 package de.skerkewitz.enora2d.core.game;
 
-import de.skerkewitz.blubberblase.entity.Bubble;
-import de.skerkewitz.blubberblase.entity.Bubblun;
-import de.skerkewitz.blubberblase.entity.ZenChan;
 import de.skerkewitz.enora2d.backend.awt.game.WindowHandler;
-import de.skerkewitz.enora2d.core.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
 import de.skerkewitz.enora2d.core.game.level.Level;
 import de.skerkewitz.enora2d.core.gfx.ImageData;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.gfx.Screen;
-import de.skerkewitz.enora2d.core.gfx.SpriteSheet;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,19 +30,16 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   public WindowHandler windowHandler;
   public Player player;
 
-  public boolean debug = true;
   private Thread thread;
   private int[] frameBufferPixels;
 
-  private Screen screen;
-
+  protected Screen screen;
 
   public Level level;
-  private SpriteSheet spritesheet;
-  private Screen.Sprite sprite;
 
   public static final int TICKTIME_1s = AbstractGame.secondsToTickTime(1);
   public static final int TICKTIME_5s = AbstractGame.secondsToTickTime(5);
+  private boolean paused = false;
 
   public AbstractGame(GameConfig config) {
     super();
@@ -60,31 +52,15 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
   @Override
   public void init() throws IOException {
-
     frameBufferPixels = getFrameBufferPixel();
-
     screen = new Screen(gameConfig.width, gameConfig.height, new ImageData("/sprite_sheet.png"));
-
-    spritesheet = new SpriteSheet(new ImageData("/Enemies.png"));
-    sprite = new Screen.Sprite(1, spritesheet);
-
-    level = new Level();
-
-    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
-    var bob_sprite = new Screen.Sprite(1, sheet);
-
-    player = new Bubblun(4 * 8, 25 * 8, input, bob_sprite);
-    level.spawnEntity(player);
-    level.spawnEntity(new Bubble(8 * 8, 24 * 8, 1));
-    level.spawnEntity(new ZenChan(8 * 8, 24 * 8, 1, sprite));
   }
 
 
   @Override
   public synchronized void start() {
     running = true;
-
-    thread = new Thread(this, gameConfig.name + "_main");
+    thread = new Thread(this, gameConfig.name + "_gameLoop");
     thread.start();
   }
 
@@ -101,14 +77,25 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
 
   @Override
   public void run() {
-    long lastTime = System.nanoTime();
-    double nsPerTick = 1000000000D / TARGET_FPS;
 
-    int ticks = 0;
-    int frames = 0;
+    //This value would probably be stored elsewhere.
+    final double GAME_HERTZ = 60.0;
+    //Calculate how many ns each frame should take for our target game hertz.
+    final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
+    //At the very most we will update the game this many times before a new render.
+    //If you're worried about visual hitches more than perfect timing, set this to 1.
+    final int MAX_UPDATES_BEFORE_RENDER = 1;
+    //We will need the last update time.
+    double lastUpdateTime = System.nanoTime();
+    //Store the last time we rendered.
+    double lastRenderTime = System.nanoTime();
 
-    long lastTimer = System.currentTimeMillis();
-    double delta = 0;
+    //If we are able to get as high as this FPS, don't render again.
+    final double TARGET_FPS1 = 60;
+    final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS1;
+
+    //Simple way of finding FPS.
+    int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 
     try {
       init();
@@ -116,38 +103,58 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
       throw new RuntimeException("Could not initialize because of: " + e, e);
     }
 
+    int frameCount = 0;
+
     while (running) {
-      long now = System.nanoTime();
-      delta += (now - lastTime) / nsPerTick;
-      lastTime = now;
-      boolean shouldRender = false;
+      double now = System.nanoTime();
+      int updateCount = 0;
 
-      while (delta >= 1) {
-        ticks++;
-        tick();
-        delta -= 1;
-        shouldRender = true;
-      }
 
-      try {
-        Thread.sleep(2);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+      if (!paused) {
+        //Do as many game updates as we need to, potentially playing catchup.
+        while (now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER) {
+          tick();
+          lastUpdateTime += TIME_BETWEEN_UPDATES;
+          updateCount++;
+        }
 
-      if (shouldRender) {
-        frames++;
-        render();
-      }
+        //If for some reason an update takes forever, we don't want to do an insane number of catchups.
+        //If you were doing some sort of game that needed to keep EXACT time, you would get rid of this.
+        if (now - lastUpdateTime > TIME_BETWEEN_UPDATES) {
+          lastUpdateTime = now - TIME_BETWEEN_UPDATES;
+        }
 
-      if (System.currentTimeMillis() - lastTimer >= 1000) {
-        lastTimer += 1000;
-        logger.info("[" + gameConfig.name + "] " + (ticks + " ticks, " + frames + " frames"));
-        frames = 0;
-        ticks = 0;
+        //Render. To do so, we need to calculate interpolation for a smooth render.
+        float interpolation = Math.min(1.0f, (float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES));
+        render();// drawGame(interpolation);
+        frameCount++;
+        lastRenderTime = now;
+
+        //Update the frames we got.
+        int thisSecond = (int) (lastUpdateTime / 1000000000);
+        if (thisSecond > lastSecondTime) {
+//          System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+          //fps = frameCount;
+          frameCount = 0;
+          lastSecondTime = thisSecond;
+        }
+
+        //Yield until it has been at least the target time between renders. This saves the CPU from hogging.
+        while (now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < TIME_BETWEEN_UPDATES) {
+//          Thread.yield();
+//
+//          //This stops the app from consuming all your CPU. It makes this slightly less accurate, but is worth it.
+//          //You can remove this line and it will still work (better), your CPU just climbs on certain OSes.
+//          //FYI on some OS's this can cause pretty bad stuttering.
+//          try {Thread.sleep(5);} catch(Exception e) {}
+
+          now = System.nanoTime();
+        }
       }
     }
+
   }
+
 
   @Override
   public void tick() {
@@ -155,25 +162,24 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
     level.tick(tickTime);
   }
 
-
-  private void renderLevel(BackgroundLayer backgroundLayer, int xOffset, int yOffset) {
+  protected void renderLevel(BackgroundLayer backgroundLayer, int xOffset, int yOffset) {
     if (xOffset < 0) {
       xOffset = 0;
     }
-    if (xOffset > ((backgroundLayer.tileWidth << 3) - screen.imageData.width)) {
-      xOffset = ((backgroundLayer.tileWidth << 3) - screen.imageData.width);
+    if (xOffset > ((backgroundLayer.tileWidth << 3) - screen.screenImageData.width)) {
+      xOffset = ((backgroundLayer.tileWidth << 3) - screen.screenImageData.width);
     }
     if (yOffset < 0) {
       yOffset = 0;
     }
-    if (yOffset > ((backgroundLayer.tileHeight << 3) - screen.imageData.height)) {
-      yOffset = ((backgroundLayer.tileHeight << 3) - screen.imageData.height);
+    if (yOffset > ((backgroundLayer.tileHeight << 3) - screen.screenImageData.height)) {
+      yOffset = ((backgroundLayer.tileHeight << 3) - screen.screenImageData.height);
     }
 
     screen.setOffset(xOffset, yOffset);
 
-    for (int y = (yOffset >> 3); y < (yOffset + screen.imageData.height >> 3) + 1; y++) {
-      for (int x = (xOffset >> 3); x < (xOffset + screen.imageData.width >> 3) + 1; x++) {
+    for (int y = (yOffset >> 3); y < (yOffset + screen.screenImageData.height >> 3) + 1; y++) {
+      for (int x = (xOffset >> 3); x < (xOffset + screen.screenImageData.width >> 3) + 1; x++) {
         backgroundLayer.getTile(x, y).render(screen, backgroundLayer, x << 3, y << 3);
       }
     }
@@ -183,19 +189,10 @@ public abstract class AbstractGame extends Canvas implements Runnable, Game {
   @Override
   public void render() {
 
-    int xOffset = player.posX - (screen.imageData.width / 2);
-    int yOffset = player.posY - (screen.imageData.height / 2);
-
-    /* Render the backgroundLayer into the screen. */
-    renderLevel(level.backgroundLayer, xOffset, yOffset);
-
-    /* Render all the entities. */
-    level.getEntityContainer().forEach((Entity e) -> e.render(screen));
-
     /* Render the screen into the framebuffer. */
-    for (int y = 0; y < screen.imageData.height; y++) {
-      for (int x = 0; x < screen.imageData.width; x++) {
-        int colourCode = screen.imageData.pixels[x + y * screen.imageData.width];
+    for (int y = 0; y < screen.screenImageData.height; y++) {
+      for (int x = 0; x < screen.screenImageData.width; x++) {
+        int colourCode = screen.screenImageData.pixels[x + y * screen.screenImageData.width];
         if (colourCode < 255) {
           frameBufferPixels[x + y * gameConfig.width] = rgbColorPalette.rgbValueForIndex(colourCode);
         }
