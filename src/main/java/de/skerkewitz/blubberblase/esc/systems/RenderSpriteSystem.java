@@ -1,15 +1,17 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.game.level.Level;
-import de.skerkewitz.enora2d.core.gfx.ImageData;
+import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
-import de.skerkewitz.enora2d.core.gfx.Renderer;
-import de.skerkewitz.enora2d.core.gfx.Screen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,26 +21,52 @@ import java.util.stream.Stream;
 /**
  * A system to render all SpriteComponents.
  */
-public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.Tuple, RenderSpriteSystem.TupleFactory> {
+public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.Tuple, RenderSpriteSystem.TupleFactory> implements RenderSystem {
 
   private static final Logger logger = LogManager.getLogger(RenderSpriteSystem.class);
 
-  private Screen screen;
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
+  private GdxTextureContainer textureContainer = new GdxTextureContainer();
 
-  public RenderSpriteSystem(Screen screen) {
+  private SpriteBatch spriteBatch = new SpriteBatch();
+
+  private Camera camera = null;
+
+  public RenderSpriteSystem() {
     super(new RenderSpriteSystem.TupleFactory());
-    this.screen = screen;
   }
 
   @Override
-  public void execute(int tickTime, Tuple tuple, Level level) {
+  public void willExecute(int tickTime, World world) {
+    super.willExecute(tickTime, world);
+
+    spriteBatch.setProjectionMatrix(camera.combined);
+    spriteBatch.begin();
+  }
+
+  @Override
+  public void didExecute(int tickTime, World world) {
+    super.didExecute(tickTime, world);
+    spriteBatch.end();
+  }
+
+  @Override
+  public void execute(int tickTime, Tuple tuple, World world) {
     TransformComponent transformComponent = tuple.transformComponent;
-    SpriteComponent sprite = tuple.spriteComponent;
+    SpriteComponent spriteComponent = tuple.spriteComponent;
     try {
-      ImageData imageData = imageDataContainer.getResourceForName(sprite.renderSprite.namedResource);
-      Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
-              screen.screenImageData, transformComponent.position.plus(sprite.pivotPoint), sprite.flipX, sprite.flipY);
+      Sprite sprite = textureContainer.getTextureNamedResourceAndPalette(spriteComponent.renderSprite.namedResource, spriteComponent.colorPalette, imageDataContainer);
+
+      Point2i pos = transformComponent.position.plus(spriteComponent.pivotPoint);
+
+      sprite.setSize(16, 16);
+      sprite.setPosition(pos.x, pos.y);
+      sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, 16, 16);
+      sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
+      sprite.draw(spriteBatch);
+
+      //      Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
+//              screen.screenImageData, transformComponent.position.plus(sprite.pivotPoint), sprite.flipX, sprite.flipY);
     } catch (IOException e) {
       logger.error("Error rendering sprite because of: " + e, e);
     }
@@ -46,6 +74,11 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   public Stream<Tuple> getTuples(Stream<Entity> stream) {
     return super.getTuples(stream).filter(tuple -> tuple.spriteComponent.renderSprite != null);
+  }
+
+  @Override
+  public void applyActiveCamera(Camera camera) {
+    this.camera = camera;
   }
 
   /**

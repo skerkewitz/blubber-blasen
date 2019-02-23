@@ -5,7 +5,7 @@ import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.game.level.Level;
+import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,14 +22,14 @@ public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystem
   }
 
   @Override
-  public void execute(int tickTime, Tuple t, Level level) {
+  public void execute(int tickTime, Tuple t, World world) {
 
     /* Point below feet. */
 //    var pointBelowFeet = new Point2i(t.transformComponent.position.x, t.transformComponent.position.y + 1);
 
     /* We are on ground if feet are in free space and point below is in solid. */
-    Tile lastTile = level.getTileAtPosition(t.transformComponent.position.x, t.transformComponent.position.y);
-    Tile newTile = level.getTileAtPosition(t.transformComponent.position.x, t.transformComponent.position.y + 1);
+    Tile lastTile = world.getTileAtPosition(t.transformComponent.position.x, t.transformComponent.position.y);
+    Tile newTile = world.getTileAtPosition(t.transformComponent.position.x, t.transformComponent.position.y + 1);
     t.groundDataComponent.isOnGround = !lastTile.isSolid() && newTile.isSolid();
   }
 

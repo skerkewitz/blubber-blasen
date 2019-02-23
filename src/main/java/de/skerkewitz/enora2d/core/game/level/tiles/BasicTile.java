@@ -1,8 +1,5 @@
 package de.skerkewitz.enora2d.core.game.level.tiles;
 
-import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
-import de.skerkewitz.enora2d.core.gfx.Screen;
-
 public class BasicTile extends Tile {
 
   protected int tileId;
@@ -14,11 +11,12 @@ public class BasicTile extends Tile {
     this.tileColour = tileColour;
   }
 
-  public void tick() {
+  public int getTileColour() {
+    return tileColour;
   }
 
-  public void render(Screen screen, BackgroundLayer backgroundLayer, int x, int y) {
-    screen.render(x, y, tileId, tileColour, 0x00, 1);
-  }
 
+  public int getTileId() {
+    return tileId;
+  }
 }
