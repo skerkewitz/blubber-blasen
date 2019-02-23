@@ -1,5 +1,7 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -7,10 +9,6 @@ import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.game.level.World;
-import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
-import de.skerkewitz.enora2d.core.gfx.Renderer;
-import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
-import de.skerkewitz.enora2d.core.gfx.Screen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,21 +19,33 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
 
   private static final Logger logger = LogManager.getLogger(RenderDebugSystem.class);
 
-  private Screen screen;
-  private ImageDataContainer imageDataContainer = new ImageDataContainer();
+  private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-  public RenderDebugSystem(Screen screen) {
+  public RenderDebugSystem() {
     super(new RenderDebugSystem.TupleFactory());
-    this.screen = screen;
+  }
+
+  @Override
+  public void willExecute(int tickTime, World world) {
+    super.willExecute(tickTime, world);
+
+    shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+    shapeRenderer.setProjectionMatrix(world.projectionMatrix);
   }
 
   @Override
   public void execute(int tickTime, Tuple t, World world) {
-    TransformComponent transformComponent = t.transformComponent;
-    BoundingBoxComponent boundingBoxComponent = t.boundingBoxComponent;
 
-    Rect2i boundingBox = new Rect2i(t.transformComponent.position.plus(boundingBoxComponent.getBoundingBox().origin), boundingBoxComponent.getBoundingBox().size);
-    Renderer.renderBoxOutline(screen.screenImageData, boundingBox, RgbColorPalette.encodeColorCode(555));
+    final BoundingBoxComponent boundingBoxComponent = t.boundingBoxComponent;
+    final Rect2i boundingBox = new Rect2i(t.transformComponent.position.plus(boundingBoxComponent.getBoundingBox().origin), boundingBoxComponent.getBoundingBox().size);
+    shapeRenderer.setColor(Color.WHITE);
+    shapeRenderer.rect(boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height);
+  }
+
+  @Override
+  public void didExecute(int tickTime, World world) {
+    super.didExecute(tickTime, world);
+    shapeRenderer.end();
   }
 
   /**

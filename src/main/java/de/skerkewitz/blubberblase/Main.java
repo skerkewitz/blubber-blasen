@@ -17,6 +17,7 @@ import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.Game;
+import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.level.BackgroundLayer;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.BasicTile;
@@ -60,7 +61,7 @@ public class Main {
 
     private Viewport viewport;
     private Camera camera;
-    private LevelScreen levelScreen;
+    private Screen currentScreen;
 
     public GameListener(Game.GameConfig config) {
       this.config = config;
@@ -69,8 +70,8 @@ public class Main {
     @Override
     public void create() {
 
-      renderSpriteSystem = new RenderSpriteSystem(null);
-      renderDebugSystem = new RenderDebugSystem(null);
+      renderSpriteSystem = new RenderSpriteSystem();
+      renderDebugSystem = new RenderDebugSystem();
 
       camera = new OrthographicCamera(config.width, config.height);
       ((OrthographicCamera) camera).setToOrtho(true);
@@ -86,7 +87,7 @@ public class Main {
       world.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
       world.addEntity(EntityFactory.spawnZenChan());
 
-      levelScreen = new LevelScreen(world);
+      currentScreen = new LevelScreen(world);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class Main {
       /* Render the backgroundLayer into the screen. */
 //      renderLevel(world.backgroundLayer, 0, 0);
       try {
-        levelScreen.render(tickTime);
+        currentScreen.render(tickTime);
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -117,9 +118,9 @@ public class Main {
 
       renderSpriteSystem.update(tickTime, world, world.getEntityContainer().stream());
 
-//      if (gameConfig.cmd.hasOption("showbbox")) {
-//        renderDebugSystem.update(tickTime, world, world.getEntityContainer().stream());
-//      }
+      if (config.cmd.hasOption("showbbox")) {
+        renderDebugSystem.update(tickTime, world, world.getEntityContainer().stream());
+      }
     }
 
     @Override
@@ -138,7 +139,7 @@ public class Main {
     }
   }
 
-  static class LevelScreen {
+  static class LevelScreen implements Screen {
 
     SpriteBatch spriteBatch = new SpriteBatch();
     private World world;
@@ -150,6 +151,7 @@ public class Main {
       this.world = world;
     }
 
+    @Override
     public void render(int tickTime) throws IOException {
 
       BackgroundLayer backgroundLayer = world.backgroundLayer;

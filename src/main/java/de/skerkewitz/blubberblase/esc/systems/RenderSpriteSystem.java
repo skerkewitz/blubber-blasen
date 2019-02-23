@@ -11,7 +11,6 @@ import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
-import de.skerkewitz.enora2d.core.gfx.Screen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,15 +24,13 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   private static final Logger logger = LogManager.getLogger(RenderSpriteSystem.class);
 
-  private Screen screen;
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
   private GdxTextureContainer textureContainer = new GdxTextureContainer();
 
   private SpriteBatch spriteBatch = new SpriteBatch();
 
-  public RenderSpriteSystem(Screen screen) {
+  public RenderSpriteSystem() {
     super(new RenderSpriteSystem.TupleFactory());
-    this.screen = screen;
   }
 
   @Override
