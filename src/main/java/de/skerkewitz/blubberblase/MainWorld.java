@@ -5,7 +5,7 @@ import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
-import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.game.world.World;
 
 public class MainWorld extends World {
 

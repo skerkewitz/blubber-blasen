@@ -1,7 +1,7 @@
 package de.skerkewitz.enora2d.core.ecs.system;
 
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.game.world.World;
 
 import java.util.Objects;
 import java.util.stream.Stream;

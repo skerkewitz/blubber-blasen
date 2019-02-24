@@ -6,8 +6,8 @@ import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.game.level.World;
-import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
+import de.skerkewitz.enora2d.core.game.world.World;
+import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
 /**
  * A system to render all SpriteComponents.

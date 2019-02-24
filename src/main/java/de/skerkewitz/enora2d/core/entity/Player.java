@@ -4,9 +4,9 @@ import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.component.*;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.game.TimeUtil;
-import de.skerkewitz.enora2d.core.game.level.World;
-import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
+import de.skerkewitz.enora2d.common.TimeUtil;
+import de.skerkewitz.enora2d.core.game.world.World;
+import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
 public abstract class Player extends MoveableLegacyEntity {
 

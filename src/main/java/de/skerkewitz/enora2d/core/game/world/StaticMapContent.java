@@ -1,7 +1,7 @@
-package de.skerkewitz.enora2d.core.game.level;
+package de.skerkewitz.enora2d.core.game.world;
 
-import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
-import de.skerkewitz.enora2d.core.game.level.tiles.TileContainer;
+import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
+import de.skerkewitz.enora2d.core.game.world.tiles.TileContainer;
 
 public class StaticMapContent {
 

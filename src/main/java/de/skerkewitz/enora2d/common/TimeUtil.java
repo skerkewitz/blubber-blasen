@@ -1,4 +1,4 @@
-package de.skerkewitz.enora2d.core.game;
+package de.skerkewitz.enora2d.common;
 
 public class TimeUtil {
   public static final double TARGET_FPS = 60D;

@@ -4,7 +4,7 @@ import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.game.world.World;
 
 public class LevelUtils {
 

@@ -2,7 +2,7 @@ package de.skerkewitz.enora2d.core.entity;
 
 import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.DefaultEntity;
-import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.game.world.World;
 
 public abstract class AbstractLegacyEntity extends DefaultEntity implements LegacyEntity {
 

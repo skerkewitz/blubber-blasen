@@ -1,8 +1,8 @@
-package de.skerkewitz.enora2d.core.game.level;
+package de.skerkewitz.enora2d.core.game.world;
 
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
+import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
 public abstract class World {
 

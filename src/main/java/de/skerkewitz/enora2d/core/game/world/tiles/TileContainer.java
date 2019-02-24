@@ -1,4 +1,4 @@
-package de.skerkewitz.enora2d.core.game.level.tiles;
+package de.skerkewitz.enora2d.core.game.world.tiles;
 
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 

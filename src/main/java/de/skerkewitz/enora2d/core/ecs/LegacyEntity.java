@@ -1,7 +1,7 @@
 package de.skerkewitz.enora2d.core.ecs;
 
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.game.level.World;
+import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
  * Any entity in the game.
