@@ -10,6 +10,8 @@ import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 
+import java.util.EnumSet;
+
 public class EntityFactory {
 
 
@@ -24,7 +26,7 @@ public class EntityFactory {
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
     entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
-    entity.addComponent(new CollisionComponent());
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.ENEMY)));
     AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
@@ -45,7 +47,7 @@ public class EntityFactory {
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, moveDirection, 4));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 16, 16)));
-    entity.addComponent(new CollisionComponent());
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
@@ -66,7 +68,7 @@ public class EntityFactory {
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
-    entity.addComponent(new CollisionComponent());
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.ENEMY), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.BUBBLE)));
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);

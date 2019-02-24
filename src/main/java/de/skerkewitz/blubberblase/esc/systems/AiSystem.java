@@ -1,9 +1,6 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
-import de.skerkewitz.blubberblase.esc.component.AiBubbleComponent;
-import de.skerkewitz.blubberblase.esc.component.AiComponent;
-import de.skerkewitz.blubberblase.esc.component.MovementComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.esc.component.*;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
@@ -32,6 +29,7 @@ public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.Tuple
     if (aiComponent instanceof AiBubbleComponent) {
       AiBubbleComponent aiBubbleComponent = (AiBubbleComponent) aiComponent;
       if (aiBubbleComponent.currentState == AiBubbleComponent.State.SHOOT && aiBubbleComponent.getStateTime(tickTime) > 2 * 4) {
+        t.entity.getComponent(CollisionComponent.class).removeCollideWithLayer(CollisionComponent.Layer.ENEMY);
         aiBubbleComponent.setState(tickTime, AiBubbleComponent.State.FLOAT);
         movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
         movementComponent.speed = 1;

@@ -46,22 +46,29 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
 
   private void execute(int tickTime, Tuple t, Tuple o, World world) {
 
-    o.boundingBoxComponent.getBoundingBox();
+    var canTCollideWithO = t.collisionComponent.doesCollideWith(o.collisionComponent);
+    var canOCollideWithT = o.collisionComponent.doesCollideWith(t.collisionComponent);
+
+    if (!canTCollideWithO && !canOCollideWithT) {
+      return;
+    }
 
     final Rect2i tbb = new Rect2i(t.transformComponent.position.plus(t.boundingBoxComponent.getBoundingBox().origin), t.boundingBoxComponent.getBoundingBox().size);
     final Rect2i obb = new Rect2i(o.transformComponent.position.plus(o.boundingBoxComponent.getBoundingBox().origin), o.boundingBoxComponent.getBoundingBox().size);
 
     boolean collide = BoundingBoxUtil.collide(tbb, obb);
-    t.collisionComponent.applyCollide(collide);
-    o.collisionComponent.applyCollide(collide);
+
+    if (canTCollideWithO) {
+      t.collisionComponent.applyCollide(collide);
+    }
+
+    if (canOCollideWithT) {
+      o.collisionComponent.applyCollide(collide);
+    }
   }
 
   public void execute(int tickTime, Tuple t, World world) {
-//    TransformComponent transformComponent = t.transformComponent;
-//    MovementComponent movementComponent = t.movementComponent;
-//    if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 8 * 4) {
-//      movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
-//    }
+    throw new UnsupportedOperationException("Don't call me!");
   }
 
   /**
