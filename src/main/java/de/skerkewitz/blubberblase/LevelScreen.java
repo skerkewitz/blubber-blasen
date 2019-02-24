@@ -22,13 +22,16 @@ import java.io.IOException;
 class LevelScreen implements Screen {
 
   private final GameConfig config;
-  SpriteBatch spriteBatch = new SpriteBatch();
+  private SpriteBatch spriteBatch = new SpriteBatch();
   private World world;
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
   private GdxTextureContainer gdxTextureContainer = new GdxTextureContainer();
 
+  private LevelSpawner levelSpawner;
+
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
+
 
   public LevelScreen(GameConfig config, World world) {
     this.config = config;
@@ -36,18 +39,24 @@ class LevelScreen implements Screen {
 
     this.world = new MainWorld(config);
 
+    this.levelSpawner = new LevelSpawner();
+
 //    Controller first = Controllers.getControllers().first();
 //    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
     InputHandler handler = new GdxKeyboardInputHandler();
 
     this.world.addEntity(EntityFactory.spawnBubblun(handler));
     this.world.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
-    this.world.addEntity(EntityFactory.spawnZenChan());
+
+    levelSpawner.prepareSpawnWithDelay(1, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
+    levelSpawner.prepareSpawnWithDelay(21, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
+    levelSpawner.prepareSpawnWithDelay(41, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
   }
 
   @Override
   public void update(int tickTime) {
     world.tick(tickTime);
+    levelSpawner.spawnEntities(world, tickTime);
   }
 
   @Override
