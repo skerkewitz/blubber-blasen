@@ -32,7 +32,7 @@ public class EntityFactory {
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubblun.COLOR_PALETTE;
-    spriteComponent.pivotPoint = new Point2i(-8, -15);
+    spriteComponent.pivotPoint = new Point2i(-8, -16);
 //    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25* 8, 16, 16), new ImageData("/sprite_sheet.png"));
     return entity;
   }
@@ -41,7 +41,7 @@ public class EntityFactory {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new AiComponent());
+    entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.SHOOT));
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, moveDirection, 4));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 16, 16)));
@@ -65,11 +65,13 @@ public class EntityFactory {
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(0, 0, 16, 16)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
     entity.addComponent(new CollisionComponent());
+    entity.addComponent(new GroundDataComponent(0, 0, 0));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;
+    spriteComponent.pivotPoint = new Point2i(-8, -16);
 
     return entity;
   }

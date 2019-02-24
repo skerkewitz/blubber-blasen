@@ -3,11 +3,14 @@ package de.skerkewitz.blubberblase.entity;
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
+import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Dice;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
+import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.TimeUtil;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
@@ -48,54 +51,78 @@ public class ZenChan extends MoveableLegacyEntity {
 //      return;
 //    }
 
-    super.tick(world, tickTime);
+    final TransformComponent transformComponent = getComponent(TransformComponent.class);
+    final BoundingBoxComponent boundingBoxComponent = getComponent(BoundingBoxComponent.class);
 
     int xa = 0;
     int ya = 0;
 
+//    if (jumpTickRemaining > 0) {
+//      jumpTickRemaining -= 1;
+//      ya -= 1;
+//    } else {
+//      ya += 2;
+//
+//      /* There is a 50/50 change every 5s that he will jump if possible. */
+//      if (tickTime % TimeUtil.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, world)) {
+//        jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
+//      }
+//    }
+
+    boolean isOnGround = getComponent(GroundDataComponent.class).isOnGround;
     if (jumpTickRemaining > 0) {
       jumpTickRemaining -= 1;
       ya -= 1;
     } else {
-      ya += 2;
-
-      /* There is a 50/50 change every 5s that he will jump if possible. */
-      if (tickTime % TimeUtil.TICKTIME_5s == 0 && Dice.chance(0.5f) && LevelUtils.isOnGround(this, world)) {
-        jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
+      if (isOnGround) {
+        /* There is a 50/50 change every 5s that he will jump if possible. */
+        if (tickTime % TimeUtil.TICKTIME_5s == 0 && Dice.chance(0.5f)) {
+          jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
+        }
+      } else {
+        ya += 1;
       }
     }
 
+    /* Enemies jump only straight up and fall straight down. */
     var playerMoveDirection = movingDir;
-    if (playerMoveDirection == MoveDirection.Left) {
-      TransformComponent transformComponent = getComponent(TransformComponent.class);
-      if (world.getTileAtPosition(transformComponent.position.x - 1, transformComponent.position.y).isSolid()) {
-        playerMoveDirection = MoveDirection.Right;
-      }
-    } else if (playerMoveDirection == MoveDirection.Right) {
-      TransformComponent transformComponent = getComponent(TransformComponent.class);
-      final BoundingBoxComponent boundingBoxComponent = getComponent(BoundingBoxComponent.class);
+    if (isOnGround) {
       final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
-      if (world.getTileAtPosition(transformComponent.position.x + 1 + boundingBox.size.width, transformComponent.position.y).isSolid()) {
-        playerMoveDirection = MoveDirection.Left;
+      if (playerMoveDirection == MoveDirection.Left) {
+        if (Player.clipMoveX(-1, transformComponent.position, boundingBox, world) == 0) {
+          playerMoveDirection = MoveDirection.Right;
+        }
+      } else if (playerMoveDirection == MoveDirection.Right) {
+        if (Player.clipMoveX(+1, transformComponent.position, boundingBox, world) == 0) {
+          playerMoveDirection = MoveDirection.Left;
+        }
       }
+
+      if (playerMoveDirection == MoveDirection.Left) {
+        xa--;
+      } else if (playerMoveDirection == MoveDirection.Right) {
+        xa++;
+      }
+
+      xa = Player.clipMoveX(xa, transformComponent.position, boundingBox, world);
     }
 
-    if (playerMoveDirection == MoveDirection.Left) {
-      xa--;
-    } else if (playerMoveDirection == MoveDirection.Right) {
-      xa++;
-    }
+    /* Update player position. */
+    Point2i position = transformComponent.position;
+    position.x += xa * speed;
+    position.y += ya * speed;
 
+
+    movingDir = playerMoveDirection;
+//
     if (xa != 0 || ya != 0) {
-      isMoving = move(world, xa, ya);
+//      isMoving = move(world, xa, ya);
     } else {
       isMoving = false;
     }
 
-    logger.debug("Player num steps: " + numSteps);
     movingDir = playerMoveDirection;
 
-    TransformComponent transformComponent = getComponent(TransformComponent.class);
     if (transformComponent.position.y < 8) {
       transformComponent.position.y = 8;
     }

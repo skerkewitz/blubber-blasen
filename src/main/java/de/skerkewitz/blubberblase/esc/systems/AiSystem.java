@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
+import de.skerkewitz.blubberblase.esc.component.AiBubbleComponent;
 import de.skerkewitz.blubberblase.esc.component.AiComponent;
 import de.skerkewitz.blubberblase.esc.component.MovementComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
@@ -25,9 +26,16 @@ public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.Tuple
   public void execute(int tickTime, Tuple t, World world) {
     TransformComponent transformComponent = t.transformComponent;
     MovementComponent movementComponent = t.movementComponent;
-    if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 2 * 4) {
-      movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
-      movementComponent.speed = 1;
+
+    AiComponent aiComponent = t.aiComponent;
+
+    if (aiComponent instanceof AiBubbleComponent) {
+      AiBubbleComponent aiBubbleComponent = (AiBubbleComponent) aiComponent;
+      if (aiBubbleComponent.currentState == AiBubbleComponent.State.SHOOT && aiBubbleComponent.getStateTime(tickTime) > 2 * 4) {
+        aiBubbleComponent.setState(tickTime, AiBubbleComponent.State.FLOAT);
+        movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
+        movementComponent.speed = 1;
+      }
     }
   }
 

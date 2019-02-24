@@ -79,11 +79,10 @@ public abstract class Player extends MoveableLegacyEntity {
     position.y += ya * speed;
 
 
-    logger.debug("Player num steps: " + numSteps);
     movingDir = playerMoveDirection;
   }
 
-  private int clipMoveX(int moveX, Point2i position, Rect2i boundingBox, World world) {
+  public static int clipMoveX(int moveX, Point2i position, Rect2i boundingBox, World world) {
 
     /* no horizontal movement. */
     if (moveX == 0) {
