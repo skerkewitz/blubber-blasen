@@ -8,7 +8,6 @@ import de.skerkewitz.enora2d.core.ecs.entity.DefaultEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
-import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 
 import java.util.EnumSet;
@@ -62,14 +61,15 @@ public class EntityFactory {
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT));
-    entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new LifeTimeComponent(tickTime, CaptureBubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Up, 1));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
-//    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
+    entity.addComponent(new AnimationComponent(0, CaptureBubble.IDLE, false));
+
+    //    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
-    spriteComponent.colorPalette = RgbColorPalette.mergeColorCodes(RgbColorPalette.NONE, RgbColorPalette.BLACK, 533, RgbColorPalette.GREEN);
-    spriteComponent.renderSprite = new RenderSprite(new Rect2i(131, 5, 16, 16), Ressources.SpriteSheet_Enemies);
+    spriteComponent.colorPalette = CaptureBubble.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -8);
     return entity;
   }
