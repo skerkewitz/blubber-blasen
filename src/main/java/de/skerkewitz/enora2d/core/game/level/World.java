@@ -6,8 +6,8 @@ import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
 public abstract class World {
 
-  public final int numHorizontalTiles = 32;
-  public final int numVerticalTiles = 28;
+  public final int numHorizontalTiles = BackgroundLayer.WIDTH / 8;
+  public final int numVerticalTiles = BackgroundLayer.HEIGHT / 8;
 
   public BackgroundLayer backgroundLayer;
 

@@ -43,7 +43,7 @@ public class EntityFactory {
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AiComponent());
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
-    entity.addComponent(new MovementComponent(tickTime, moveDirection));
+    entity.addComponent(new MovementComponent(tickTime, moveDirection, 4));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 16, 16)));
     entity.addComponent(new CollisionComponent());
 

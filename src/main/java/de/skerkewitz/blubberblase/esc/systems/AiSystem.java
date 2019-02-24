@@ -25,8 +25,9 @@ public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.Tuple
   public void execute(int tickTime, Tuple t, World world) {
     TransformComponent transformComponent = t.transformComponent;
     MovementComponent movementComponent = t.movementComponent;
-    if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 8 * 4) {
+    if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 2 * 4) {
       movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
+      movementComponent.speed = 1;
     }
   }
 

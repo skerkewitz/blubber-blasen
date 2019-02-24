@@ -55,10 +55,9 @@ public class MovementSystem {
     movementComponent.numSteps++;
 
     /* Update player position. */
-    int speed = 1;
     Point2i position = targetTransformComponent.position;
-    position.x += xa * speed;
-    position.y += ya * speed;
+    position.x += xa * movementComponent.speed;
+    position.y += ya * movementComponent.speed;
   }
 
   private Stream<Tuple> getTuples(Stream<Entity> stream) {
