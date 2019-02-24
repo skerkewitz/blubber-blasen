@@ -51,8 +51,8 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
       return;
     }
 
-    final Rect2i tbb = new Rect2i(t.transformComponent.position.plus(t.boundingBoxComponent.getBoundingBox().origin), t.boundingBoxComponent.getBoundingBox().size);
-    final Rect2i obb = new Rect2i(o.transformComponent.position.plus(o.boundingBoxComponent.getBoundingBox().origin), o.boundingBoxComponent.getBoundingBox().size);
+    final Rect2i tbb = new Rect2i(t.transformComponent.position.toPoint2i().plus(t.boundingBoxComponent.getBoundingBox().origin), t.boundingBoxComponent.getBoundingBox().size);
+    final Rect2i obb = new Rect2i(o.transformComponent.position.toPoint2i().plus(o.boundingBoxComponent.getBoundingBox().origin), o.boundingBoxComponent.getBoundingBox().size);
     if (BoundingBoxUtil.doesOverlap(tbb, obb)) {
       if (canTCollideWithO) {
         t.collisionComponent.addCollide(o.entity);

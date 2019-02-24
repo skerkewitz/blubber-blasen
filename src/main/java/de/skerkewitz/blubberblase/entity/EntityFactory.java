@@ -2,6 +2,7 @@ package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.component.*;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.DefaultEntity;
@@ -20,7 +21,7 @@ public class EntityFactory {
 //    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
 
     Bubblun entity = new Bubblun();
-    entity.addComponent(new TransformComponent(new Point2i(4 * 8, 25 * 8)));
+    entity.addComponent(new TransformComponent(new Point2f(4 * 8, 25 * 8)));
     entity.addComponent(new InputComponent(inputHandler));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
@@ -39,7 +40,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnBubble(int tickTime, Point2i position, MoveableLegacyEntity.MoveDirection moveDirection, AiBubbleComponent.State state) {
+  public static Entity spawnBubble(int tickTime, Point2f position, MoveableLegacyEntity.MoveDirection moveDirection, AiBubbleComponent.State state) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
@@ -56,13 +57,13 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnCaptureBubble(int tickTime, Point2i position) {
+  public static Entity spawnCaptureBubble(int tickTime, Point2f position) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT));
     entity.addComponent(new LifeTimeComponent(tickTime, CaptureBubble.MAX_LIFETIME_IN_TICKS));
-    entity.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Up, 1));
+    entity.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Up, 0.3f));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new AnimationComponent(0, CaptureBubble.IDLE, false));
 
@@ -74,7 +75,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnZenChan(Point2i position) {
+  public static Entity spawnZenChan(Point2f position) {
 //    var spritesheet = new SpriteSheet(new ImageData("/Enemies.png"));
 //    var sprite = new Screen.Sprite(1, spritesheet);
 

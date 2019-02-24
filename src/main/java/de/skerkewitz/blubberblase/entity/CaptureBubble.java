@@ -11,7 +11,7 @@ public interface CaptureBubble {
 
   int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(RgbColorPalette.NONE, RgbColorPalette.BLACK, 533, RgbColorPalette.GREEN);
 
-  int MAX_LIFETIME_IN_TICKS = 300;
+  int MAX_LIFETIME_IN_TICKS = TimeUtil.secondsToTickTime(7);
 
   int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.1);
 

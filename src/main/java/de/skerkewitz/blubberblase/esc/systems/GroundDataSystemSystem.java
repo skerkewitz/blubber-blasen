@@ -25,15 +25,15 @@ public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystem
 //    var pointBelowFeet = new Point2i(t.transformComponent.position.x, t.transformComponent.position.y + 1);
 
     /* We are on ground if feet are in free space and point below is in solid. */
-    Point2i position = t.transformComponent.position;
+    final Point2i position = t.transformComponent.position.toPoint2i();
     boolean isOnGroundLeft = checkGround(world, position.plus(new Point2i(t.groundDataComponent.leftOffset, t.groundDataComponent.heightOffset)));
     boolean isOnGroundRight = checkGround(world, position.plus(new Point2i(t.groundDataComponent.rightOffset, t.groundDataComponent.heightOffset)));
     t.groundDataComponent.isOnGround = isOnGroundLeft || isOnGroundRight;
   }
 
   private boolean checkGround(World world, Point2i position) {
-    Tile lastTile = world.getTileAtPosition(position.x, position.y);
-    Tile newTile = world.getTileAtPosition(position.x, position.y + 1);
+    final Tile lastTile = world.getTileAtPosition(position.x, position.y);
+    final Tile newTile = world.getTileAtPosition(position.x, position.y + 1);
     return !lastTile.isSolid() && newTile.isSolid();
   }
 

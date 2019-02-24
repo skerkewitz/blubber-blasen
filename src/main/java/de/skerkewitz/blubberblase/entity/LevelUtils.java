@@ -19,19 +19,19 @@ public class LevelUtils {
 
     TransformComponent transformComponent = entity.getComponent(TransformComponent.class);
 
-    if (world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMin)) {
+    if (world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMin, yMin)) {
       return true;
     }
 
-    if (world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMin)) {
+    if (world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMax, yMin)) {
       return true;
     }
 
-    if (world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMin, yMax)) {
+    if (world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMin, yMax)) {
       return true;
     }
 
-    return world.isSolidTile(transformComponent.position.x, transformComponent.position.y, xa, ya, xMax, yMax);
+    return world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMax, yMax);
 
   }
 

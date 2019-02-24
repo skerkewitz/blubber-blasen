@@ -2,7 +2,7 @@ package de.skerkewitz.enora2d.core.entity;
 
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
-import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
@@ -62,7 +62,7 @@ public abstract class MoveableLegacyEntity extends AbstractLegacyEntity {
       movingDir = MoveDirection.Right;
 
     /* Update player position. */
-    Point2i position = getComponent(TransformComponent.class).position;
+    Point2f position = getComponent(TransformComponent.class).position;
     position.x += xa * speed;
     position.y += ya * speed;
 

@@ -54,7 +54,7 @@ public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.Tuple
           collisionComponent.removeCollideWithLayer(CollisionComponent.Layer.ENEMY);
           aiBubbleComponent.setState(tickTime, AiBubbleComponent.State.FLOAT);
           movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
-          movementComponent.speed = 1;
+          movementComponent.speed = 0.5f;
         }
 
       }

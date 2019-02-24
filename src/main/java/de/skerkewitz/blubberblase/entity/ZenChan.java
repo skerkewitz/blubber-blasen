@@ -5,13 +5,9 @@ import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
-import de.skerkewitz.enora2d.common.Dice;
-import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.common.Square2i16;
+import de.skerkewitz.enora2d.common.*;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.entity.Player;
-import de.skerkewitz.enora2d.common.TimeUtil;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
@@ -105,7 +101,7 @@ public class ZenChan extends MoveableLegacyEntity {
     }
 
     /* Update player position. */
-    Point2i position = transformComponent.position;
+    Point2f position = transformComponent.position;
     position.x += xa * speed;
     position.y += ya * speed;
 

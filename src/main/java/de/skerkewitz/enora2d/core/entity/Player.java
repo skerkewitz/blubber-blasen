@@ -2,7 +2,7 @@ package de.skerkewitz.enora2d.core.entity;
 
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.component.*;
-import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.common.TimeUtil;
 import de.skerkewitz.enora2d.core.game.world.World;
@@ -24,6 +24,47 @@ public abstract class Player extends MoveableLegacyEntity {
     this.movingDir = MoveDirection.Right;
   }
 
+  public static int clipMoveX(int moveX, Point2f position, Rect2i boundingBox, World world) {
+
+    /* no horizontal movement. */
+    if (moveX == 0) {
+      return 0;
+    }
+
+    Tile oldTile;
+    Tile newTile;
+    if (moveX < 0) {
+
+      float ox = position.x - (boundingBox.size.width / 2);
+      float oy = position.y;
+
+      float ex = position.x - (boundingBox.size.width / 2) + moveX;
+      float ey = position.y;
+
+      oldTile = world.getTileAtPosition((int) ox, (int) oy);
+      newTile = world.getTileAtPosition((int) ex, (int) ey);
+    } else {
+      float ox = position.x + (boundingBox.size.width / 2);
+      float oy = position.y;
+
+      float ex = position.x + (boundingBox.size.width / 2) + moveX;
+      float ey = position.y;
+
+      oldTile = world.getTileAtPosition((int) ox, (int) oy);
+      newTile = world.getTileAtPosition((int) ex, (int) ey);
+    }
+
+    if (oldTile.isSolid()) {
+      return moveX;
+    }
+
+    if (!newTile.isSolid()) {
+      return moveX;
+    }
+
+    return 0;
+  }
+
   public void tick(World world, int tickTime) {
     super.tick(world, tickTime);
 
@@ -35,7 +76,7 @@ public abstract class Player extends MoveableLegacyEntity {
     if (lastBubbleSpawnTime + BUBBLE_SHOOT_DELAY < tickTime && inputComponent.shoot) {
       lastBubbleSpawnTime = tickTime;
       var offsetX = movingDir == MoveDirection.Left ? -8 : +8;
-      Point2i position = new Point2i(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
+      Point2f position = new Point2f(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
       world.addEntity(EntityFactory.spawnBubble(tickTime, position, movingDir, AiBubbleComponent.State.SHOOT));
     }
 
@@ -67,52 +108,11 @@ public abstract class Player extends MoveableLegacyEntity {
     moveX = clipMoveX(moveX, transformComponent.position, getComponent(BoundingBoxComponent.class).getBoundingBox(), world);
 
     /* Update player position. */
-    Point2i position = getComponent(TransformComponent.class).position;
+    Point2f position = getComponent(TransformComponent.class).position;
     position.x += moveX * speed;
     position.y += ya * speed;
 
 
     movingDir = playerMoveDirection;
-  }
-
-  public static int clipMoveX(int moveX, Point2i position, Rect2i boundingBox, World world) {
-
-    /* no horizontal movement. */
-    if (moveX == 0) {
-      return 0;
-    }
-
-    Tile oldTile;
-    Tile newTile;
-    if (moveX < 0) {
-
-      int ox = position.x - (boundingBox.size.width / 2);
-      int oy = position.y;
-
-      int ex = position.x - (boundingBox.size.width / 2) + moveX;
-      int ey = position.y;
-
-      oldTile = world.getTileAtPosition(ox, oy);
-      newTile = world.getTileAtPosition(ex, ey);
-    } else {
-      int ox = position.x + (boundingBox.size.width / 2);
-      int oy = position.y;
-
-      int ex = position.x + (boundingBox.size.width / 2) + moveX;
-      int ey = position.y;
-
-      oldTile = world.getTileAtPosition(ox, oy);
-      newTile = world.getTileAtPosition(ex, ey);
-    }
-
-    if (oldTile.isSolid()) {
-      return moveX;
-    }
-
-    if (!newTile.isSolid()) {
-      return moveX;
-    }
-
-    return 0;
   }
 }

@@ -2,7 +2,7 @@ package de.skerkewitz.enora2d.core.ecs.system;
 
 import de.skerkewitz.blubberblase.esc.component.MovementComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
-import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 
 import java.util.Objects;
@@ -51,7 +51,7 @@ public class MovementSystem {
     movementComponent.numSteps++;
 
     /* Update player position. */
-    Point2i position = targetTransformComponent.position;
+    final Point2f position = targetTransformComponent.position;
     position.x += xa * movementComponent.speed;
     position.y += ya * movementComponent.speed;
   }

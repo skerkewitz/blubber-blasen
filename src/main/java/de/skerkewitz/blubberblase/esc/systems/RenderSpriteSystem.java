@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
-import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
@@ -54,8 +54,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
     try {
       Sprite sprite = textureContainer.getTextureNamedResourceAndPalette(spriteComponent.renderSprite.namedResource, spriteComponent.colorPalette, imageDataContainer);
 
-      Point2i pos = transformComponent.position.plus(spriteComponent.pivotPoint);
-
+      final Point2f pos = transformComponent.position.plus(spriteComponent.pivotPoint);
       sprite.setSize(16, 16);
       sprite.setPosition(pos.x, pos.y);
       sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, 16, 16);

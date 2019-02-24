@@ -5,7 +5,7 @@ import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 
 public class MovementComponent implements Component {
 
-  public int speed = 1;
+  public float speed = 1.0f;
   public int currentMovementStartTimeTick;
   public int numSteps = 0;
   public MoveableLegacyEntity.MoveDirection currentMoveDirection;
@@ -14,7 +14,7 @@ public class MovementComponent implements Component {
     this(tickTime, MoveableLegacyEntity.MoveDirection.Idle, 1);
   }
 
-  public MovementComponent(int tickTime, MoveableLegacyEntity.MoveDirection currentMoveDirection, int speed) {
+  public MovementComponent(int tickTime, MoveableLegacyEntity.MoveDirection currentMoveDirection, float speed) {
     this.currentMovementStartTimeTick = tickTime;
     this.currentMoveDirection = currentMoveDirection;
     this.speed = speed;

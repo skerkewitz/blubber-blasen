@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.systems.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
-import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.world.World;
@@ -40,9 +40,9 @@ class LevelScreen implements Screen {
 
     this.world.addEntity(EntityFactory.spawnBubblun(handler));
 
-    this.world.prepareSpawnAtTime(1, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
-    this.world.prepareSpawnAtTime(21, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
-    this.world.prepareSpawnAtTime(41, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
+    this.world.prepareSpawnAtTime(1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
+    this.world.prepareSpawnAtTime(21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
+    this.world.prepareSpawnAtTime(41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
   }
 
   @Override
