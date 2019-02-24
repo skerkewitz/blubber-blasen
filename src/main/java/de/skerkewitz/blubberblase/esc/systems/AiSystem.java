@@ -6,15 +6,11 @@ import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.level.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * A system to render all SpriteComponents.
  */
 public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.TupleFactory> {
-
-  private static final Logger logger = LogManager.getLogger(AiSystem.class);
 
   public AiSystem() {
     super(new TupleFactory());

@@ -10,12 +10,8 @@ import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.game.TimeUtil;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public abstract class Player extends MoveableLegacyEntity {
-
-  private static final Logger logger = LogManager.getLogger(Player.class);
 
   private static final int JUMP_HEIGHT_IN_PIXEL = 44;
 

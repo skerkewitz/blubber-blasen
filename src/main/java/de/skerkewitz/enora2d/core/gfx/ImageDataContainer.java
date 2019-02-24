@@ -1,7 +1,6 @@
 package de.skerkewitz.enora2d.core.gfx;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.badlogic.gdx.Gdx;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,16 +10,13 @@ import java.util.Map;
 
 public class ImageDataContainer {
 
-  private static final Logger logger = LogManager.getLogger(ImageDataContainer.class);
-
   private final Map<NamedResource, ImageData> knownResources = new HashMap<>();
 
   public ImageData getResourceForName(NamedResource resource) throws IOException {
 
     ImageData imageData = knownResources.get(resource);
     if (imageData == null) {
-
-      logger.info("Cache miss for: " + resource);
+      Gdx.app.log(this.getClass().getSimpleName(), "Cache miss for: " + resource);
 
       BufferedImage image = ImageIO.read(ImageDataContainer.class.getResourceAsStream(resource.name));
 

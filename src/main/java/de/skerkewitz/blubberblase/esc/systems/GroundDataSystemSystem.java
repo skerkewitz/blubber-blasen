@@ -8,15 +8,11 @@ import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * A system to render all SpriteComponents.
  */
 public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystemSystem.Tuple, GroundDataSystemSystem.TupleFactory> {
-
-  private static final Logger logger = LogManager.getLogger(GroundDataSystemSystem.class);
 
   public GroundDataSystemSystem() {
     super(new GroundDataSystemSystem.TupleFactory());

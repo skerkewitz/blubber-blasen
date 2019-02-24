@@ -1,10 +1,9 @@
 package de.skerkewitz.enora2d.core.gfx;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 public class GdxTextureContainer {
-
-  private static final Logger logger = LogManager.getLogger(GdxTextureContainer.class);
 
   private final Map<NamedResource, List<Entry>> knownResources = new HashMap<>();
 
@@ -31,8 +28,7 @@ public class GdxTextureContainer {
       }
     }
 
-
-    logger.info("Cache miss for: " + resource + " palette " + palette);
+    Gdx.app.log(this.getClass().getSimpleName(), "Cache miss for: " + resource + " palette " + palette);
     final ImageData imageData = imageDataContainer.getResourceForName(resource);
 
     final Pixmap pixmap = new Pixmap(imageData.width, imageData.width, Pixmap.Format.RGBA8888);

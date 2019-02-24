@@ -3,13 +3,12 @@ package de.skerkewitz.blubberblase.esc.systems;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.CollisionComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.enora2d.common.BoundingBoxUtil;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.game.level.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +18,6 @@ import java.util.stream.Stream;
  * A system to render all SpriteComponents.
  */
 public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, CollisionSystem.TupleFactory> {
-
-  private static final Logger logger = LogManager.getLogger(CollisionSystem.class);
 
   public CollisionSystem() {
     super(new TupleFactory());
@@ -56,7 +53,7 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
     final Rect2i tbb = new Rect2i(t.transformComponent.position.plus(t.boundingBoxComponent.getBoundingBox().origin), t.boundingBoxComponent.getBoundingBox().size);
     final Rect2i obb = new Rect2i(o.transformComponent.position.plus(o.boundingBoxComponent.getBoundingBox().origin), o.boundingBoxComponent.getBoundingBox().size);
 
-    boolean collide = BoundingBoxUtil.collide(tbb, obb);
+    boolean collide = BoundingBoxUtil.doesOverlap(tbb, obb);
 
     if (canTCollideWithO) {
       t.collisionComponent.applyCollide(collide);
@@ -103,10 +100,4 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
   }
 
 
-  private static class BoundingBoxUtil {
-    public static boolean collide(Rect2i tbb, Rect2i obb) {
-      return !((tbb.origin.x + tbb.size.width < obb.origin.x) || (obb.origin.x + obb.size.width < tbb.origin.x)
-              || (tbb.origin.y + tbb.size.height < obb.origin.y) || (obb.origin.y + obb.size.height < tbb.origin.y));
-    }
-  }
 }

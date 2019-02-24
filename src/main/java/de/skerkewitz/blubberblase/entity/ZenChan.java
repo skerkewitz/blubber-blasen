@@ -16,8 +16,6 @@ import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * The most basic enemy.
@@ -25,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 public class ZenChan extends MoveableLegacyEntity {
 
   public final static int MAX_LIFETIME_IN_TICKS = 100;
-  private static final Logger logger = LogManager.getLogger(ZenChan.class);
   private static final int JUMP_HEIGHT_IN_PIXEL = 44;
 
   public static final int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(-1, 005, 410, 445);
