@@ -5,6 +5,7 @@ public class RgbColorPalette {
   public static final int GREEN = 050;
   public static final int WHITE = 555;
   public static final int NONE = -1;
+  public static final int BLACK = 0;
   /**
    * Each channel can habe a value 0 - 6, 255 is transparent.
    */

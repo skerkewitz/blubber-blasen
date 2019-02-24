@@ -4,8 +4,6 @@ import de.skerkewitz.blubberblase.esc.component.MovementComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -14,8 +12,6 @@ import java.util.stream.Stream;
  * A system to render all SpriteComponents.
  */
 public class MovementSystem {
-
-  private static final Logger logger = LogManager.getLogger(MovementSystem.class);
 
   public void update(int tickTime, Stream<Entity> stream) {
     getTuples(stream)
@@ -55,10 +51,9 @@ public class MovementSystem {
     movementComponent.numSteps++;
 
     /* Update player position. */
-    int speed = 1;
     Point2i position = targetTransformComponent.position;
-    position.x += xa * speed;
-    position.y += ya * speed;
+    position.x += xa * movementComponent.speed;
+    position.y += ya * movementComponent.speed;
   }
 
   private Stream<Tuple> getTuples(Stream<Entity> stream) {

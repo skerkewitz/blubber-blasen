@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,8 +13,6 @@ import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.game.level.World;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -22,8 +21,6 @@ import java.util.stream.Stream;
  * A system to render all SpriteComponents.
  */
 public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.Tuple, RenderSpriteSystem.TupleFactory> implements RenderSystem {
-
-  private static final Logger logger = LogManager.getLogger(RenderSpriteSystem.class);
 
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
   private GdxTextureContainer textureContainer = new GdxTextureContainer();
@@ -68,7 +65,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
       //      Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
 //              screen.screenImageData, transformComponent.position.plus(sprite.pivotPoint), sprite.flipX, sprite.flipY);
     } catch (IOException e) {
-      logger.error("Error rendering sprite because of: " + e, e);
+      Gdx.app.error(this.getClass().getSimpleName(), "Error rendering sprite because of: " + e, e);
     }
   }
 

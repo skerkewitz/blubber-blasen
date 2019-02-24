@@ -24,6 +24,8 @@ public class MainWorld extends World {
 
   public void tick(int tickTime) {
 
+    super.tick(tickTime);
+
     /* Update life time of entities and purge dead entities. */
     lifeTimeSystem.update(tickTime, this, entityContainer.stream());
     entityContainer.purgeExpired();

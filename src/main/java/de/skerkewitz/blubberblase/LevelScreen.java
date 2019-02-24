@@ -7,7 +7,6 @@ import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.systems.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
 import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.level.World;
@@ -22,7 +21,7 @@ import java.io.IOException;
 class LevelScreen implements Screen {
 
   private final GameConfig config;
-  SpriteBatch spriteBatch = new SpriteBatch();
+  private SpriteBatch spriteBatch = new SpriteBatch();
   private World world;
   private ImageDataContainer imageDataContainer = new ImageDataContainer();
   private GdxTextureContainer gdxTextureContainer = new GdxTextureContainer();
@@ -30,10 +29,9 @@ class LevelScreen implements Screen {
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
 
-  public LevelScreen(GameConfig config, World world) {
-    this.config = config;
-    this.world = world;
 
+  public LevelScreen(GameConfig config) {
+    this.config = config;
     this.world = new MainWorld(config);
 
 //    Controller first = Controllers.getControllers().first();
@@ -41,8 +39,10 @@ class LevelScreen implements Screen {
     InputHandler handler = new GdxKeyboardInputHandler();
 
     this.world.addEntity(EntityFactory.spawnBubblun(handler));
-    this.world.addEntity(EntityFactory.spawnBubble(0, new Point2i(8 * 8, 24 * 8), MoveableLegacyEntity.MoveDirection.Right));
-    this.world.addEntity(EntityFactory.spawnZenChan());
+
+    this.world.prepareSpawnAtTime(1, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
+    this.world.prepareSpawnAtTime(21, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
+    this.world.prepareSpawnAtTime(41, EntityFactory.spawnZenChan(new Point2i(15 * 8, 4 * 8)));
   }
 
   @Override
@@ -71,7 +71,7 @@ class LevelScreen implements Screen {
     spriteBatch.begin();
     for (int y = 0; y < world.numVerticalTiles; y++) {
       for (int x = 0; x < world.numHorizontalTiles; x++) {
-        final BasicTile tile = (BasicTile) world.backgroundLayer.getTile(x, y);
+        final BasicTile tile = (BasicTile) world.staticMapContent.getTile(x, y);
 
         int xTile = tile.getTileId() % 32;
         int yTile = tile.getTileId() / 32;

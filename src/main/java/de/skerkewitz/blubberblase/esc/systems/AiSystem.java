@@ -1,22 +1,20 @@
 package de.skerkewitz.blubberblase.esc.systems;
 
-import de.skerkewitz.blubberblase.esc.component.AiComponent;
-import de.skerkewitz.blubberblase.esc.component.MovementComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.entity.EntityFactory;
+import de.skerkewitz.blubberblase.entity.ZenChan;
+import de.skerkewitz.blubberblase.esc.component.*;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.game.level.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import java.util.Optional;
 
 /**
  * A system to render all SpriteComponents.
  */
 public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.TupleFactory> {
-
-  private static final Logger logger = LogManager.getLogger(AiSystem.class);
 
   public AiSystem() {
     super(new TupleFactory());
@@ -25,8 +23,41 @@ public class AiSystem extends BaseComponentSystem<AiSystem.Tuple, AiSystem.Tuple
   public void execute(int tickTime, Tuple t, World world) {
     TransformComponent transformComponent = t.transformComponent;
     MovementComponent movementComponent = t.movementComponent;
-    if (movementComponent.currentMoveDirection != MoveableLegacyEntity.MoveDirection.Up && movementComponent.numSteps > 8 * 4) {
-      movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
+
+    AiComponent aiComponent = t.aiComponent;
+
+    if (aiComponent instanceof AiBubbleComponent) {
+      AiBubbleComponent aiBubbleComponent = (AiBubbleComponent) aiComponent;
+
+      if (aiBubbleComponent.currentState == AiBubbleComponent.State.SHOOT) {
+
+        /* Check for collisions with enemy. */
+        final Entity bubbleEntity = t.entity;
+        CollisionComponent collisionComponent = bubbleEntity.getComponent(CollisionComponent.class);
+        if (collisionComponent.hasCollission()) {
+          /* Search for a monster collision. */
+          Optional<Entity> enemy = collisionComponent.getCollisions().filter(entity -> entity instanceof ZenChan).findFirst();
+          if (enemy.isPresent()) {
+            final Entity enemyEntity = enemy.get();
+
+            /* Hit the enemy. Remove enemy and replace this bubble with floating bubble. */
+            enemyEntity.expired();
+            bubbleEntity.expired();
+
+            world.prepareSpawnAtTime(tickTime, EntityFactory.spawnCaptureBubble(tickTime, transformComponent.position));
+
+            return;
+          }
+        }
+
+        if (aiBubbleComponent.getStateTime(tickTime) > 2 * 4) {
+          collisionComponent.removeCollideWithLayer(CollisionComponent.Layer.ENEMY);
+          aiBubbleComponent.setState(tickTime, AiBubbleComponent.State.FLOAT);
+          movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
+          movementComponent.speed = 1;
+        }
+
+      }
     }
   }
 

@@ -6,26 +6,24 @@ import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 
 public abstract class World {
 
-  public final int numHorizontalTiles = 32;
-  public final int numVerticalTiles = 28;
-
-  public BackgroundLayer backgroundLayer;
+  public final int numHorizontalTiles = StaticMapContent.WIDTH / 8;
+  public final int numVerticalTiles = StaticMapContent.HEIGHT / 8;
+  private final SpawnSheduler spawnSheduler = new SpawnSheduler();
 
   protected final EntityContainer entityContainer;
-
-  //public Matrix4 projectionMatrix = null;
-
+  public StaticMapContent staticMapContent;
 
   public World() {
-    //backgroundLayer = new BackgroundLayer("/levels/water_test_level.png");
     entityContainer = new EntityContainer();
-    backgroundLayer = new BackgroundLayer(null);
+    staticMapContent = new StaticMapContent();
   }
 
-  public abstract void tick(int tickTime);
+  public void tick(int tickTime) {
+    spawnSheduler.spawnEntities(this, tickTime);
+  }
 
   public boolean isSolidTile(int px, int py, int xa, int ya, int x, int y) {
-    if (backgroundLayer == null) {
+    if (staticMapContent == null) {
       return false;
     }
 
@@ -38,7 +36,7 @@ public abstract class World {
    * Returns the tile at the given pixel position.
    */
   public Tile getTileAtPosition(int x, int y) {
-    return backgroundLayer.getTile(x >> 3, y >> 3);
+    return staticMapContent.getTile(x >> 3, y >> 3);
   }
 
 
@@ -52,4 +50,7 @@ public abstract class World {
   }
 
 
+  public void prepareSpawnAtTime(int tickTime, Entity entity) {
+    this.spawnSheduler.prepareSpawnAtTime(tickTime, entity);
+  }
 }

@@ -8,7 +8,10 @@ import de.skerkewitz.enora2d.core.ecs.entity.DefaultEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
+import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 import de.skerkewitz.enora2d.core.input.InputHandler;
+
+import java.util.EnumSet;
 
 public class EntityFactory {
 
@@ -17,61 +20,78 @@ public class EntityFactory {
 
 //    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
 
-    Bubblun bubblun = new Bubblun();
-    bubblun.addComponent(new TransformComponent(new Point2i(4 * 8, 25 * 8)));
-    bubblun.addComponent(new InputComponent(inputHandler));
-    bubblun.addComponent(new SpriteComponent());
-    bubblun.addComponent(new GroundDataComponent(0, 0, 0));
-    bubblun.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
-    bubblun.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
-    bubblun.addComponent(new CollisionComponent());
-    AnimationComponent animationComponent = bubblun.getComponent(AnimationComponent.class);
+    Bubblun entity = new Bubblun();
+    entity.addComponent(new TransformComponent(new Point2i(4 * 8, 25 * 8)));
+    entity.addComponent(new InputComponent(inputHandler));
+    entity.addComponent(new SpriteComponent());
+    entity.addComponent(new GroundDataComponent(-4, 4, 0));
+    entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.ENEMY)));
+    AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
 
 
-    SpriteComponent spriteComponent = bubblun.getComponent(SpriteComponent.class);
+    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubblun.COLOR_PALETTE;
-    spriteComponent.pivotPoint = new Point2i(-8, -15);
+    spriteComponent.pivotPoint = new Point2i(-8, -16);
 //    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25* 8, 16, 16), new ImageData("/sprite_sheet.png"));
-    return bubblun;
+    return entity;
   }
 
-  public static Entity spawnBubble(int tickTime, Point2i position, MoveableLegacyEntity.MoveDirection moveDirection) {
-    Entity bubble = newEntity();
-    bubble.addComponent(new TransformComponent(position));
-    bubble.addComponent(new SpriteComponent());
-    bubble.addComponent(new AiComponent());
-    bubble.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
-    bubble.addComponent(new MovementComponent(tickTime, moveDirection));
-    bubble.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 16, 16)));
-    bubble.addComponent(new CollisionComponent());
+  public static Entity spawnBubble(int tickTime, Point2i position, MoveableLegacyEntity.MoveDirection moveDirection, AiBubbleComponent.State state) {
+    Entity entity = newEntity();
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new SpriteComponent());
+    entity.addComponent(new AiBubbleComponent(tickTime, state));
+    entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new MovementComponent(tickTime, moveDirection, state == AiBubbleComponent.State.SHOOT ? 4 : 1));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
 
-    SpriteComponent spriteComponent = bubble.getComponent(SpriteComponent.class);
+    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
     spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet);
     spriteComponent.pivotPoint = new Point2i(-8, -8);
-    return bubble;
-
-
+    return entity;
   }
 
-  public static Entity spawnZenChan() {
+  public static Entity spawnCaptureBubble(int tickTime, Point2i position) {
+    Entity entity = newEntity();
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new SpriteComponent());
+    entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT));
+    entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Up, 1));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
+//    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
+
+    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
+    spriteComponent.colorPalette = RgbColorPalette.mergeColorCodes(RgbColorPalette.NONE, RgbColorPalette.BLACK, 533, RgbColorPalette.GREEN);
+    spriteComponent.renderSprite = new RenderSprite(new Rect2i(131, 5, 16, 16), Ressources.SpriteSheet_Enemies);
+    spriteComponent.pivotPoint = new Point2i(-8, -8);
+    return entity;
+  }
+
+  public static Entity spawnZenChan(Point2i position) {
 //    var spritesheet = new SpriteSheet(new ImageData("/Enemies.png"));
 //    var sprite = new Screen.Sprite(1, spritesheet);
 
-    ZenChan zenChan = new ZenChan(1);
+    ZenChan entity = new ZenChan(1);
 
-    zenChan.addComponent(new TransformComponent(new Point2i(8 * 8, 24 * 8)));
-    zenChan.addComponent(new SpriteComponent());
-    zenChan.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
-    zenChan.addComponent(new BoundingBoxComponent(new Rect2i(0, 0, 15, 15)));
-    zenChan.addComponent(new CollisionComponent());
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new SpriteComponent());
+    entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.ENEMY), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.BUBBLE)));
+    entity.addComponent(new GroundDataComponent(-4, 4, 0));
 
-    SpriteComponent spriteComponent = zenChan.getComponent(SpriteComponent.class);
+    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;
+    spriteComponent.pivotPoint = new Point2i(-8, -16);
 
-    return zenChan;
+    return entity;
   }
 
   private static Entity newEntity() {

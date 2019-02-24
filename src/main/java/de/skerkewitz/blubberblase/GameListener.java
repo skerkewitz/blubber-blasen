@@ -36,7 +36,7 @@ class GameListener implements ApplicationListener {
     camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
     camera.update();
 
-    currentScreen = new LevelScreen(config, null);
+    currentScreen = new LevelScreen(config);
 
   }
 
@@ -55,7 +55,7 @@ class GameListener implements ApplicationListener {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     try {
-      /* Render the backgroundLayer into the screen. */
+      /* Render the staticMapContent into the screen. */
       currentScreen.render(tickTime, camera);
     } catch (IOException e) {
       e.printStackTrace();

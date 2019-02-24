@@ -11,15 +11,11 @@ import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
 import de.skerkewitz.enora2d.core.game.level.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * A system to render all SpriteComponents.
  */
 public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tuple, RenderDebugSystem.TupleFactory> implements RenderSystem {
-
-  private static final Logger logger = LogManager.getLogger(RenderDebugSystem.class);
 
   private ShapeRenderer shapeRenderer = new ShapeRenderer();
   private Camera camera = null;
@@ -46,7 +42,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
 
     final BoundingBoxComponent boundingBoxComponent = t.boundingBoxComponent;
     final Rect2i boundingBox = new Rect2i(t.transformComponent.position.plus(boundingBoxComponent.getBoundingBox().origin), boundingBoxComponent.getBoundingBox().size);
-    shapeRenderer.setColor(t.collisionComponent.didCollide ? Color.RED : Color.GREEN);
+    shapeRenderer.setColor(t.collisionComponent.hasCollission() ? Color.RED : Color.GREEN);
     shapeRenderer.rect(boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height);
   }
 
