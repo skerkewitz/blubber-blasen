@@ -42,7 +42,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
 
     final BoundingBoxComponent boundingBoxComponent = t.boundingBoxComponent;
     final Rect2i boundingBox = new Rect2i(t.transformComponent.position.plus(boundingBoxComponent.getBoundingBox().origin), boundingBoxComponent.getBoundingBox().size);
-    shapeRenderer.setColor(t.collisionComponent.didCollide ? Color.RED : Color.GREEN);
+    shapeRenderer.setColor(t.collisionComponent.hasCollission() ? Color.RED : Color.GREEN);
     shapeRenderer.rect(boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height);
   }
 

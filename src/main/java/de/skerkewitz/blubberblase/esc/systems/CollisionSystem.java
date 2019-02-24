@@ -28,7 +28,8 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
 
     final List<Tuple> tuples = getTuples(stream).collect(Collectors.toList());
 
-    tuples.forEach(t -> t.collisionComponent.didCollide = false);
+    /* Clear all previous collisions. */
+    tuples.forEach(t -> t.collisionComponent.clearCollisionSet());
 
     /* We need at least two element to compare something. */
     if (tuples.size() < 2) {
@@ -43,8 +44,8 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
 
   private void execute(int tickTime, Tuple t, Tuple o, World world) {
 
-    var canTCollideWithO = t.collisionComponent.doesCollideWith(o.collisionComponent);
-    var canOCollideWithT = o.collisionComponent.doesCollideWith(t.collisionComponent);
+    var canTCollideWithO = t.collisionComponent.canCollideWith(o.collisionComponent);
+    var canOCollideWithT = o.collisionComponent.canCollideWith(t.collisionComponent);
 
     if (!canTCollideWithO && !canOCollideWithT) {
       return;
@@ -52,15 +53,14 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
 
     final Rect2i tbb = new Rect2i(t.transformComponent.position.plus(t.boundingBoxComponent.getBoundingBox().origin), t.boundingBoxComponent.getBoundingBox().size);
     final Rect2i obb = new Rect2i(o.transformComponent.position.plus(o.boundingBoxComponent.getBoundingBox().origin), o.boundingBoxComponent.getBoundingBox().size);
+    if (BoundingBoxUtil.doesOverlap(tbb, obb)) {
+      if (canTCollideWithO) {
+        t.collisionComponent.addCollide(o.entity);
+      }
 
-    boolean collide = BoundingBoxUtil.doesOverlap(tbb, obb);
-
-    if (canTCollideWithO) {
-      t.collisionComponent.applyCollide(collide);
-    }
-
-    if (canOCollideWithT) {
-      o.collisionComponent.applyCollide(collide);
+      if (canOCollideWithT) {
+        o.collisionComponent.addCollide(t.entity);
+      }
     }
   }
 
@@ -91,7 +91,7 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
       var transformComponent = entity.getComponent(TransformComponent.class);
       var collisionComponent = entity.getComponent(CollisionComponent.class);
       var boundingBoxComponent = entity.getComponent(BoundingBoxComponent.class);
-      if (/*collisionComponent != null  && */transformComponent != null && boundingBoxComponent != null) {
+      if (collisionComponent != null && transformComponent != null && boundingBoxComponent != null) {
         return new Tuple(entity, transformComponent, collisionComponent, boundingBoxComponent);
       } else {
         return null;

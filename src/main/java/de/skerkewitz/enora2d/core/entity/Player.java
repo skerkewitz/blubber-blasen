@@ -1,10 +1,7 @@
 package de.skerkewitz.enora2d.core.entity;
 
 import de.skerkewitz.blubberblase.entity.EntityFactory;
-import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
-import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
-import de.skerkewitz.blubberblase.esc.component.InputComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.esc.component.*;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.game.TimeUtil;
@@ -39,7 +36,7 @@ public abstract class Player extends MoveableLegacyEntity {
       lastBubbleSpawnTime = tickTime;
       var offsetX = movingDir == MoveDirection.Left ? -8 : +8;
       Point2i position = new Point2i(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
-      world.addEntity(EntityFactory.spawnBubble(tickTime, position, movingDir));
+      world.addEntity(EntityFactory.spawnBubble(tickTime, position, movingDir, AiBubbleComponent.State.SHOOT));
     }
 
 
