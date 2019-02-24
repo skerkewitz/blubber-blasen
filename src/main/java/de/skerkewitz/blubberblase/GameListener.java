@@ -38,6 +38,7 @@ class GameListener implements ApplicationListener {
 
     currentScreen = new LevelScreen(config);
 
+    Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
   }
 
   @Override

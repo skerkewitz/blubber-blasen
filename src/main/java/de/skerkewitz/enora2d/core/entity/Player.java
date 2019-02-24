@@ -1,5 +1,6 @@
 package de.skerkewitz.enora2d.core.entity;
 
+import com.badlogic.gdx.Gdx;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.esc.component.*;
 import de.skerkewitz.enora2d.common.Point2f;
@@ -78,6 +79,7 @@ public abstract class Player extends MoveableLegacyEntity {
       var offsetX = movingDir == MoveDirection.Left ? -8 : +8;
       Point2f position = new Point2f(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
       world.addEntity(EntityFactory.spawnBubble(tickTime, position, movingDir, AiBubbleComponent.State.SHOOT));
+      Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (2).wav")).play();
     }
 
 
@@ -89,6 +91,7 @@ public abstract class Player extends MoveableLegacyEntity {
       if (isOnGround) {
         if (inputComponent.jump && isOnGround) {
           jumpTickRemaining = JUMP_HEIGHT_IN_PIXEL;
+          Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (6).wav")).play();
         }
       } else {
         ya += 1;
