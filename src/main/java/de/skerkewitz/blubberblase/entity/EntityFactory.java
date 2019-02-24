@@ -21,7 +21,7 @@ public class EntityFactory {
     entity.addComponent(new TransformComponent(new Point2i(4 * 8, 25 * 8)));
     entity.addComponent(new InputComponent(inputHandler));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new GroundDataComponent(0, 0, 0));
+    entity.addComponent(new GroundDataComponent(-4, 4, 0));
     entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
     entity.addComponent(new CollisionComponent());
@@ -67,7 +67,7 @@ public class EntityFactory {
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
     entity.addComponent(new CollisionComponent());
-    entity.addComponent(new GroundDataComponent(0, 0, 0));
+    entity.addComponent(new GroundDataComponent(-4, 4, 0));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;

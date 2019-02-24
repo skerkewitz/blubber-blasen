@@ -3,12 +3,7 @@ package de.skerkewitz.enora2d.core.game.level;
 import de.skerkewitz.enora2d.core.game.level.tiles.Tile;
 import de.skerkewitz.enora2d.core.game.level.tiles.TileContainer;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-public class BackgroundLayer {
+public class StaticMapContent {
 
   public static final int WIDTH = 256;
   public static final int HEIGHT = 240;
@@ -48,55 +43,12 @@ public class BackgroundLayer {
   public int tileWidth;
   public int tileHeight;
   private byte[] tiles;
-  private String imagePath;
-  private BufferedImage image;
 
-  public BackgroundLayer(String imagePath) {
-    if (imagePath != null) {
-      this.imagePath = imagePath;
-      this.loadLevelFromFile();
-    } else {
-      this.tileWidth = WIDTH / 8;
-      this.tileHeight = HEIGHT / 8;
-      tiles = new byte[tileWidth * tileHeight];
-      this.generateLevel();
-    }
-  }
-
-  private void loadLevelFromFile() {
-    try {
-      this.image = ImageIO.read(BackgroundLayer.class.getResource(this.imagePath));
-      this.tileWidth = this.image.getWidth();
-      this.tileHeight = this.image.getHeight();
-      tiles = new byte[tileWidth * tileHeight];
-      this.loadTiles();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private void loadTiles() {
-    int[] tileColours = this.image.getRGB(0, 0, tileWidth, tileHeight, null, 0, tileWidth);
-    for (int y = 0; y < tileHeight; y++) {
-      for (int x = 0; x < tileWidth; x++) {
-        tileCheck:
-        for (Tile t : TileContainer.tiles) {
-          if (t != null && t.getLevelColour() == tileColours[x + y * tileWidth]) {
-            this.tiles[x + y * tileWidth] = t.getId();
-            break tileCheck;
-          }
-        }
-      }
-    }
-  }
-
-  @SuppressWarnings("unused")
-  private void saveLevelToFile() {
-    try {
-      ImageIO.write(image, "png", new File(BackgroundLayer.class.getResource(this.imagePath).getFile()));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public StaticMapContent() {
+    this.tileWidth = WIDTH / 8;
+    this.tileHeight = HEIGHT / 8;
+    tiles = new byte[tileWidth * tileHeight];
+    this.generateLevel();
   }
 
   public void generateLevel() {

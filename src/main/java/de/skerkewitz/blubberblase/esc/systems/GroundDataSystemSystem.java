@@ -2,6 +2,7 @@ package de.skerkewitz.blubberblase.esc.systems;
 
 import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
@@ -28,9 +29,16 @@ public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystem
 //    var pointBelowFeet = new Point2i(t.transformComponent.position.x, t.transformComponent.position.y + 1);
 
     /* We are on ground if feet are in free space and point below is in solid. */
-    Tile lastTile = world.getTileAtPosition(t.transformComponent.position.x, t.transformComponent.position.y);
-    Tile newTile = world.getTileAtPosition(t.transformComponent.position.x, t.transformComponent.position.y + 1);
-    t.groundDataComponent.isOnGround = !lastTile.isSolid() && newTile.isSolid();
+    Point2i position = t.transformComponent.position;
+    boolean isOnGroundLeft = checkGround(world, position.plus(new Point2i(t.groundDataComponent.leftOffset, t.groundDataComponent.heightOffset)));
+    boolean isOnGroundRight = checkGround(world, position.plus(new Point2i(t.groundDataComponent.rightOffset, t.groundDataComponent.heightOffset)));
+    t.groundDataComponent.isOnGround = isOnGroundLeft || isOnGroundRight;
+  }
+
+  private boolean checkGround(World world, Point2i position) {
+    Tile lastTile = world.getTileAtPosition(position.x, position.y);
+    Tile newTile = world.getTileAtPosition(position.x, position.y + 1);
+    return !lastTile.isSolid() && newTile.isSolid();
   }
 
   /**
