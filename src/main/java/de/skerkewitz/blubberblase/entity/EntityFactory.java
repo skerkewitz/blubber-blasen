@@ -35,7 +35,7 @@ public class EntityFactory {
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubblun.COLOR_PALETTE;
-    spriteComponent.pivotPoint = new Point2i(-8, -16);
+    spriteComponent.pivotPoint = new Point2i(-8, -15);
 //    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25* 8, 16, 16), new ImageData("/sprite_sheet.png"));
     return entity;
   }
@@ -90,7 +90,7 @@ public class EntityFactory {
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;
-    spriteComponent.pivotPoint = new Point2i(-8, -16);
+    spriteComponent.pivotPoint = new Point2i(-8, -15);
 
     return entity;
   }
