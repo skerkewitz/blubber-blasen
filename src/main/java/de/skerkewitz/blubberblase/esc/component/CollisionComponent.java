@@ -45,6 +45,7 @@ public class CollisionComponent implements Component {
   public enum Layer {
     PLAYER,
     BUBBLE,
+    TRAP_BUBBLE,
     ENEMY
   }
 

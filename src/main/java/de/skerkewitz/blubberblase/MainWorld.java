@@ -10,7 +10,7 @@ import de.skerkewitz.enora2d.core.game.world.World;
 public class MainWorld extends World {
 
   private MovementSystem movementSystem = new MovementSystem();
-  private AiSystem aiSystem = new AiSystem();
+  private AiBubbleSystem aiBubbleSystem = new AiBubbleSystem();
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
   private AnimationSystem animationSystem = new AnimationSystem();
   private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
@@ -43,7 +43,7 @@ public class MainWorld extends World {
     });
     entityContainer.purgeExpired();
 
-    aiSystem.update(tickTime, this, entityContainer.stream());
+    aiBubbleSystem.update(tickTime, this, entityContainer.stream());
     movementSystem.update(tickTime, entityContainer.stream());
 
     animationSystem.update(tickTime, this, entityContainer.stream());

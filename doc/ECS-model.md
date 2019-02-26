@@ -17,3 +17,16 @@ Lastly you have Systems. A system checks if an legacyEntity has certain componen
 * Shared code lives in Utils
 * Complex side effects should be deferred
 * Systems can't call other systems     
+
+
+
+# True ECS entities
+
+This is not the way entities are implemented here, but rather how they should be implemented.
+
+* Entities are just an index.
+* Entities do not contain components. Instead EntityManager have a knowledge to which entity component belongs.
+* Entities do not have Methods.
+* Entities do not have even name or type.
+
+Systems operate on data in components

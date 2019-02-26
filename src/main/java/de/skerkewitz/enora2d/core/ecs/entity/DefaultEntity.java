@@ -42,6 +42,11 @@ public class DefaultEntity implements Entity {
   }
 
   @Override
+  public <T extends Component> boolean hasComponent(Class<T> type) {
+    return getComponent(type) != null;
+  }
+
+  @Override
   public final boolean isExpired() {
     return expired;
   }

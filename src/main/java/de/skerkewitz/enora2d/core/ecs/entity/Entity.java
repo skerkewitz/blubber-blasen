@@ -13,4 +13,6 @@ public interface Entity {
   <T extends Component> T getComponent(Class<T> type);
 
   void expired();
+
+  <T extends Component> boolean hasComponent(Class<T> type);
 }
