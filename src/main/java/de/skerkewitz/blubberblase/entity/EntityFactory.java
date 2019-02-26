@@ -22,12 +22,13 @@ public class EntityFactory {
 
     Bubblun entity = new Bubblun();
     entity.addComponent(new TransformComponent(new Point2f(4 * 8, 25 * 8)));
+    entity.addComponent(new PlayerComponent());
     entity.addComponent(new InputComponent(inputHandler));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
     entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
-    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.ENEMY)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.TRAP_BUBBLE, CollisionComponent.Layer.ENEMY)));
     AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
@@ -44,7 +45,7 @@ public class EntityFactory {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new AiBubbleComponent(tickTime, state));
+    entity.addComponent(new AiBubbleComponent(tickTime, state, AiBubbleComponent.Type.NORMAL, false));
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, moveDirection, state == AiBubbleComponent.State.SHOOT ? 4 : 1));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
@@ -57,17 +58,16 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnCaptureBubble(int tickTime, Point2f position) {
+  public static Entity spawnTrapBubble(int tickTime, Point2f position) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT));
+    entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT, AiBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, CaptureBubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Up, 0.3f));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new AnimationComponent(0, CaptureBubble.IDLE, false));
-
-    //    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = CaptureBubble.COLOR_PALETTE;
@@ -82,6 +82,7 @@ public class EntityFactory {
     ZenChan entity = new ZenChan(1);
 
     entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new EnemyComponent());
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));

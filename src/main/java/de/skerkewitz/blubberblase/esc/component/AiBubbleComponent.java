@@ -1,24 +1,27 @@
 package de.skerkewitz.blubberblase.esc.component;
 
-public class AiBubbleComponent extends AiComponent {
+import de.skerkewitz.enora2d.core.ecs.component.Component;
 
-  /**
-   * The current state.
-   */
-  public State currentState;
+public class AiBubbleComponent extends AiComponent<AiBubbleComponent.State> implements Component {
 
-  public AiBubbleComponent(int stateBeginTime, State currentState) {
-    this.stateBeginTime = stateBeginTime;
-    this.currentState = currentState;
+  public Type type;
+  public boolean isAngry;
+
+  public AiBubbleComponent(int stateBeginTime, State state, Type type, boolean angry) {
+    super(stateBeginTime);
+    this.state = state;
+    this.type = type;
+    this.isAngry = angry;
   }
-
-  public void setState(int tickTime, State state) {
-    this.stateBeginTime = tickTime;
-    this.currentState = state;
-  }
-
   public enum State {
     SHOOT,
     FLOAT
   }
+
+  public enum Type {
+    NORMAL,
+    TRAP
+  }
+
+
 }
