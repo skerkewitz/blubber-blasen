@@ -13,9 +13,9 @@ public abstract class World {
   protected final EntityContainer entityContainer;
   public StaticMapContent staticMapContent;
 
-  public World() {
+  public World(StaticMapContent staticMapContent) {
     entityContainer = new EntityContainer();
-    staticMapContent = new StaticMapContent();
+    this.staticMapContent = staticMapContent;
   }
 
   public void tick(int tickTime) {

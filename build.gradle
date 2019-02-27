@@ -25,6 +25,9 @@ dependencies {
     }
 
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+
 
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

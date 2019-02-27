@@ -5,6 +5,7 @@ import de.skerkewitz.enora2d.core.ecs.LegacyEntity;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
+import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 public class MainWorld extends World {
@@ -18,8 +19,8 @@ public class MainWorld extends World {
 
   private InputSystem inputSystem = new InputSystem();
 
-  public MainWorld(GameConfig config) {
-
+  public MainWorld(GameConfig config, StaticMapContent staticMapContent) {
+    super(staticMapContent);
   }
 
   public void tick(int tickTime) {

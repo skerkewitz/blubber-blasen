@@ -21,7 +21,7 @@ public class EntityFactory {
 //    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
 
     Bubblun entity = new Bubblun();
-    entity.addComponent(new TransformComponent(new Point2f(4 * 8, 25 * 8)));
+    entity.addComponent(new TransformComponent(new Point2f(4 * 8, 20 * 8)));
     entity.addComponent(new PlayerComponent());
     entity.addComponent(new InputComponent(inputHandler));
     entity.addComponent(new SpriteComponent());
