@@ -1,8 +1,8 @@
 package de.skerkewitz.enora2d.core.game.world;
 
 import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
 public abstract class World {
@@ -13,6 +13,8 @@ public abstract class World {
 
   protected final EntityContainer entityContainer;
   public StaticMapContent staticMapContent;
+
+  private Entity playerEntity;
 
   public World(StaticMapContent staticMapContent) {
     entityContainer = new EntityContainer();
@@ -53,5 +55,33 @@ public abstract class World {
 
   public void prepareSpawnAtTime(int frameCount, Entity entity) {
     this.spawnSheduler.prepareSpawnAtTime(frameCount, entity);
+  }
+
+  public Entity getPlayerEntity() {
+    return playerEntity;
+  }
+
+  private void setPlayerEntity(Entity playerEntity) {
+    this.playerEntity = playerEntity;
+  }
+
+  public void addPlayer(Entity playerEntity) {
+    addEntity(playerEntity);
+    setPlayerEntity(playerEntity);
+  }
+
+  public boolean canGapJumpAtPosition(int x, int y, int moveDir) {
+
+    int tx = x >> 8;
+    int ty = y >> 8;
+
+    /* Maximum Gap distance is 3. Find a solid tile so we can jump. Very naive approach*/
+    for (var i = 0; i < 2; i++) {
+      if (staticMapContent.getTile(tx + (moveDir * i), ty).isSolid()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

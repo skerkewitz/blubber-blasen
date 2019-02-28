@@ -1,8 +1,8 @@
 package de.skerkewitz.blubberblase.esc.component;
 
 import de.skerkewitz.enora2d.common.TimeUtil;
-import de.skerkewitz.enora2d.core.ecs.component.Component;
-import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
+import de.skerkewitz.enora2d.core.ecs.Component;
+import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 
 /**
  * Dummy component to mark players.
@@ -25,6 +25,6 @@ public class PlayerComponent implements Component {
    */
   public int jumpTickRemaining = 0;
 
-  public MoveableLegacyEntity.MoveDirection movingDir = MoveableLegacyEntity.MoveDirection.Up;
+  public MoveDirection movingDir = MoveDirection.Up;
 
 }

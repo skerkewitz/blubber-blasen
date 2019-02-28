@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
-import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**

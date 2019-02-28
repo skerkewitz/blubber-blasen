@@ -1,6 +1,6 @@
 package de.skerkewitz.enora2d.core.game.world;
 
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
+import de.skerkewitz.enora2d.core.ecs.Entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;

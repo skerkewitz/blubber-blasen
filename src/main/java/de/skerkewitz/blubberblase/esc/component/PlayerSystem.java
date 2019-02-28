@@ -7,10 +7,10 @@ import de.skerkewitz.blubberblase.entity.Bubblun;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.enora2d.common.Point2f;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
-import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
+import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
@@ -45,7 +45,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
     InputComponent inputComponent = t.entity.getComponent(InputComponent.class);
     if (t.playerComponent.lastBubbleSpawnTime + PlayerComponent.BUBBLE_SHOOT_DELAY < tickTime && inputComponent.shoot) {
       t.playerComponent.lastBubbleSpawnTime = tickTime;
-      var offsetX = t.playerComponent.movingDir == MoveableLegacyEntity.MoveDirection.Left ? -8 : +8;
+      var offsetX = t.playerComponent.movingDir == MoveDirection.Left ? -8 : +8;
       Point2f position = new Point2f(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
       world.addEntity(EntityFactory.spawnBubble(tickTime, position, t.playerComponent.movingDir, AiBubbleComponent.State.SHOOT));
       sfxShootBubble.play();
@@ -72,10 +72,10 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
     var playerMoveDirection = t.playerComponent.movingDir;
     if (inputComponent.horizontal < 0) {
       moveX--;
-      playerMoveDirection = MoveableLegacyEntity.MoveDirection.Left;
+      playerMoveDirection = MoveDirection.Left;
     } else if (inputComponent.horizontal > 0) {
       moveX++;
-      playerMoveDirection = MoveableLegacyEntity.MoveDirection.Right;
+      playerMoveDirection = MoveDirection.Right;
     }
 
     moveX = LevelUtils.clipMoveX(moveX, transformComponent.position, t.entity.getComponent(BoundingBoxComponent.class).getBoundingBox(), world);
@@ -91,7 +91,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
     AnimationComponent animationComponent = t.entity.getComponent(AnimationComponent.class);
     animationComponent.animation = Bubblun.ANIMATION_IDLE;
     animationComponent.currentAnimationStartTimeTick = 0;
-    animationComponent.flipX = playerMoveDirection == MoveableLegacyEntity.MoveDirection.Left;
+    animationComponent.flipX = playerMoveDirection == MoveDirection.Left;
 
   }
 

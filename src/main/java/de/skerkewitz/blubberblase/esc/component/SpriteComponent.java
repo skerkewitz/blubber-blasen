@@ -1,7 +1,7 @@
 package de.skerkewitz.blubberblase.esc.component;
 
 import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.core.ecs.component.Component;
+import de.skerkewitz.enora2d.core.ecs.Component;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 
 public class SpriteComponent implements Component {
