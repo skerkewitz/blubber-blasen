@@ -72,11 +72,15 @@ public abstract class World {
 
   public boolean canGapJumpAtPosition(int x, int y, int moveDir) {
 
-    int tx = x >> 8;
-    int ty = y >> 8;
+    int tx = x / 8;
+    int ty = y / 8;
 
     /* Maximum Gap distance is 3. Find a solid tile so we can jump. Very naive approach*/
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 4; i++) {
+      if (staticMapContent.getTile(tx + (moveDir * i), ty - 1).isSolid()) {
+        return false;
+      }
+
       if (staticMapContent.getTile(tx + (moveDir * i), ty).isSolid()) {
         return true;
       }
