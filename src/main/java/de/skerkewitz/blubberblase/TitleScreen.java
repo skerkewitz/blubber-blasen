@@ -23,6 +23,8 @@ public class TitleScreen implements Screen {
   private final BitmapFont font;
   private SpriteBatch spriteBatch = new SpriteBatch();
 
+  private boolean wasSpacePressed = false;
+
   public TitleScreen(GameConfig config) {
     this.gameContext = new GameContext();
     this.config = config;
@@ -35,7 +37,6 @@ public class TitleScreen implements Screen {
 
     music = Gdx.audio.newMusic(Gdx.files.internal("music/title.mp3"));
     music.setLooping(true);
-    music.play();
 
     Texture texture = new Texture(Gdx.files.internal("font/text.png"), true); // true enables mipmaps
     texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear); // linear filtering in nearest mipmap image
@@ -47,8 +48,14 @@ public class TitleScreen implements Screen {
   @Override
   public ScreenAction update(int tickTime) {
 
-    if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-      return ScreenAction.GoLevel;
+    if (!wasSpacePressed) {
+      if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        wasSpacePressed = true;
+      }
+    } else {
+      if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        return ScreenAction.GoLevel;
+      }
     }
 
     return ScreenAction.None;
@@ -83,6 +90,7 @@ public class TitleScreen implements Screen {
 
   @Override
   public void screenDidAppear() {
-
+    music.play();
+    wasSpacePressed = false;
   }
 }
