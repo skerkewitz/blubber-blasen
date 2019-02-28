@@ -178,7 +178,7 @@ void main(void)
 
 #ifdef ENABLE_PHOSPHOR_VIBRANCE
 	// phosphor vibrance
-	col *= 0.97+0.03*sin(110.0*time);
+	col *= 0.97+0.01*sin(110.0*time);
 #endif
 
 	gl_FragColor = vec4(col,org_alpha);
