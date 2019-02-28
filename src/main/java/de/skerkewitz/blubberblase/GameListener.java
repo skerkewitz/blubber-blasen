@@ -24,12 +24,13 @@ class GameListener implements ApplicationListener {
 
   private Viewport viewport;
   private Camera camera;
-  private Screen currentScreen;
+  private final ScreenController screenController;
   private PostProcessing post;
   private long startMs;
 
   public GameListener(GameConfig config) {
     this.config = config;
+    screenController = new ScreenController(config);
   }
 
   @Override
@@ -49,9 +50,8 @@ class GameListener implements ApplicationListener {
     post = new PostProcessing();
     startMs = TimeUtils.millis();
 
-    currentScreen = new LevelScreen(config);
-
-    Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
+    //currentScreen = new LevelScreen(config);
+    screenController.changeScreen(new TitleScreen(config));
   }
 
   @Override
@@ -62,6 +62,13 @@ class GameListener implements ApplicationListener {
   @Override
   public void render() {
     tickTime++;
+
+    final Screen currentScreen = screenController.getCurrentScreen();
+    final ScreenAction update = currentScreen.update(tickTime);
+    boolean didScreenChange = screenController.handleScreenChange(update);
+    if (didScreenChange) {
+      return;
+    }
 
     post.setEnabled(!config.cmd.hasOption(CMD_OPTION_DISABLEPPFX));
 
@@ -76,8 +83,6 @@ class GameListener implements ApplicationListener {
 
     post.begin();
 
-    currentScreen.update(tickTime);
-
     camera.update();
 
     try {
@@ -90,6 +95,7 @@ class GameListener implements ApplicationListener {
     post.end();
 
   }
+
 
   @Override
   public void pause() {

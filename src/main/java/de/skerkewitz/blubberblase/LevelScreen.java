@@ -39,6 +39,8 @@ public class LevelScreen implements Screen {
 
     this.config = config;
     this.world = loadWorldOfLevel(0, config, gameContext.currentLevelNum);
+
+    Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
   }
 
   public static World loadWorldOfLevel(int tickTime, GameConfig config, int level) {
@@ -69,14 +71,14 @@ public class LevelScreen implements Screen {
   }
 
   @Override
-  public void update(int tickTime) {
+  public ScreenAction update(int tickTime) {
 
     if (!gameContext.gameOver) {
       world.tick(tickTime, gameContext);
     }
 
     if (tickTime % 10 != 0) {
-      return;
+      return ScreenAction.None;
     }
 
     /* Check any 100 ticks if the level is cleared. */
@@ -92,6 +94,8 @@ public class LevelScreen implements Screen {
         gameContext.isLevelClearedTimer = -1;
       }
     }
+
+    return ScreenAction.None;
   }
 
 
@@ -130,5 +134,25 @@ public class LevelScreen implements Screen {
       }
     }
     spriteBatch.end();
+  }
+
+  @Override
+  public void screenWillDisappear() {
+
+  }
+
+  @Override
+  public void screenWillAppear() {
+
+  }
+
+  @Override
+  public void screenDidDisappear() {
+
+  }
+
+  @Override
+  public void screenDidAppear() {
+
   }
 }
