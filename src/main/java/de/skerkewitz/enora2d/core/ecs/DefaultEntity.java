@@ -1,6 +1,4 @@
-package de.skerkewitz.enora2d.core.ecs.entity;
-
-import de.skerkewitz.enora2d.core.ecs.component.Component;
+package de.skerkewitz.enora2d.core.ecs;
 
 import java.util.ArrayList;
 import java.util.List;

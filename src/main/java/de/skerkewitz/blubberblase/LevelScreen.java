@@ -50,19 +50,19 @@ public class LevelScreen implements Screen {
 //    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
     InputHandler handler = new GdxKeyboardInputHandler();
 
-    world.addEntity(EntityFactory.spawnBubblun(handler));
+    world.addPlayer(EntityFactory.spawnBubblun(handler));
 
     switch (level) {
       case 1:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(frameCount + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(frameCount + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount));
         break;
       case 2:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(14 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(16 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(14 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(16 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 4 * 8), frameCount));
         break;
       default:
     }

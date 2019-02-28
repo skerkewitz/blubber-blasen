@@ -3,7 +3,9 @@ package de.skerkewitz.enora2d.common;
 public class TimeUtil {
   public static final double TARGET_FPS = 60D;
   public static final int TICKTIME_1s = secondsToTickTime(1);
+  public static final int TICKTIME_2s = secondsToTickTime(2);
   public static final int TICKTIME_5s = secondsToTickTime(5);
+
 
   private TimeUtil() {
     /* No instance allowed. */

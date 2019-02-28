@@ -6,8 +6,9 @@ import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.EnemyComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2f;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
+import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
@@ -82,6 +83,31 @@ public class LevelUtils {
     return hasCollided(entity, world, 0, +1);
   }
 
+  public static boolean isGapInFront(int moveX, Point2f position, Rect2i boundingBox, World world) {
+
+    /* If we don't move left or right then there is no gap. */
+    if (moveX == 0) {
+      return false;
+    }
+
+    final Tile tile;
+    if (moveX < 0) {
+      float ex = position.x - (boundingBox.size.width / 2) + moveX;
+      float ey = position.y + 1;
+
+      tile = world.getTileAtPosition((int) ex, (int) ey);
+    } else {
+      float ex = position.x + (boundingBox.size.width / 2) + moveX;
+      float ey = position.y + 1;
+
+      tile = world.getTileAtPosition((int) ex, (int) ey);
+    }
+
+    /* if tile is not solid then there is a gap. */
+    return !tile.isSolid();
+  }
+
+
   public static int clipMoveX(int moveX, Point2f position, Rect2i boundingBox, World world) {
 
     /* no horizontal movement. */
@@ -121,5 +147,54 @@ public class LevelUtils {
     }
 
     return 0;
+  }
+
+  public static boolean canGapJump(int horizontalMoveVector, Point2f position, Rect2i boundingBox, World world) {
+
+    /* If we don't move left or right then there is no gap. */
+    if (horizontalMoveVector == 0) {
+      return false;
+    }
+
+    final int tileX;
+    final int tileY;
+
+    if (horizontalMoveVector < 0) {
+      tileX = (int) (position.x - (boundingBox.size.width / 2) + horizontalMoveVector);
+      tileY = (int) (position.y + 1);
+    } else {
+      tileX = (int) (position.x + (boundingBox.size.width / 2) + horizontalMoveVector);
+      tileY = (int) (position.y + 1);
+    }
+
+    /* if tile is not solid then there is a gap. */
+    return world.canGapJumpAtPosition(tileX, tileY, horizontalMoveVector);
+  }
+
+  public static void clipPositionToLevelBounds(Point2f position, Rect2i boundingBox) {
+
+    var minX = (int) (position.x - (boundingBox.size.width / 2));
+    var maxX = (int) (position.x + (boundingBox.size.width / 2));
+
+    if (minX < 16) {
+      position.x += (16 - minX);
+    } else if (maxX > 239) {
+      position.x -= (maxX - 239);
+    }
+  }
+
+  public static boolean canJumpUp(Point2f position, World world) {
+
+    final int tileX = (int) (position.x);
+    final int tileY = (int) (position.y + 1);
+
+    /* if tile is not solid then there is a gap. */
+    return world.canJumpUp(tileX, tileY);
+  }
+
+  public static boolean checkGround(Point2i position, World world) {
+    final boolean lastTile = world.isSolidAtPosition(position.x, position.y);
+    final boolean newTile = world.isSolidAtPosition(position.x, position.y + 1);
+    return !lastTile && newTile;
   }
 }

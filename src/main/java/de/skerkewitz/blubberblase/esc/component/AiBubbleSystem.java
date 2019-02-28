@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
-import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
-import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
+import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 import java.util.Optional;
@@ -65,7 +65,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
         aiBubbleComponent.setState(tickTime, AiBubbleComponent.State.FLOAT);
 
         final MovementComponent movementComponent = t.movementComponent;
-        movementComponent.setMovementDirection(MoveableLegacyEntity.MoveDirection.Up, tickTime);
+        movementComponent.setMovementDirection(MoveDirection.Up, tickTime);
         movementComponent.speed = 0.5f;
       }
     }

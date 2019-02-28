@@ -1,12 +1,12 @@
 package de.skerkewitz.blubberblase.esc.component;
 
 import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
-import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
+import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
-import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
 /**
  * A system to render all SpriteComponents.
@@ -25,15 +25,9 @@ public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystem
 
     /* We are on ground if feet are in free space and point below is in solid. */
     final Point2i position = t.transformComponent.position.toPoint2i();
-    boolean isOnGroundLeft = checkGround(world, position.plus(new Point2i(t.groundDataComponent.leftOffset, t.groundDataComponent.heightOffset)));
-    boolean isOnGroundRight = checkGround(world, position.plus(new Point2i(t.groundDataComponent.rightOffset, t.groundDataComponent.heightOffset)));
+    boolean isOnGroundLeft = LevelUtils.checkGround(position.plus(new Point2i(t.groundDataComponent.leftOffset, t.groundDataComponent.heightOffset)), world);
+    boolean isOnGroundRight = LevelUtils.checkGround(position.plus(new Point2i(t.groundDataComponent.rightOffset, t.groundDataComponent.heightOffset)), world);
     t.groundDataComponent.isOnGround = isOnGroundLeft || isOnGroundRight;
-  }
-
-  private boolean checkGround(World world, Point2i position) {
-    final Tile lastTile = world.getTileAtPosition(position.x, position.y);
-    final Tile newTile = world.getTileAtPosition(position.x, position.y + 1);
-    return !lastTile.isSolid() && newTile.isSolid();
   }
 
   /**

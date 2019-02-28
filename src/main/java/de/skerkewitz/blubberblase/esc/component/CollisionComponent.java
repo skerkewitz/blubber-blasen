@@ -1,7 +1,7 @@
 package de.skerkewitz.blubberblase.esc.component;
 
-import de.skerkewitz.enora2d.core.ecs.component.Component;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
+import de.skerkewitz.enora2d.core.ecs.Component;
+import de.skerkewitz.enora2d.core.ecs.Entity;
 
 import java.util.EnumSet;
 import java.util.HashSet;

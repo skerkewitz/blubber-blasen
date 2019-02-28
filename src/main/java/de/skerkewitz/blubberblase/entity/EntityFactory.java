@@ -2,12 +2,13 @@ package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.component.*;
+import de.skerkewitz.enora2d.common.Dice;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
-import de.skerkewitz.enora2d.core.ecs.entity.DefaultEntity;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
-import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
+import de.skerkewitz.enora2d.core.ecs.DefaultEntity;
+import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 
@@ -41,7 +42,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnBubble(int tickTime, Point2f position, MoveableLegacyEntity.MoveDirection moveDirection, AiBubbleComponent.State state) {
+  public static Entity spawnBubble(int tickTime, Point2f position, MoveDirection moveDirection, AiBubbleComponent.State state) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
@@ -64,7 +65,7 @@ public class EntityFactory {
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT, AiBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, CaptureBubble.MAX_LIFETIME_IN_TICKS));
-    entity.addComponent(new MovementComponent(tickTime, MoveableLegacyEntity.MoveDirection.Up, 0.3f));
+    entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, 0.3f));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new AnimationComponent(0, CaptureBubble.IDLE, false));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
@@ -75,11 +76,9 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnZenChan(Point2f position) {
-//    var spritesheet = new SpriteSheet(new ImageData("/Enemies.png"));
-//    var sprite = new Screen.Sprite(1, spritesheet);
+  public static Entity spawnZenChan(Point2f position, int tickTime) {
 
-    ZenChan entity = new ZenChan(1);
+    Entity entity = newEntity();
 
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new EnemyComponent());
@@ -92,6 +91,9 @@ public class EntityFactory {
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -15);
+
+    MoveDirection movingDir = Dice.chance(0.5f) ? MoveDirection.Right : MoveDirection.Left;
+    entity.addComponent(new MovementComponent(tickTime, movingDir, 1));
 
     return entity;
   }

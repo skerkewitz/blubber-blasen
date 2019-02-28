@@ -1,7 +1,6 @@
-package de.skerkewitz.enora2d.core.ecs.system;
+package de.skerkewitz.enora2d.core.ecs;
 
 import de.skerkewitz.blubberblase.GameContext;
-import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 import java.util.stream.Stream;
