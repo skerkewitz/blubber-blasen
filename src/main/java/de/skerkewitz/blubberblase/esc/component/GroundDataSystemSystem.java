@@ -1,7 +1,6 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
-import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
@@ -19,7 +18,7 @@ public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystem
   }
 
   @Override
-  public void execute(int tickTime, Tuple t, World world) {
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
     /* Point below feet. */
 //    var pointBelowFeet = new Point2i(t.transformComponent.position.x, t.transformComponent.position.y + 1);

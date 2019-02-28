@@ -1,12 +1,13 @@
 package de.skerkewitz.blubberblase;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
-import de.skerkewitz.blubberblase.esc.systems.RenderDebugSystem;
-import de.skerkewitz.blubberblase.esc.systems.RenderSpriteSystem;
+import de.skerkewitz.blubberblase.esc.component.RenderDebugSystem;
+import de.skerkewitz.blubberblase.esc.component.RenderSpriteSystem;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.TimeUtil;
 import de.skerkewitz.enora2d.core.game.GameConfig;
@@ -69,10 +70,12 @@ public class LevelScreen implements Screen {
 
   @Override
   public void update(int tickTime) {
-    world.tick(tickTime);
 
+    if (!gameContext.gameOver) {
+      world.tick(tickTime, gameContext);
+    }
 
-    if (tickTime % 100 != 0) {
+    if (tickTime % 10 != 0) {
       return;
     }
 
@@ -80,6 +83,7 @@ public class LevelScreen implements Screen {
     if (gameContext.isLevelClearedTimer < 0) {
       if (LevelUtils.isLevelCleared(world)) {
         gameContext.isLevelClearedTimer = tickTime + TimeUtil.secondsToTickTime(5);
+        Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (16).wav")).play();
       }
     } else {
 
@@ -90,16 +94,6 @@ public class LevelScreen implements Screen {
     }
   }
 
-  /**
-   * Contains game related state that is no entity based.
-   */
-  public static class GameContext {
-    public static final int MAX_LEVEL = 2;
-    public int currentLevelNum = 1;
-
-    public int isLevelClearedTimer = -1;
-  }
-
 
   @Override
   public void render(int tickTime, Camera camera) throws IOException {
@@ -108,11 +102,11 @@ public class LevelScreen implements Screen {
 
     /* Render all the entities. */
     renderSpriteSystem.applyActiveCamera(camera);
-    renderSpriteSystem.update(tickTime, world, world.getEntityContainer().stream());
+    renderSpriteSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
 
     if (config.cmd.hasOption("showbbox")) {
       renderDebugSystem.applyActiveCamera(camera);
-      renderDebugSystem.update(tickTime, world, world.getEntityContainer().stream());
+      renderDebugSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
     }
   }
 

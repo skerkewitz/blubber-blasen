@@ -1,7 +1,6 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
-import de.skerkewitz.blubberblase.esc.component.AnimationComponent;
-import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
@@ -17,7 +16,7 @@ public class AnimationSystem extends BaseComponentSystem<AnimationSystem.Tuple, 
   }
 
   @Override
-  public void execute(int tickTime, Tuple t, World world) {
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
     t.spriteComponent.flipX = t.animationComponent.flipX;
     t.spriteComponent.renderSprite = t.animationComponent.animation.currentFrame(tickTime, t.animationComponent.currentAnimationStartTimeTick);
   }

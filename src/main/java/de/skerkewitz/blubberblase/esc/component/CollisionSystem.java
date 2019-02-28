@@ -1,8 +1,6 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
-import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
-import de.skerkewitz.blubberblase.esc.component.CollisionComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.BoundingBoxUtil;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
@@ -24,7 +22,7 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
   }
 
   @Override
-  public void executor(int tickTime, World world, Stream<Entity> stream) {
+  public void executor(int tickTime, World world, Stream<Entity> stream, GameContext context) {
 
     final List<Tuple> tuples = getTuples(stream).collect(Collectors.toList());
 
@@ -64,7 +62,7 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
     }
   }
 
-  public void execute(int tickTime, Tuple t, World world) {
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
     throw new UnsupportedOperationException("Don't call me!");
   }
 

@@ -20,14 +20,14 @@ public class EntityFactory {
 
 //    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
 
-    Bubblun entity = new Bubblun();
+    Entity entity = newEntity();
     entity.addComponent(new TransformComponent(new Point2f(4 * 8, 20 * 8)));
     entity.addComponent(new PlayerComponent());
     entity.addComponent(new InputComponent(inputHandler));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
     entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -12, 12, 13)));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.TRAP_BUBBLE, CollisionComponent.Layer.ENEMY)));
     AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
@@ -85,7 +85,7 @@ public class EntityFactory {
     entity.addComponent(new EnemyComponent());
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -16, 16, 16)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -14, 12, 15)));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.ENEMY), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.BUBBLE)));
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
 

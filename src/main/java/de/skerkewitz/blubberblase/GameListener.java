@@ -14,6 +14,8 @@ import de.skerkewitz.enora2d.core.game.Screen;
 
 import java.io.IOException;
 
+import static de.skerkewitz.enora2d.core.game.GameConfig.CMD_OPTION_DISABLEPPFX;
+
 class GameListener implements ApplicationListener {
 
   private final GameConfig config;
@@ -60,6 +62,8 @@ class GameListener implements ApplicationListener {
   @Override
   public void render() {
     tickTime++;
+
+    post.setEnabled(!config.cmd.hasOption(CMD_OPTION_DISABLEPPFX));
 
     float elapsedSecs = (float) (TimeUtils.millis() - startMs) / 1000;
 

@@ -1,14 +1,16 @@
 package de.skerkewitz.blubberblase.entity;
 
-import de.skerkewitz.blubberblase.LevelScreen;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.esc.component.AiBubbleComponent;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.EnemyComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.World;
+import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
 import static de.skerkewitz.blubberblase.LevelScreen.loadWorldOfLevel;
 
@@ -45,8 +47,8 @@ public class LevelUtils {
 
   }
 
-  public static World loadNextLevel(int tickTime, LevelScreen.GameContext gameContext, GameConfig config) {
-    gameContext.currentLevelNum = (gameContext.currentLevelNum + 1) % (LevelScreen.GameContext.MAX_LEVEL + 1);
+  public static World loadNextLevel(int tickTime, GameContext gameContext, GameConfig config) {
+    gameContext.currentLevelNum = (gameContext.currentLevelNum + 1) % (GameContext.MAX_LEVEL + 1);
     if (gameContext.currentLevelNum == 0) {
       gameContext.currentLevelNum += 1;
     }
@@ -78,5 +80,46 @@ public class LevelUtils {
    */
   public static boolean isOnGround(Entity entity, World world) {
     return hasCollided(entity, world, 0, +1);
+  }
+
+  public static int clipMoveX(int moveX, Point2f position, Rect2i boundingBox, World world) {
+
+    /* no horizontal movement. */
+    if (moveX == 0) {
+      return 0;
+    }
+
+    Tile oldTile;
+    Tile newTile;
+    if (moveX < 0) {
+
+      float ox = position.x - (boundingBox.size.width / 2);
+      float oy = position.y;
+
+      float ex = position.x - (boundingBox.size.width / 2) + moveX;
+      float ey = position.y;
+
+      oldTile = world.getTileAtPosition((int) ox, (int) oy);
+      newTile = world.getTileAtPosition((int) ex, (int) ey);
+    } else {
+      float ox = position.x + (boundingBox.size.width / 2);
+      float oy = position.y;
+
+      float ex = position.x + (boundingBox.size.width / 2) + moveX;
+      float ey = position.y;
+
+      oldTile = world.getTileAtPosition((int) ox, (int) oy);
+      newTile = world.getTileAtPosition((int) ex, (int) ey);
+    }
+
+    if (oldTile.isSolid()) {
+      return moveX;
+    }
+
+    if (!newTile.isSolid()) {
+      return moveX;
+    }
+
+    return 0;
   }
 }

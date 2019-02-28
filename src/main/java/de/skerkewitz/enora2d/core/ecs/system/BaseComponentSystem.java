@@ -1,5 +1,6 @@
 package de.skerkewitz.enora2d.core.ecs.system;
 
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 
@@ -15,15 +16,15 @@ public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends Comp
   }
 
   @Override
-  public void update(int tickTime, World world, Stream<Entity> stream) {
+  public void update(int tickTime, World world, Stream<Entity> stream, GameContext context) {
     willExecute(tickTime, world);
-    executor(tickTime, world, stream);
+    executor(tickTime, world, stream, context);
     didExecute(tickTime, world);
   }
 
   @Override
-  public void executor(int tickTime, World world, Stream<Entity> stream) {
-    getTuples(stream).forEach(tuple -> execute(tickTime, tuple, world));
+  public void executor(int tickTime, World world, Stream<Entity> stream, GameContext context) {
+    getTuples(stream).forEach(tuple -> execute(tickTime, tuple, world, context));
   }
 
   @Override
@@ -32,7 +33,7 @@ public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends Comp
   }
 
   @Override
-  public void execute(int tickTime, T t, World world) {
+  public void execute(int tickTime, T t, World world, GameContext context) {
 
   }
 

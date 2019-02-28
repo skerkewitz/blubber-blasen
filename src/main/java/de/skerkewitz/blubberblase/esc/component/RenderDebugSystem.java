@@ -1,11 +1,9 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
-import de.skerkewitz.blubberblase.esc.component.CollisionComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
@@ -38,7 +36,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
   }
 
   @Override
-  public void execute(int tickTime, Tuple t, World world) {
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
     final BoundingBoxComponent boundingBoxComponent = t.boundingBoxComponent;
     final Rect2i boundingBox = new Rect2i(t.transformComponent.position.toPoint2i().plus(boundingBoxComponent.getBoundingBox().origin), boundingBoxComponent.getBoundingBox().size);

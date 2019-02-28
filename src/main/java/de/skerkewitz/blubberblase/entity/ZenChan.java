@@ -7,7 +7,6 @@ import de.skerkewitz.blubberblase.esc.component.GroundDataComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.*;
 import de.skerkewitz.enora2d.core.entity.MoveableLegacyEntity;
-import de.skerkewitz.enora2d.core.entity.Player;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
@@ -82,11 +81,11 @@ public class ZenChan extends MoveableLegacyEntity {
     if (isOnGround) {
       final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
       if (playerMoveDirection == MoveDirection.Left) {
-        if (Player.clipMoveX(-1, transformComponent.position, boundingBox, world) == 0) {
+        if (LevelUtils.clipMoveX(-1, transformComponent.position, boundingBox, world) == 0) {
           playerMoveDirection = MoveDirection.Right;
         }
       } else if (playerMoveDirection == MoveDirection.Right) {
-        if (Player.clipMoveX(+1, transformComponent.position, boundingBox, world) == 0) {
+        if (LevelUtils.clipMoveX(+1, transformComponent.position, boundingBox, world) == 0) {
           playerMoveDirection = MoveDirection.Left;
         }
       }
@@ -97,7 +96,7 @@ public class ZenChan extends MoveableLegacyEntity {
         xa++;
       }
 
-      xa = Player.clipMoveX(xa, transformComponent.position, boundingBox, world);
+      xa = LevelUtils.clipMoveX(xa, transformComponent.position, boundingBox, world);
     }
 
     /* Update player position. */

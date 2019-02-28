@@ -1,5 +1,6 @@
 package de.skerkewitz.enora2d.core.game.world;
 
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
@@ -18,7 +19,7 @@ public abstract class World {
     this.staticMapContent = staticMapContent;
   }
 
-  public void tick(int tickTime) {
+  public void tick(int tickTime, GameContext context) {
     spawnSheduler.spawnEntities(this, tickTime);
   }
 

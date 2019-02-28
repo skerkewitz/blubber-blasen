@@ -1,7 +1,9 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
-import de.skerkewitz.blubberblase.esc.component.*;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
@@ -15,11 +17,13 @@ import java.util.Optional;
  */
 public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, AiBubbleSystem.TupleFactory> {
 
+  private Sound sfxBurstTrapBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/sfx_coin_double7.wav"));
+
   public AiBubbleSystem() {
     super(new TupleFactory());
   }
 
-  public void execute(int tickTime, Tuple t, World world) {
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
     switch (t.aiBubbleComponent.type) {
       case NORMAL:
@@ -77,6 +81,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       Optional<Entity> player = collisionComponent.getCollisions().filter(entity -> entity.hasComponent(PlayerComponent.class)).findFirst();
       if (player.isPresent()) {
         t.entity.expired();
+        sfxBurstTrapBubble.play();
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());

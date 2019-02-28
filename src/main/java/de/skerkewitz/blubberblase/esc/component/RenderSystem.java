@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
 import com.badlogic.gdx.graphics.Camera;
 

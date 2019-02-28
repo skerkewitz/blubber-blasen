@@ -1,6 +1,6 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
-import de.skerkewitz.blubberblase.esc.component.InputComponent;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.system.ComponentSystem;
@@ -15,7 +15,7 @@ public class InputSystem extends BaseComponentSystem<InputSystem.Tuple, InputSys
     super(new TupleFactory());
   }
 
-  public void execute(int tickTime, Tuple t, World world) {
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
     InputComponent inputComponent = t.inputComponent;
 
     inputComponent.shoot = inputComponent.inputHandler.getFireA().isPressed();

@@ -1,11 +1,10 @@
-package de.skerkewitz.blubberblase.esc.systems;
+package de.skerkewitz.blubberblase.esc.component;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.skerkewitz.blubberblase.esc.component.SpriteComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.entity.Entity;
 import de.skerkewitz.enora2d.core.ecs.system.BaseComponentSystem;
@@ -48,7 +47,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   }
 
   @Override
-  public void execute(int tickTime, Tuple tuple, World world) {
+  public void execute(int tickTime, Tuple tuple, World world, GameContext context) {
     TransformComponent transformComponent = tuple.transformComponent;
     SpriteComponent spriteComponent = tuple.spriteComponent;
     try {
