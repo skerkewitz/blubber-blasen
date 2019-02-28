@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SpawnSheduler {
+public class EntitySpawnScheduler {
+
+  public void prepareSpawnAtTime(int frameCount, Entity spawnZenChan) {
+    spawnList.add(new SpawnInfo(frameCount, spawnZenChan));
+  }
 
   private final List<SpawnInfo> spawnList = new ArrayList<>();
 
-  public void prepareSpawnAtTime(int tickTime, Entity spawnZenChan) {
-    spawnList.add(new SpawnInfo(tickTime, spawnZenChan));
-  }
-
-  public void spawnEntities(World world, int tickTime) {
+  public void spawnEntities(int frameCount, World world) {
 
     Iterator<SpawnInfo> iterator = spawnList.iterator();
     while (iterator.hasNext()) {
       final SpawnInfo spawnInfo = iterator.next();
-      if (spawnInfo.spawnTime <= tickTime) {
+      if (spawnInfo.spawnFrameCount <= frameCount) {
         world.addEntity(spawnInfo.entity);
         iterator.remove();
       }
@@ -28,12 +28,12 @@ public class SpawnSheduler {
 
   private static class SpawnInfo {
 
-    final int spawnTime;
+    final int spawnFrameCount;
     final Entity entity;
 
-    SpawnInfo(int spawnTime, Entity entity) {
+    SpawnInfo(int spawnFrameCount, Entity entity) {
       this.entity = entity;
-      this.spawnTime = spawnTime;
+      this.spawnFrameCount = spawnFrameCount;
     }
   }
 }

@@ -9,7 +9,7 @@ public abstract class World {
 
   public final int numHorizontalTiles = StaticMapContent.WIDTH / 8;
   public final int numVerticalTiles = StaticMapContent.HEIGHT / 8;
-  private final SpawnSheduler spawnSheduler = new SpawnSheduler();
+  private final EntitySpawnScheduler spawnSheduler = new EntitySpawnScheduler();
 
   protected final EntityContainer entityContainer;
   public StaticMapContent staticMapContent;
@@ -20,7 +20,7 @@ public abstract class World {
   }
 
   public void tick(int tickTime, GameContext context) {
-    spawnSheduler.spawnEntities(this, tickTime);
+    spawnSheduler.spawnEntities(tickTime, this);
   }
 
   public boolean isSolidTile(int px, int py, int xa, int ya, int x, int y) {
@@ -51,7 +51,7 @@ public abstract class World {
   }
 
 
-  public void prepareSpawnAtTime(int tickTime, Entity entity) {
-    this.spawnSheduler.prepareSpawnAtTime(tickTime, entity);
+  public void prepareSpawnAtTime(int frameCount, Entity entity) {
+    this.spawnSheduler.prepareSpawnAtTime(frameCount, entity);
   }
 }

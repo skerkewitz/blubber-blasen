@@ -20,7 +20,10 @@ class GameListener implements ApplicationListener {
 
   private final GameConfig config;
 
-  private int tickTime = 0;
+  /**
+   * The actual frame count we are currently on.
+   */
+  private int frameCount = 0;
 
   private Viewport viewport;
   private Camera camera;
@@ -61,11 +64,11 @@ class GameListener implements ApplicationListener {
 
   @Override
   public void render() {
-    tickTime++;
+    frameCount++;
 
     final Screen currentScreen = screenController.getCurrentScreen();
-    final ScreenAction update = currentScreen.update(tickTime);
-    boolean didScreenChange = screenController.handleScreenChange(update);
+    final ScreenAction update = currentScreen.update(frameCount);
+    boolean didScreenChange = screenController.handleScreenChange(update, frameCount);
     if (didScreenChange) {
       return;
     }
@@ -87,7 +90,7 @@ class GameListener implements ApplicationListener {
 
     try {
       /* Render the staticMapContent into the screen. */
-      currentScreen.render(tickTime, camera);
+      currentScreen.render(frameCount, camera);
     } catch (IOException e) {
       e.printStackTrace();
     }

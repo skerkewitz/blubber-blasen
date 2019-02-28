@@ -34,16 +34,16 @@ public class LevelScreen implements Screen {
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
 
-  public LevelScreen(GameConfig config) {
+  public LevelScreen(GameConfig config, int frameCount) {
     this.gameContext = new GameContext();
 
     this.config = config;
-    this.world = loadWorldOfLevel(0, config, gameContext.currentLevelNum);
+    this.world = loadWorldOfLevel(frameCount, config, gameContext.currentLevelNum);
 
     Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
   }
 
-  public static World loadWorldOfLevel(int tickTime, GameConfig config, int level) {
+  public static World loadWorldOfLevel(int frameCount, GameConfig config, int level) {
     var world = new MainWorld(config, StaticMapContentLoader.load(level));
 
 //    Controller first = Controllers.getControllers().first();
@@ -54,15 +54,15 @@ public class LevelScreen implements Screen {
 
     switch (level) {
       case 1:
-        world.prepareSpawnAtTime(tickTime + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(tickTime + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(tickTime + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8)));
         break;
       case 2:
-        world.prepareSpawnAtTime(tickTime + 1, EntityFactory.spawnZenChan(new Point2f(14 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(tickTime + 1, EntityFactory.spawnZenChan(new Point2f(16 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(tickTime + 31, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8)));
-        world.prepareSpawnAtTime(tickTime + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(14 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(16 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8)));
+        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 4 * 8)));
         break;
       default:
     }

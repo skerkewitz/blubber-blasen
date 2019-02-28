@@ -52,7 +52,7 @@ public class ScreenController {
     return currentScreen;
   }
 
-  public boolean handleScreenChange(ScreenAction update) {
+  public boolean handleScreenChange(ScreenAction update, int frameCount) {
     switch (update) {
       case None:
         break;
@@ -60,7 +60,7 @@ public class ScreenController {
         changeScreen(new TitleScreen(config));
         return true;
       case GoLevel:
-        changeScreen(new LevelScreen(config));
+        changeScreen(new LevelScreen(config, frameCount));
         return true;
       case GoGameOver:
         break;
