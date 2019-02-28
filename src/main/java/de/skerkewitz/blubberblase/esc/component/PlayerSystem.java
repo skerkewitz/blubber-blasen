@@ -7,6 +7,7 @@ import de.skerkewitz.blubberblase.entity.Bubblun;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.enora2d.common.Point2f;
+import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
@@ -78,12 +79,15 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
       playerMoveDirection = MoveDirection.Right;
     }
 
-    moveX = LevelUtils.clipMoveX(moveX, transformComponent.position, t.entity.getComponent(BoundingBoxComponent.class).getBoundingBox(), world);
+    final Rect2i boundingBox = t.entity.getComponent(BoundingBoxComponent.class).getBoundingBox();
+    moveX = LevelUtils.clipMoveX(moveX, transformComponent.position, boundingBox, world);
 
     /* Update player position. */
     Point2f position = t.entity.getComponent(TransformComponent.class).position;
     position.x += moveX * t.playerComponent.speed;
     position.y += ya * t.playerComponent.speed;
+
+    LevelUtils.clipPositionToLevelBounds(transformComponent.position, boundingBox);
 
 
     t.playerComponent.movingDir = playerMoveDirection;

@@ -6,6 +6,7 @@ import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.EnemyComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2f;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.GameConfig;
@@ -180,5 +181,20 @@ public class LevelUtils {
     } else if (maxX > 239) {
       position.x -= (maxX - 239);
     }
+  }
+
+  public static boolean canJumpUp(Point2f position, World world) {
+
+    final int tileX = (int) (position.x);
+    final int tileY = (int) (position.y + 1);
+
+    /* if tile is not solid then there is a gap. */
+    return world.canJumpUp(tileX, tileY);
+  }
+
+  public static boolean checkGround(Point2i position, World world) {
+    final boolean lastTile = world.isSolidAtPosition(position.x, position.y);
+    final boolean newTile = world.isSolidAtPosition(position.x, position.y + 1);
+    return !lastTile && newTile;
   }
 }

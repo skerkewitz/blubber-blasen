@@ -23,16 +23,19 @@ public class StaticMapContent {
    * Get a tile in tile space.
    */
   public Tile getTile(int x, int y) {
-    if (0 > x || x >= tileWidth || 0 > y || y >= tileHeight)
+    if (0 > x || x >= tileWidth || 0 > y || y >= tileHeight) {
       return TileContainer.VOID;
+    }
+
     return TileContainer.tiles[tiles[x + y * tileWidth]];
   }
 
-  /**
-   * Get a tile in pixel space.
-   */
-  public Tile getTilePixelSpace(int pixelSpaceX, int pixelSpaceY) {
-    return getTile(pixelSpaceX >> 8, pixelSpaceY >> 3);
-  }
+  public boolean isSolidGround(int x, int y) {
+    /* Make sure we can not land on top of the level. */
+    if (x > 1 && x < tileWidth - 2 && y == 0) {
+      return false;
+    }
 
+    return getTile(x, y).isSolid();
+  }
 }

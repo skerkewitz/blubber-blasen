@@ -14,6 +14,9 @@ import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.world.World;
 
+import static de.skerkewitz.blubberblase.esc.component.AiEnemySystem.AiEnemyUtils.RelativePlayerHeight.Above;
+import static de.skerkewitz.blubberblase.esc.component.AiEnemySystem.AiEnemyUtils.RelativePlayerHeight.Below;
+
 /**
  * A system to render all SpriteComponents.
  */
@@ -33,7 +36,7 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
     int moveVectorX = 0;
     int moveVectorY = 0;
 
-    final AiEnemyUtils.RelativePlayerHeight relativePlayerHeight = AiEnemyUtils.relativePlayerHeightPosition(t.entity, world.getPlayerEntity());
+    final AiEnemyUtils.RelativePlayerHeight playerRelativeYPosition = AiEnemyUtils.relativePlayerHeightPosition(t.entity, world.getPlayerEntity());
 
     var playerMoveDirection = t.movementComponent.currentMoveDirection;
     final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
@@ -53,13 +56,14 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
         t.enemyComponent.gapJump = false;
 
         /* There is a 50/50 change every 5s that he will jump if possible. */
-        if (tickTime % TimeUtil.TICKTIME_2s == 0 && relativePlayerHeight == AiEnemyUtils.RelativePlayerHeight.Above && Dice.chance(0.33f)) {
+        if (tickTime % TimeUtil.TICKTIME_2s == 0 && playerRelativeYPosition == Above
+                && LevelUtils.canJumpUp(transformComponent.position, world) && Dice.chance(0.4f)) {
           t.enemyComponent.jumpTickRemaining = EnemyComponent.JUMP_HEIGHT_IN_PIXEL;
         } else {
 
           /* On ground, check for gap. */
           if (LevelUtils.isGapInFront(playerMoveDirection.getHorizontalMoveVector(), transformComponent.position, boundingBox, world)) {
-            if (relativePlayerHeight == AiEnemyUtils.RelativePlayerHeight.Below && Dice.chance(0.5f)) {
+            if (playerRelativeYPosition == Below && Dice.chance(0.5f)) {
               t.enemyComponent.walkOverEdge = true;
             }
 
@@ -144,7 +148,7 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
     }
   }
 
-  private static class AiEnemyUtils {
+  public static class AiEnemyUtils {
 
     /**
      * Returns the height of the player in relation to the enemy.
@@ -159,9 +163,9 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
       var playerTransform = player.getComponent(TransformComponent.class);
 
       if (selfTransform.position.y > (playerTransform.position.y + 16)) {
-        return RelativePlayerHeight.Above;
+        return Above;
       } else if (selfTransform.position.y < (playerTransform.position.y - 32)) {
-        return RelativePlayerHeight.Below;
+        return Below;
       }
 
       return RelativePlayerHeight.Same;

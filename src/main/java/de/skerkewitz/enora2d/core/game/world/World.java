@@ -42,6 +42,13 @@ public abstract class World {
     return staticMapContent.getTile(x >> 3, y >> 3);
   }
 
+  /**
+   * Returns the tile at the given pixel position.
+   */
+  public boolean isSolidAtPosition(int x, int y) {
+    return staticMapContent.isSolidGround(x >> 3, y >> 3);
+  }
+
 
   public void addEntity(Entity entity) {
     entityContainer.addEntity(entity);
@@ -87,5 +94,32 @@ public abstract class World {
     }
 
     return false;
+  }
+
+  public boolean canJumpUp(int x, int y) {
+    int tx = x / 8;
+    int ty = y / 8;
+
+    if (staticMapContent.getTile(tx, ty - 1).isSolid()) {
+      return false;
+    }
+
+    if (staticMapContent.getTile(tx, ty - 2).isSolid()) {
+      return false;
+    }
+
+    if (staticMapContent.getTile(tx, ty - 3).isSolid()) {
+      return false;
+    }
+
+    if (staticMapContent.getTile(tx, ty - 4).isSolid()) {
+      return false;
+    }
+
+    if (!staticMapContent.getTile(tx, ty - 5).isSolid()) {
+      return false;
+    }
+
+    return !staticMapContent.getTile(tx, ty - 6).isSolid();
   }
 }
