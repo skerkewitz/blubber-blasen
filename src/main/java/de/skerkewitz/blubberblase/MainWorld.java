@@ -11,7 +11,7 @@ import de.skerkewitz.enora2d.core.game.world.World;
 
 public class MainWorld extends World {
 
-  public static final int HURRYUP_SECONDS = 5;
+
   private MovementSystem movementSystem = new MovementSystem();
   private AiBubbleSystem aiBubbleSystem = new AiBubbleSystem();
   private AiEnemySystem aiEnemySystem = new AiEnemySystem();
@@ -27,6 +27,12 @@ public class MainWorld extends World {
 
   private boolean hurryMode = false;
 
+  /**
+   * How many seconds have the player until hurry up appears and monster turn angry.
+   */
+  public int hurryUpTimeLimitInSeconds = 30;
+  public int hurryUpTimeLimitInFrameCount = TimeUtil.secondsToTickTime(hurryUpTimeLimitInSeconds);
+
   public MainWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
     super(staticMapContent, frameCount);
   }
@@ -35,7 +41,7 @@ public class MainWorld extends World {
 
     super.tick(tickTime, context);
 
-    if (getWorldFrameCount(tickTime) > TimeUtil.secondsToTickTime(HURRYUP_SECONDS) && !hurryMode) {
+    if (getWorldFrameCount(tickTime) > hurryUpTimeLimitInFrameCount && !hurryMode) {
       hurryUp.play();
       hurryMode = true;
 
