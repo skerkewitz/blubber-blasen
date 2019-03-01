@@ -10,6 +10,7 @@ import de.skerkewitz.blubberblase.esc.component.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.component.RenderSpriteSystem;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.TimeUtil;
+import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
@@ -54,15 +55,15 @@ public class LevelScreen implements Screen {
 
     switch (level) {
       case 1:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount));
-        world.prepareSpawnAtTime(frameCount + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount));
-        world.prepareSpawnAtTime(frameCount + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount, MoveDirection.Right));
+        world.prepareSpawnAtTime(frameCount + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount, MoveDirection.Right));
+        world.prepareSpawnAtTime(frameCount + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount, MoveDirection.Right));
         break;
       case 2:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(14 * 8, 4 * 8), frameCount));
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(16 * 8, 4 * 8), frameCount));
-        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8), frameCount));
-        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 4 * 8), frameCount));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8), frameCount, MoveDirection.Left));
+        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(14 * 8, 2 * 8), frameCount, MoveDirection.Left));
+        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 2 * 8), frameCount, MoveDirection.Right));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(20 * 8, 4 * 8), frameCount, MoveDirection.Right));
         break;
       default:
     }
