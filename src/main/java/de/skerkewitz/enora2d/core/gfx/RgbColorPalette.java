@@ -15,6 +15,13 @@ public class RgbColorPalette {
     buildRgbColorPaletteIndex();
   }
 
+  public static int mergeRgbColors(int colour1, int colour2, int colour3, int colour4) {
+    return (encodeRBGACode(colour4) << 24)
+            + (encodeRBGACode(colour3) << 16)
+            + (encodeRBGACode(colour2) << 8)
+            + encodeRBGACode(colour1);
+  }
+
   public int rgbValueForIndex(int colorCode) {
     return rgbColorPaletteIndex[colorCode];
   }
@@ -43,10 +50,29 @@ public class RgbColorPalette {
    * @return
    */
   public static int encodeColorCode(int colour) {
-    if (colour < 0) return 255;
+    if (colour < 0) {
+      return 255;
+    }
     int r = colour / 100 % 10;
     int g = colour / 10 % 10;
     int b = colour % 10;
+    return r * 36 + g * 6 + b;
+  }
+
+  /**
+   * Encode the given color code into a 8bit color index.
+   *
+   * @param colour
+   * @return
+   */
+  public static int encodeRBGACode(int colour) {
+    if (colour < 0) {
+      return 255;
+    }
+
+    int r = ((colour >> 16) & 0xff) / (255 / 5);
+    int g = ((colour >> 8) & 0xff) / (255 / 5);
+    int b = ((colour) & 0xff) / (255 / 5);
     return r * 36 + g * 6 + b;
   }
 

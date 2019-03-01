@@ -16,13 +16,20 @@ public abstract class World {
 
   private Entity playerEntity;
 
-  public World(StaticMapContent staticMapContent) {
+  private final int levelStartFrameCount;
+
+  public World(StaticMapContent staticMapContent, int frameCount) {
     entityContainer = new EntityContainer();
     this.staticMapContent = staticMapContent;
+    this.levelStartFrameCount = frameCount;
   }
 
   public void tick(int tickTime, GameContext context) {
     spawnSheduler.spawnEntities(tickTime, this);
+  }
+
+  protected int getWorldFrameCount(int tickTime) {
+    return tickTime - levelStartFrameCount;
   }
 
   public boolean isSolidTile(int px, int py, int xa, int ya, int x, int y) {

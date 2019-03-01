@@ -54,7 +54,8 @@ public final class CrtScreen extends Filter<CrtScreen> {
     chromaticDispersion = new Vector2();
 
     setTime(0f);
-    setTint(1.0f, 1.0f, 0.85f);
+//    setTint(1.0f, 1.0f, 0.85f);
+    setTint(1.0f, 1.0f, 1.0f);
     setDistortion(0.1f);
     setZoom(1f);
     setRgbMode(mode);

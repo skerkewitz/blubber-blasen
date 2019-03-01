@@ -44,7 +44,7 @@ public class LevelScreen implements Screen {
   }
 
   public static World loadWorldOfLevel(int frameCount, GameConfig config, int level) {
-    var world = new MainWorld(config, StaticMapContentLoader.load(level));
+    var world = new MainWorld(config, StaticMapContentLoader.load(level), frameCount);
 
 //    Controller first = Controllers.getControllers().first();
 //    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
