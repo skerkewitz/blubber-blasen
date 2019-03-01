@@ -57,6 +57,12 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
     if (t.playerComponent.jumpTickRemaining > 0) {
       t.playerComponent.jumpTickRemaining -= 1;
       ya -= 1;
+
+      /* Limit Jump */
+      if (!inputComponent.jump && t.playerComponent.jumpTickRemaining < PlayerComponent.JUMP_HEIGHT_IN_PIXEL_MIN_JUMP && t.playerComponent.jumpTickRemaining > PlayerComponent.JUMP_HEIGHT_IN_PIXEL_MIN_JUMP - 5) {
+        t.playerComponent.jumpTickRemaining = 0;
+      }
+
     } else {
       boolean isOnGround = t.entity.getComponent(GroundDataComponent.class).isOnGround;
       if (isOnGround) {

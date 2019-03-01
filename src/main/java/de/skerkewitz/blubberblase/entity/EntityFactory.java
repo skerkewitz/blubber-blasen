@@ -2,7 +2,6 @@ package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.component.*;
-import de.skerkewitz.enora2d.common.Dice;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -76,7 +75,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnZenChan(Point2f position, int tickTime) {
+  public static Entity spawnZenChan(Point2f position, int tickTime, MoveDirection movingDir) {
 
     Entity entity = newEntity();
 
@@ -92,7 +91,6 @@ public class EntityFactory {
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -15);
 
-    MoveDirection movingDir = Dice.chance(0.5f) ? MoveDirection.Right : MoveDirection.Left;
     entity.addComponent(new MovementComponent(tickTime, movingDir, 1));
 
     return entity;

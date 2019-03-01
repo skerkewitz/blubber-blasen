@@ -10,6 +10,7 @@ import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 public class PlayerComponent implements Component {
 
   public static final int JUMP_HEIGHT_IN_PIXEL = 44;
+  public static final int JUMP_HEIGHT_IN_PIXEL_MIN_JUMP = 24;
 
   public static final int BUBBLE_SHOOT_DELAY = TimeUtil.secondsToTickTime(0.5);
 
