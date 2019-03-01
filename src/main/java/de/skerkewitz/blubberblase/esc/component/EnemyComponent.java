@@ -12,7 +12,9 @@ public class EnemyComponent implements Component {
   public static final int JUMP_HEIGHT_IN_PIXEL_GAP_JUMP = 24;
 
   public int jumpTickRemaining;
-  public int speed = 1;
+  public float speed = 1;
   public boolean gapJump = false;
   public boolean walkOverEdge = false;
+
+  public boolean isAngry = false;
 }

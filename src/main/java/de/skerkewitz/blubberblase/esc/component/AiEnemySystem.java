@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
+import de.skerkewitz.blubberblase.entity.ZenChan;
 import de.skerkewitz.enora2d.common.Dice;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -101,20 +102,21 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
 
     /* Update player position. */
     Point2f position = transformComponent.position;
-    position.x += moveVectorX * t.enemyComponent.speed;
+    position.x += moveVectorX * (t.enemyComponent.speed + (t.enemyComponent.isAngry ? 0.3f : 0.0f));
     position.y += moveVectorY * t.enemyComponent.speed;
-
 
     LevelUtils.clipPositionToLevelBounds(transformComponent.position, boundingBox);
 
     t.movementComponent.currentMoveDirection = playerMoveDirection;
 
-    if (transformComponent.position.y < 8) {
-      transformComponent.position.y = 8;
+    if (t.enemyComponent.isAngry) {
+      t.entity.getComponent(AnimationComponent.class).animation = ZenChan.ANGRY_ANIMATION_IDLE;
+      t.entity.getComponent(SpriteComponent.class).colorPalette = ZenChan.ANGRY_COLOR_PALETTE;
     }
 
     AnimationComponent animationComponent = t.entity.getComponent(AnimationComponent.class);
     animationComponent.flipX = t.movementComponent.currentMoveDirection == MoveDirection.Right;
+
   }
 
   /**

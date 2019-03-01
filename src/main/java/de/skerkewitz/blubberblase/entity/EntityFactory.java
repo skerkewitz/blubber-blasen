@@ -64,14 +64,14 @@ public class EntityFactory {
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT, AiBubbleComponent.Type.TRAP, false));
-    entity.addComponent(new LifeTimeComponent(tickTime, CaptureBubble.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new LifeTimeComponent(tickTime, TrapBubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, 0.3f));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
-    entity.addComponent(new AnimationComponent(0, CaptureBubble.IDLE, false));
+    entity.addComponent(new AnimationComponent(0, TrapBubble.IDLE, false));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
-    spriteComponent.colorPalette = CaptureBubble.COLOR_PALETTE;
+    spriteComponent.colorPalette = TrapBubble.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -8);
     return entity;
   }
