@@ -10,6 +10,7 @@ import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.GameConfig;
+import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 
@@ -49,10 +50,10 @@ public class LevelUtils {
   }
 
   public static World loadNextLevel(int tickTime, GameContext gameContext, GameConfig config) {
-    gameContext.currentLevelNum = (gameContext.currentLevelNum + 1) % (GameContext.MAX_LEVEL + 1);
-    if (gameContext.currentLevelNum == 0) {
-      gameContext.currentLevelNum += 1;
-    }
+
+    gameContext.currentLevelNum += 1;
+    gameContext.clampLevelNum();
+
     return loadWorldOfLevel(tickTime, config, gameContext.currentLevelNum);
   }
 
@@ -180,6 +181,11 @@ public class LevelUtils {
       position.x += (16 - minX);
     } else if (maxX > 239) {
       position.x -= (maxX - 239);
+    }
+
+    /* Wrap around if entity did fall through. */
+    if (position.y > StaticMapContent.HEIGHT + 16) {
+      position.y = -16;
     }
   }
 

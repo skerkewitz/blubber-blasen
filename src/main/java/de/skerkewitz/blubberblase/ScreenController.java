@@ -60,7 +60,7 @@ public class ScreenController {
         changeScreen(new TitleScreen(config));
         return true;
       case GoLevel:
-        changeScreen(new LevelScreen(config, frameCount));
+        changeScreen(new LevelScreen(config, frameCount, 1));
         return true;
       case GoGameOver:
         break;
