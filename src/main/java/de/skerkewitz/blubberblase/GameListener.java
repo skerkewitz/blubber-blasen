@@ -54,7 +54,12 @@ class GameListener implements ApplicationListener {
     startMs = TimeUtils.millis();
 
     //currentScreen = new LevelScreen(config);
-    screenController.changeScreen(new TitleScreen(config));
+    if (config.cmd.hasOption(GameConfig.CMD_OPTION_LEVEL)) {
+      int level = Integer.parseInt(config.cmd.getOptionValue(GameConfig.CMD_OPTION_LEVEL));
+      screenController.changeScreen(new LevelScreen(config, frameCount, level));
+    } else {
+      screenController.changeScreen(new TitleScreen(config));
+    }
   }
 
   @Override

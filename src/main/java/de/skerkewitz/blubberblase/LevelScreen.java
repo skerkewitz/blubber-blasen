@@ -35,8 +35,10 @@ public class LevelScreen implements Screen {
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
 
-  public LevelScreen(GameConfig config, int frameCount) {
+  public LevelScreen(GameConfig config, int frameCount, int levelNum) {
     this.gameContext = new GameContext();
+    this.gameContext.currentLevelNum = levelNum;
+    this.gameContext.clampLevelNum();
 
     this.config = config;
     this.world = loadWorldOfLevel(frameCount, config, gameContext.currentLevelNum);
@@ -65,7 +67,14 @@ public class LevelScreen implements Screen {
         world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 2 * 8), frameCount, MoveDirection.Right));
         world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(20 * 8, 4 * 8), frameCount, MoveDirection.Right));
         break;
+      case 3:
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(8 * 8, 4 * 8), frameCount, MoveDirection.Right));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(12 * 8, 2 * 8), frameCount, MoveDirection.Right));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(20 * 8, 2 * 8), frameCount, MoveDirection.Left));
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(24 * 8, 4 * 8), frameCount, MoveDirection.Left));
+        break;
       default:
+        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8), frameCount, MoveDirection.Left));
     }
 
     return world;
