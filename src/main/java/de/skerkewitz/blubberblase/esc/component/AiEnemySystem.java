@@ -64,7 +64,7 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
 
           /* On ground, check for gap. */
           if (LevelUtils.isGapInFront(playerMoveDirection.getHorizontalMoveVector(), transformComponent.position, boundingBox, world)) {
-            if (playerRelativeYPosition == Below && Dice.chance(0.5f)) {
+            if (playerRelativeYPosition == Below && Dice.chance(0.8f)) {
               t.enemyComponent.walkOverEdge = true;
             }
 
