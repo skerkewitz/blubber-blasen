@@ -32,6 +32,16 @@ public class StaticMapContentLoader {
     FileHandle internal = Gdx.files.internal("level/level" + padded + ".txt");
     List<String> strings = IOUtils.readLines(internal.read(), StandardCharsets.UTF_8);
 
+    byte tileId = TileContainer.BB_STONE.getId();
+    switch (levelNum) {
+      case 2:
+        tileId = TileContainer.BB_LEVEL2_STONE.getId();
+        break;
+      case 3:
+        tileId = TileContainer.BB_LEVEL3_STONE.getId();
+        break;
+    }
+
     /* Ignore topline. */
     strings = strings.subList(1, strings.size());
 
@@ -45,7 +55,7 @@ public class StaticMapContentLoader {
         int index = x + y * tileWidth;
         switch (l.charAt(x)) {
           case '#':
-            tiles[index] = TileContainer.BB_STONE.getId();
+            tiles[index] = tileId;
             break;
           default:
             tiles[index] = TileContainer.VOID.getId();
