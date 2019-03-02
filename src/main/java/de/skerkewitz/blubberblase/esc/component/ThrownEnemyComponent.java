@@ -3,9 +3,19 @@ package de.skerkewitz.blubberblase.esc.component;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.Component;
 
-public class ThrownEnemyComponent implements Component {
+public class ThrownEnemyComponent extends StateBaseComponent<ThrownEnemyComponent.State> implements Component {
 
-  public float speed = 2.5f;
+  public final float speedIfKicked = 2.5f;
+  public final float speedIfFalling = 1.0f;
+  public final Point2i moveVector;
 
-  public Point2i moveVector = new Point2i(1, -1);
+  public ThrownEnemyComponent(int stateBeginFrameCount, Point2i moveVector) {
+    super(stateBeginFrameCount, State.KICKED);
+    this.moveVector = moveVector;
+  }
+
+  enum State {
+    KICKED,
+    FALL
+  }
 }

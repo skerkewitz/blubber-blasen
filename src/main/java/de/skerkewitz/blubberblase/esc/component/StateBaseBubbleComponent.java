@@ -2,14 +2,13 @@ package de.skerkewitz.blubberblase.esc.component;
 
 import de.skerkewitz.enora2d.core.ecs.Component;
 
-public class AiBubbleComponent extends AiComponent<AiBubbleComponent.State> implements Component {
+public class StateBaseBubbleComponent extends StateBaseComponent<StateBaseBubbleComponent.State> implements Component {
 
   public Type type;
   public boolean isAngry;
 
-  public AiBubbleComponent(int stateBeginTime, State state, Type type, boolean angry) {
-    super(stateBeginTime);
-    this.state = state;
+  public StateBaseBubbleComponent(int stateBeginTime, State state, Type type, boolean angry) {
+    super(stateBeginTime, state);
     this.type = type;
     this.isAngry = angry;
   }

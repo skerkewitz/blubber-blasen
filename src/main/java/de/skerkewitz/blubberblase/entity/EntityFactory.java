@@ -49,13 +49,13 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnBubble(int tickTime, Point2f position, MoveDirection moveDirection, AiBubbleComponent.State state) {
+  public static Entity spawnBubble(int tickTime, Point2f position, MoveDirection moveDirection, StateBaseBubbleComponent.State state) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new AiBubbleComponent(tickTime, state, AiBubbleComponent.Type.NORMAL, false));
+    entity.addComponent(new StateBaseBubbleComponent(tickTime, state, StateBaseBubbleComponent.Type.NORMAL, false));
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
-    entity.addComponent(new MovementComponent(tickTime, moveDirection, state == AiBubbleComponent.State.SHOOT ? 4 : 1));
+    entity.addComponent(new MovementComponent(tickTime, moveDirection, state == StateBaseBubbleComponent.State.SHOOT ? 4 : 1));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
 
@@ -71,7 +71,7 @@ public class EntityFactory {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new AiBubbleComponent(tickTime, AiBubbleComponent.State.FLOAT, AiBubbleComponent.Type.TRAP, false));
+    entity.addComponent(new StateBaseBubbleComponent(tickTime, StateBaseBubbleComponent.State.FLOAT, StateBaseBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, TrapBubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, 0.3f));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
@@ -101,14 +101,14 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnThrownEnemy(int tickTime, Point2f position, MoveDirection currentMoveDirection) {
+  public static Entity spawnThrownEnemy(int frameCount, Point2f position, MoveDirection currentMoveDirection) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
-    entity.addComponent(new LifeTimeComponent(tickTime, BonusDiamond.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new LifeTimeComponent(frameCount, ThrownEnemy.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new AnimationComponent(0, ZenChan.THROW, false));
-    entity.addComponent(new ThrownEnemyComponent());
+    entity.addComponent(new ThrownEnemyComponent(frameCount, new Point2i(currentMoveDirection.getHorizontalMoveVector(), -1)));
     //    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
