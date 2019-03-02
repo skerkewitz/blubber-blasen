@@ -54,7 +54,7 @@ public final class ShaderLoader {
     ShaderProgram shader = new ShaderProgram(defines + "\n" + vertex, defines + "\n" + fragment);
 
     if (!shader.isCompiled()) {
-      Gdx.app.error("ShaderLoader", shader.getLog());
+      Gdx.app.error("ShaderLoader", "VertextName: " + vertexName + ", FragmentName: " + fragmentName + ": " + shader.getLog());
       System.exit(-1);
     }
 

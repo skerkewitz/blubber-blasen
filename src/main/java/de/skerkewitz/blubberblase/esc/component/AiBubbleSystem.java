@@ -89,7 +89,9 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
     /* Did it burst? */
     if (ageFrameCount > Bubble.MAX_LIFETIME_BEFORE_BURST) {
       t.entity.expired();
-      world.addEntity(EntityFactory.spawnZenChan(t.transformComponent.position, tickTime, MoveDirection.Left, true));
+      Entity entity = EntityFactory.spawnZenChan(t.transformComponent.position, tickTime, MoveDirection.Left, true);
+      EnemyUtil.setupDidEscapeTrapBubble(entity.getComponent(EnemyComponent.class));
+      world.addEntity(entity);
       return;
     }
 

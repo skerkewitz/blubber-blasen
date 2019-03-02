@@ -17,6 +17,7 @@ public class EnemyComponent implements Component {
   public boolean walkOverEdge = false;
 
   public boolean isAngry;
+  public boolean didEscapeTrapBubble = false;
 
   public EnemyComponent(boolean isAngry) {
     this.isAngry = isAngry;

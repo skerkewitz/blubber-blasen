@@ -29,6 +29,7 @@ import com.bitfire.postprocessing.filters.Blur.BlurType;
 import com.bitfire.postprocessing.filters.Combine;
 import com.bitfire.postprocessing.filters.CrtScreen;
 import com.bitfire.postprocessing.filters.CrtScreen.RgbMode;
+import com.bitfire.postprocessing.filters.GamaCorrect;
 import com.bitfire.postprocessing.utils.PingPongBuffer;
 
 public final class CrtMonitor extends PostProcessorEffect {
@@ -37,6 +38,8 @@ public final class CrtMonitor extends PostProcessorEffect {
   private CrtScreen crt;
   private Blur blur;
   private Combine combine;
+
+  private GamaCorrect gamaCorrect;
   private boolean doblur;
 
   private boolean blending = false;
@@ -59,6 +62,7 @@ public final class CrtMonitor extends PostProcessorEffect {
 
     combine = new Combine();
     crt = new CrtScreen(barrelDistortion, mode, effectsSupport);
+    gamaCorrect = new GamaCorrect();
   }
 
   @Override
@@ -201,5 +205,8 @@ public final class CrtMonitor extends PostProcessorEffect {
 
     // do combine pass
     combine.setOutput(dest).setInput(in, out).render();
+
+    gamaCorrect.setInput(dest).setOutput(dest).render();
+
   }
 }
