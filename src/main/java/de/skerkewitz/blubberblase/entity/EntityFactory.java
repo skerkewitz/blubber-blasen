@@ -16,9 +16,10 @@ import java.util.EnumSet;
 public class EntityFactory {
 
   private final static byte SPRITE_PRIORITY_BUBBLE = 0;
-  private final static byte SPRITE_PRIORITY_TRAP_BUBBLE = 1;
-  private final static byte SPRITE_PRIORITY_ENEMY = 2;
-  private final static byte SPRITE_PRIORITY_PLAYER = 3;
+  private final static byte SPRITE_PRIORITY_BONUS_ITEMS = 2;
+  private final static byte SPRITE_PRIORITY_TRAP_BUBBLE = 3;
+  private final static byte SPRITE_PRIORITY_ENEMY = 4;
+  private final static byte SPRITE_PRIORITY_PLAYER = 5;
 
 
 
@@ -81,6 +82,39 @@ public class EntityFactory {
     spriteComponent.colorPalette = TrapBubble.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -8);
     spriteComponent.priority = SPRITE_PRIORITY_TRAP_BUBBLE;
+    return entity;
+  }
+
+  public static Entity spawnDiamond(int tickTime, Point2f position) {
+    Entity entity = newEntity();
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new SpriteComponent());
+    entity.addComponent(new LifeTimeComponent(tickTime, BonusDiamond.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
+//    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
+
+    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
+    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 2 * 8, 16, 16), Ressources.SpriteSheet);
+    spriteComponent.colorPalette = BonusDiamond.COLOR_PALETTE;
+    spriteComponent.pivotPoint = new Point2i(-8, -15);
+    spriteComponent.priority = SPRITE_PRIORITY_BONUS_ITEMS;
+    return entity;
+  }
+
+  public static Entity spawnThrownEnemy(int tickTime, Point2f position, MoveDirection currentMoveDirection) {
+    Entity entity = newEntity();
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new SpriteComponent());
+    entity.addComponent(new LifeTimeComponent(tickTime, BonusDiamond.MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
+    entity.addComponent(new AnimationComponent(0, ZenChan.THROW, false));
+    entity.addComponent(new ThrownEnemyComponent());
+    //    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
+
+    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
+    spriteComponent.colorPalette = ZenChan.THROW_COLOR_PALETTE;
+    spriteComponent.pivotPoint = new Point2i(-8, -15);
+    spriteComponent.priority = SPRITE_PRIORITY_BONUS_ITEMS;
     return entity;
   }
 

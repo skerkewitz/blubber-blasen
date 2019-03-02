@@ -104,6 +104,8 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       if (player.isPresent()) {
         t.entity.expired();
         sfxBurstTrapBubble.play();
+        //world.addEntity(EntityFactory.spawnDiamond(tickTime, t.transformComponent.position));
+        world.addEntity(EntityFactory.spawnThrownEnemy(tickTime, t.transformComponent.position, t.movementComponent.currentMoveDirection));
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());

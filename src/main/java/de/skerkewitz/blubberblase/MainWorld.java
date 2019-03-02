@@ -20,6 +20,8 @@ public class MainWorld extends World {
   private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
   private CollisionSystem collisionComponent = new CollisionSystem();
   private PlayerSystem playerSystem = new PlayerSystem();
+  private ThrownEnemySystem thrownEnemySystem = new ThrownEnemySystem();
+
 
   private InputSystem inputSystem = new InputSystem();
 
@@ -62,6 +64,7 @@ public class MainWorld extends World {
     movementSystem.update(tickTime, entityContainer.stream());
 
     playerSystem.update(tickTime, this, entityContainer.stream(), context);
+    thrownEnemySystem.update(tickTime, this, entityContainer.stream(), context);
 
     animationSystem.update(tickTime, this, entityContainer.stream(), context);
   }
