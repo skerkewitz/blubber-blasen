@@ -4,16 +4,16 @@ import de.skerkewitz.enora2d.core.ecs.Component;
 
 public class LifeTimeComponent implements Component {
 
-  public int lifeTimeTC = 0;
-  public int spawnTimeTC;
+  public final int lifeTimeFrameCount = 0;
+  public final int spawnTimeFrameCount;
 
   /**
    * Use -1 for unlimited.
    */
-  public int maxLifeTimeTC;
+  public final int maxLifeTimeFrameCount;
 
-  public LifeTimeComponent(int spawnTimeTC, int maxLiveTimeTC) {
-    this.spawnTimeTC = spawnTimeTC;
-    this.maxLifeTimeTC = maxLiveTimeTC;
+  public LifeTimeComponent(int spawnTimeFrameCount, int maxLiveTimeTC) {
+    this.spawnTimeFrameCount = spawnTimeFrameCount;
+    this.maxLifeTimeFrameCount = maxLiveTimeTC;
   }
 }

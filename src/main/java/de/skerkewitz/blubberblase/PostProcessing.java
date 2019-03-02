@@ -96,12 +96,12 @@ public final class PostProcessing implements Disposable, PostProcessorListener {
     vignette.setIntensity(0.15f);
 
     crt.setEnabled(true);
-    vignette.setEnabled(true);
+    vignette.setEnabled(false);
     curvature.setEnabled(false);
     zoomer.setEnabled(false);
     bloom.setEnabled(true);
-    bloom.setBloomIntesity(1.5f);
-    bloom.setBloomSaturation(1f);
+    bloom.setBloomIntesity(0.8f);
+    bloom.setBloomSaturation(1.5f);
   }
 
   @Override

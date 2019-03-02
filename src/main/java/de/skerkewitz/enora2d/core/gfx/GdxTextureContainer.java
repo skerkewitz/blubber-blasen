@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ public class GdxTextureContainer {
 
   private final RgbColorPalette rgbColorPalette = new RgbColorPalette();
 
-  public Sprite getTextureNamedResourceAndPalette(NamedResource resource, int palette, ImageDataContainer imageDataContainer) throws IOException {
+  public Sprite getTextureNamedResourceAndPalette(NamedResource resource, int palette, ImageDataContainer imageDataContainer) {
 
     var entries = knownResources.get(resource);
     if (entries != null) {

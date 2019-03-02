@@ -12,7 +12,7 @@ public class ImageDataContainer {
 
   private final Map<NamedResource, ImageData> knownResources = new HashMap<>();
 
-  public ImageData getResourceForName(NamedResource resource) throws IOException {
+  private ImageData getResourceForNameInternal(NamedResource resource) throws IOException {
 
     ImageData imageData = knownResources.get(resource);
     if (imageData == null) {
@@ -34,5 +34,13 @@ public class ImageDataContainer {
     }
 
     return imageData;
+  }
+
+  public ImageData getResourceForName(NamedResource resource) {
+    try {
+      return getResourceForNameInternal(resource);
+    } catch (IOException e) {
+      throw new RuntimeException("Could not load resrouce " + resource.name + " because of " + e, e);
+    }
   }
 }

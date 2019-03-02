@@ -44,7 +44,7 @@ public final class Bloom extends PostProcessorEffect {
     threshold = new Threshold();
     combine = new Combine();
 
-    setSettings(new Settings("default", 2, 0.277f, 1f, .85f, 1.1f, .85f));
+    setSettings(new Settings("default", 2, 0.277f, 1f, 1f, 1.1f, .85f));
   }
 
   @Override

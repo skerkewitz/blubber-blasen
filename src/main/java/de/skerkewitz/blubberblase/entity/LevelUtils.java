@@ -60,7 +60,8 @@ public class LevelUtils {
   public static boolean isLevelCleared(World world) {
     return world.getEntityContainer()
             .stream()
-            .filter(Entity::isAlive).noneMatch(entity -> {
+            .filter(Entity::isAlive)
+            .noneMatch(entity -> {
               if (entity.hasComponent(EnemyComponent.class)) {
                 return true;
               }

@@ -11,4 +11,5 @@ public interface Bubble {
 
   int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.25);
 
+  int MAX_LIFETIME_BEFORE_BURST = TimeUtil.secondsToTickTime(5);
 }
