@@ -69,7 +69,7 @@ public class TitleScreen implements Screen {
     spriteBatch.begin();
     sprite.draw(spriteBatch);
 
-    font.draw(spriteBatch, "Insert coin to start", 128, 182, 0.01f, Align.center, false);
+    font.draw(spriteBatch, "Press space to start", 128, 182, 0.01f, Align.center, false);
     spriteBatch.end();
   }
 
