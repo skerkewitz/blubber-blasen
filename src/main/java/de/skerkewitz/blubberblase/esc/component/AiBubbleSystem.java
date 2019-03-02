@@ -40,10 +40,10 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
 
   private void handleNormalBubble(int tickTime, World world, Tuple t) {
 
-    final AiBubbleComponent aiBubbleComponent = t.aiBubbleComponent;
+    final StateBaseBubbleComponent aiBubbleComponent = t.aiBubbleComponent;
     final TransformComponent transformComponent = t.transformComponent;
 
-    if (aiBubbleComponent.state == AiBubbleComponent.State.SHOOT) {
+    if (aiBubbleComponent.state == StateBaseBubbleComponent.State.SHOOT) {
       /* Check for collisions with enemy. */
       final CollisionComponent collisionComponent = t.entity.getComponent(CollisionComponent.class);
 
@@ -63,9 +63,9 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
         }
       }
 
-      if (aiBubbleComponent.getStateTime(tickTime) > 2 * 4) {
+      if (aiBubbleComponent.getStateAge(tickTime) > 2 * 4) {
         collisionComponent.removeCollideWithLayer(CollisionComponent.Layer.ENEMY);
-        aiBubbleComponent.setState(tickTime, AiBubbleComponent.State.FLOAT);
+        aiBubbleComponent.setState(tickTime, StateBaseBubbleComponent.State.FLOAT);
 
         final MovementComponent movementComponent = t.movementComponent;
         movementComponent.setMovementDirection(MoveDirection.Up, tickTime);
@@ -104,6 +104,8 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       if (player.isPresent()) {
         t.entity.expired();
         sfxBurstTrapBubble.play();
+        //world.addEntity(EntityFactory.spawnDiamond(tickTime, t.transformComponent.position));
+        world.addEntity(EntityFactory.spawnThrownEnemy(tickTime, t.transformComponent.position, player.get().getComponent(PlayerComponent.class).movingDir));
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());
@@ -115,11 +117,11 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;
-    AiBubbleComponent aiBubbleComponent;
+    StateBaseBubbleComponent aiBubbleComponent;
     TransformComponent transformComponent;
     MovementComponent movementComponent;
 
-    Tuple(Entity entity, TransformComponent transformComponent, MovementComponent movementComponent, AiBubbleComponent aiBubbleComponent) {
+    Tuple(Entity entity, TransformComponent transformComponent, MovementComponent movementComponent, StateBaseBubbleComponent aiBubbleComponent) {
       this.entity = entity;
       this.transformComponent = transformComponent;
       this.movementComponent = movementComponent;
@@ -132,7 +134,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
     public Tuple map(Entity entity) {
       var movementComponent = entity.getComponent(MovementComponent.class);
       var transformComponent = entity.getComponent(TransformComponent.class);
-      var aiComponent = entity.getComponent(AiBubbleComponent.class);
+      var aiComponent = entity.getComponent(StateBaseBubbleComponent.class);
       if (movementComponent != null && transformComponent != null && aiComponent != null) {
         return new Tuple(entity, transformComponent, movementComponent, aiComponent);
       } else {

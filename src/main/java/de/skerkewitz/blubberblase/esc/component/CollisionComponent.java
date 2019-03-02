@@ -46,7 +46,8 @@ public class CollisionComponent implements Component {
     PLAYER,
     BUBBLE,
     TRAP_BUBBLE,
-    ENEMY
+    ENEMY,
+    BONUS
   }
 
   public boolean removeCollideWithLayer(Layer layer) {

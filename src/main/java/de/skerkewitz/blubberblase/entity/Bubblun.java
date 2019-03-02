@@ -1,8 +1,8 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
+import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.common.Square2i16;
-import de.skerkewitz.enora2d.common.TimeUtil;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;

@@ -5,9 +5,11 @@ import java.util.Objects;
 public final class NamedResource {
 
   public final String name;
+  public final SpriteSheet sheet;
 
-  public NamedResource(String name) {
+  public NamedResource(String name, SpriteSheet sheet) {
     this.name = name;
+    this.sheet = sheet;
   }
 
   @Override

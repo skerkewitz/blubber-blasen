@@ -1,4 +1,4 @@
-package de.skerkewitz.enora2d.common;
+package de.skerkewitz.blubberblase.util;
 
 public class TimeUtil {
   public static final double TARGET_FPS = 60D;
@@ -13,5 +13,9 @@ public class TimeUtil {
 
   public static int secondsToTickTime(double seconds) {
     return (int) (seconds * TARGET_FPS);
+  }
+
+  public static int randomSecondsToTickTime(double seconds) {
+    return (int) ((seconds * TARGET_FPS) * Math.random());
   }
 }

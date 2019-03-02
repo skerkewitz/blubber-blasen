@@ -1,9 +1,9 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.GameContext;
-import de.skerkewitz.blubberblase.esc.component.AiBubbleComponent;
 import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
 import de.skerkewitz.blubberblase.esc.component.EnemyComponent;
+import de.skerkewitz.blubberblase.esc.component.StateBaseBubbleComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
@@ -66,9 +66,9 @@ public class LevelUtils {
                 return true;
               }
 
-              AiBubbleComponent component = entity.getComponent(AiBubbleComponent.class);
+              StateBaseBubbleComponent component = entity.getComponent(StateBaseBubbleComponent.class);
               if (component != null) {
-                return component.type == AiBubbleComponent.Type.TRAP;
+                return component.type == StateBaseBubbleComponent.Type.TRAP;
               }
 
               return false;

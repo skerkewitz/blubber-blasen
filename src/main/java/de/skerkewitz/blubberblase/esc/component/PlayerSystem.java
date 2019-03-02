@@ -48,7 +48,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
       t.playerComponent.lastBubbleSpawnTime = tickTime;
       var offsetX = t.playerComponent.movingDir == MoveDirection.Left ? -8 : +8;
       Point2f position = new Point2f(transformComponent.position.x + offsetX, transformComponent.position.y - 8);
-      world.addEntity(EntityFactory.spawnBubble(tickTime, position, t.playerComponent.movingDir, AiBubbleComponent.State.SHOOT));
+      world.addEntity(EntityFactory.spawnBubble(tickTime, position, t.playerComponent.movingDir, StateBaseBubbleComponent.State.SHOOT));
       sfxShootBubble.play();
     }
 

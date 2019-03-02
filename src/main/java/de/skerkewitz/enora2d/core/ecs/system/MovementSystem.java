@@ -1,7 +1,7 @@
 package de.skerkewitz.enora2d.core.ecs.system;
 
-import de.skerkewitz.blubberblase.esc.component.AiBubbleComponent;
 import de.skerkewitz.blubberblase.esc.component.MovementComponent;
+import de.skerkewitz.blubberblase.esc.component.StateBaseBubbleComponent;
 import de.skerkewitz.blubberblase.esc.component.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.Entity;
@@ -78,7 +78,7 @@ public class MovementSystem {
     static Tuple map(Entity entity) {
       var movementComponent = entity.getComponent(MovementComponent.class);
       var transformComponent = entity.getComponent(TransformComponent.class);
-      if (movementComponent != null && transformComponent != null && entity.hasComponent(AiBubbleComponent.class)) {
+      if (movementComponent != null && transformComponent != null && entity.hasComponent(StateBaseBubbleComponent.class)) {
         return new Tuple(entity, transformComponent, movementComponent);
       } else {
         return null;

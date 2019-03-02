@@ -1,6 +1,6 @@
 package de.skerkewitz.blubberblase.esc.component;
 
-import de.skerkewitz.enora2d.common.TimeUtil;
+import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.ecs.Component;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 
