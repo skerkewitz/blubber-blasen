@@ -69,7 +69,9 @@ public class TitleScreen implements Screen {
     spriteBatch.begin();
     sprite.draw(spriteBatch);
 
-    font.draw(spriteBatch, "Press space to start", 128, 182, 0.01f, Align.center, false);
+    if (((tickTime / 15) % 2 == 0) || (tickTime / 300 % 2 == 0)) {
+      font.draw(spriteBatch, "Press space to start", 128, 182, 0.01f, Align.center, false);
+    }
     spriteBatch.end();
   }
 
