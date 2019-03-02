@@ -35,7 +35,7 @@ public class EntityFactory {
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
     entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -12, 12, 13)));
-    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.TRAP_BUBBLE, CollisionComponent.Layer.ENEMY)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.PLAYER), EnumSet.of(CollisionComponent.Layer.BUBBLE, CollisionComponent.Layer.TRAP_BUBBLE, CollisionComponent.Layer.ENEMY, CollisionComponent.Layer.BONUS)));
     AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
 //    animationComponent.animation = ANIMATION_IDLE;
 //    animationComponent.currentAnimationStartTimeTick = 0;
@@ -56,7 +56,7 @@ public class EntityFactory {
     entity.addComponent(new StateBaseBubbleComponent(tickTime, state, StateBaseBubbleComponent.Type.NORMAL, false));
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, moveDirection, state == StateBaseBubbleComponent.State.SHOOT ? 4 : 1));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -6, 12, 12)));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
@@ -74,7 +74,7 @@ public class EntityFactory {
     entity.addComponent(new StateBaseBubbleComponent(tickTime, StateBaseBubbleComponent.State.FLOAT, StateBaseBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, TrapBubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, 0.3f));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -6, 12, 12)));
     entity.addComponent(new AnimationComponent(0, TrapBubble.IDLE, false));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 
@@ -89,9 +89,11 @@ public class EntityFactory {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new SpriteComponent());
+    entity.addComponent(new BonusItemComponent());
     entity.addComponent(new LifeTimeComponent(tickTime, BonusDiamond.MAX_LIFETIME_IN_TICKS));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
-//    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -10, 13, 11)));
+    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BONUS), EnumSet.of(CollisionComponent.Layer.PLAYER)));
+
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 2 * 8, 16, 16), Ressources.SpriteSheet);

@@ -3,7 +3,7 @@ package de.skerkewitz.blubberblase;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.esc.component.*;
-import de.skerkewitz.enora2d.common.TimeUtil;
+import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
@@ -21,7 +21,7 @@ public class MainWorld extends World {
   private CollisionSystem collisionComponent = new CollisionSystem();
   private PlayerSystem playerSystem = new PlayerSystem();
   private ThrownEnemySystem thrownEnemySystem = new ThrownEnemySystem();
-
+  private BonusItemSystem bonusItemSystem = new BonusItemSystem();
 
   private InputSystem inputSystem = new InputSystem();
 
@@ -65,6 +65,7 @@ public class MainWorld extends World {
 
     playerSystem.update(tickTime, this, entityContainer.stream(), context);
     thrownEnemySystem.update(tickTime, this, entityContainer.stream(), context);
+    bonusItemSystem.update(tickTime, this, entityContainer.stream(), context);
 
     animationSystem.update(tickTime, this, entityContainer.stream(), context);
   }

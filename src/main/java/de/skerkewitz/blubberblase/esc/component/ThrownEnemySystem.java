@@ -35,7 +35,7 @@ public class ThrownEnemySystem extends BaseComponentSystem<ThrownEnemySystem.Tup
   private void handleThrownEnemyIfKicked(int tickTime, Tuple t, World world, GameContext context) {
 
     /* Time to switch state? */
-    if (t.thrownEnemyComponent.getStateAge(tickTime) > ThrownEnemy.KICKED_TIME) {
+    if (t.thrownEnemyComponent.getStateAge(tickTime) > t.thrownEnemyComponent.maxKickeTime) {
       t.thrownEnemyComponent.setState(tickTime, ThrownEnemyComponent.State.FALL);
       t.entity.addComponent(new GroundDataComponent(-4, 4, 0));
       return;

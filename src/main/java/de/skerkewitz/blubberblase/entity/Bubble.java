@@ -1,6 +1,6 @@
 package de.skerkewitz.blubberblase.entity;
 
-import de.skerkewitz.enora2d.common.TimeUtil;
+import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 
 public interface Bubble {

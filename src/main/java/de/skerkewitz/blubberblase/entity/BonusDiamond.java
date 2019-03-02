@@ -1,6 +1,6 @@
 package de.skerkewitz.blubberblase.entity;
 
-import de.skerkewitz.enora2d.common.TimeUtil;
+import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.gfx.RgbColorPalette;
 
 public interface BonusDiamond {
@@ -10,7 +10,7 @@ public interface BonusDiamond {
   /**
    * Will never be remove by the lifecycle system.
    */
-  int MAX_LIFETIME_IN_TICKS = 200;
+  int MAX_LIFETIME_IN_TICKS = TimeUtil.secondsToTickTime(10.0f);
 
   int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.1);
 
