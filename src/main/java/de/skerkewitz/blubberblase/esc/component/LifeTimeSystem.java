@@ -1,10 +1,13 @@
 package de.skerkewitz.blubberblase.esc.component;
 
 import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.blubberblase.util.LifeTimeUtil;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
+
+import java.util.stream.Stream;
 
 /**
  * A system to render all SpriteComponents.
@@ -16,10 +19,16 @@ public class LifeTimeSystem extends BaseComponentSystem<LifeTimeSystem.Tuple, Li
   }
 
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
-    t.lifetimeComponent.lifeTimeTC++;
-    if (t.lifetimeComponent.maxLifeTimeTC > 0 && t.lifetimeComponent.lifeTimeTC > t.lifetimeComponent.maxLifeTimeTC) {
+
+    int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.lifetimeComponent);
+    if (ageFrameCount > t.lifetimeComponent.maxLifeTimeFrameCount) {
       t.entity.expired();
     }
+  }
+
+  @Override
+  public Stream<Tuple> getTuples(Stream<Entity> stream) {
+    return super.getTuples(stream).filter(t -> t.lifetimeComponent.maxLifeTimeFrameCount >= 0);
   }
 
   /**

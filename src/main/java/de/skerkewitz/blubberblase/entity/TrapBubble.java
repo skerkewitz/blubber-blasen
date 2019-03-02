@@ -11,7 +11,10 @@ public interface TrapBubble {
 
   int COLOR_PALETTE = RgbColorPalette.mergeColorCodes(RgbColorPalette.NONE, RgbColorPalette.BLACK, 533, RgbColorPalette.GREEN);
 
-  int MAX_LIFETIME_IN_TICKS = TimeUtil.secondsToTickTime(7);
+  /**
+   * Will never be remove by the lifecycle system.
+   */
+  int MAX_LIFETIME_IN_TICKS = -1;
 
   int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.1);
 

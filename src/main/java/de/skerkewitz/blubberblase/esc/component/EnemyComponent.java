@@ -16,5 +16,9 @@ public class EnemyComponent implements Component {
   public boolean gapJump = false;
   public boolean walkOverEdge = false;
 
-  public boolean isAngry = false;
+  public boolean isAngry;
+
+  public EnemyComponent(boolean isAngry) {
+    this.isAngry = isAngry;
+  }
 }

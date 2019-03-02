@@ -3,7 +3,10 @@ package de.skerkewitz.blubberblase.esc.component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.blubberblase.entity.Bubble;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
+import de.skerkewitz.blubberblase.entity.GamePlay;
+import de.skerkewitz.blubberblase.util.LifeTimeUtil;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
@@ -72,6 +75,23 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
   }
 
   private void handleTrapBubble(int tickTime, World world, Tuple t) {
+
+    /* Check if we need to burst the bubble */
+    final int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.entity.getComponent(LifeTimeComponent.class));
+
+    /* Should it blink. */
+    t.entity.getComponent(SpriteComponent.class).visible = true;
+    if (ageFrameCount > Bubble.MAX_LIFETIME_BEFORE_BURST - GamePlay.PRE_ACTION_INDICATION_FRAMECOUNT) {
+      t.entity.getComponent(SpriteComponent.class).visible = tickTime / 10 % 2 == 0;
+    }
+
+
+    /* Did it burst? */
+    if (ageFrameCount > Bubble.MAX_LIFETIME_BEFORE_BURST) {
+      t.entity.expired();
+      world.addEntity(EntityFactory.spawnZenChan(t.transformComponent.position, tickTime, MoveDirection.Left, true));
+      return;
+    }
 
     /* Check for collisions with enemy. */
     final CollisionComponent collisionComponent = t.entity.getComponent(CollisionComponent.class);

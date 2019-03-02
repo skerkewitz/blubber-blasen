@@ -1,6 +1,5 @@
 package de.skerkewitz.blubberblase.esc.component;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +12,7 @@ import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 
-import java.io.IOException;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 /**
@@ -47,28 +46,24 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   }
 
   @Override
-  public void execute(int tickTime, Tuple tuple, World world, GameContext context) {
-    TransformComponent transformComponent = tuple.transformComponent;
-    SpriteComponent spriteComponent = tuple.spriteComponent;
-    try {
-      Sprite sprite = textureContainer.getTextureNamedResourceAndPalette(spriteComponent.renderSprite.namedResource, spriteComponent.colorPalette, imageDataContainer);
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
-      final Point2f pos = transformComponent.position.plus(spriteComponent.pivotPoint);
-      sprite.setSize(16, 16);
-      sprite.setPosition(pos.x, pos.y);
-      sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, 16, 16);
-      sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
-      sprite.draw(spriteBatch);
+    SpriteComponent spriteComponent = t.spriteComponent;
+    Sprite sprite = textureContainer.getTextureNamedResourceAndPalette(spriteComponent.renderSprite.namedResource, spriteComponent.colorPalette, imageDataContainer);
 
-      //      Renderer.renderSubImage(imageData, sprite.renderSprite.rect, sprite.colorPalette,
-//              screen.screenImageData, transformComponent.position.plus(sprite.pivotPoint), sprite.flipX, sprite.flipY);
-    } catch (IOException e) {
-      Gdx.app.error(this.getClass().getSimpleName(), "Error rendering sprite because of: " + e, e);
-    }
+    final Point2f pos = t.transformComponent.position.plus(spriteComponent.pivotPoint);
+    sprite.setSize(spriteComponent.size.x, spriteComponent.size.y);
+    sprite.setPosition(pos.x, pos.y);
+    sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, spriteComponent.size.x, spriteComponent.size.y);
+    sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
+    sprite.draw(spriteBatch);
   }
 
   public Stream<Tuple> getTuples(Stream<Entity> stream) {
-    return super.getTuples(stream).filter(tuple -> tuple.spriteComponent.renderSprite != null);
+    return super.getTuples(stream)
+            .filter(tuple -> tuple.spriteComponent.renderSprite != null)
+            .filter(tuple -> tuple.spriteComponent.visible)
+            .sorted(Comparator.comparingInt(o -> o.spriteComponent.priority));
   }
 
   @Override

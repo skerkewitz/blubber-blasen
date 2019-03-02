@@ -15,6 +15,12 @@ import java.util.EnumSet;
 
 public class EntityFactory {
 
+  private final static byte SPRITE_PRIORITY_BUBBLE = 0;
+  private final static byte SPRITE_PRIORITY_TRAP_BUBBLE = 1;
+  private final static byte SPRITE_PRIORITY_ENEMY = 2;
+  private final static byte SPRITE_PRIORITY_PLAYER = 3;
+
+
 
   public static Entity spawnBubblun(InputHandler inputHandler) {
 
@@ -37,6 +43,7 @@ public class EntityFactory {
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = Bubblun.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -15);
+    spriteComponent.priority = SPRITE_PRIORITY_PLAYER;
 //    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25* 8, 16, 16), new ImageData("/sprite_sheet.png"));
     return entity;
   }
@@ -55,6 +62,7 @@ public class EntityFactory {
     spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
     spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet);
     spriteComponent.pivotPoint = new Point2i(-8, -8);
+    spriteComponent.priority = SPRITE_PRIORITY_BUBBLE;
     return entity;
   }
 
@@ -72,15 +80,16 @@ public class EntityFactory {
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = TrapBubble.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -8);
+    spriteComponent.priority = SPRITE_PRIORITY_TRAP_BUBBLE;
     return entity;
   }
 
-  public static Entity spawnZenChan(Point2f position, int tickTime, MoveDirection movingDir) {
+  public static Entity spawnZenChan(Point2f position, int tickTime, MoveDirection movingDir, boolean isAngry) {
 
     Entity entity = newEntity();
 
     entity.addComponent(new TransformComponent(position));
-    entity.addComponent(new EnemyComponent());
+    entity.addComponent(new EnemyComponent(isAngry));
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, false));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -14, 12, 15)));
@@ -90,6 +99,7 @@ public class EntityFactory {
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.COLOR_PALETTE;
     spriteComponent.pivotPoint = new Point2i(-8, -15);
+    spriteComponent.priority = SPRITE_PRIORITY_ENEMY;
 
     entity.addComponent(new MovementComponent(tickTime, movingDir, 1));
 

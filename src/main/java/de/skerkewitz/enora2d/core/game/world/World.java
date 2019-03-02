@@ -28,7 +28,7 @@ public abstract class World {
     spawnSheduler.spawnEntities(tickTime, this);
   }
 
-  protected int getWorldFrameCount(int tickTime) {
+  public int getWorldFrameCount(int tickTime) {
     return tickTime - levelStartFrameCount;
   }
 
