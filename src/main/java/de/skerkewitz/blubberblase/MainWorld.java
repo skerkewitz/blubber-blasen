@@ -12,6 +12,7 @@ import de.skerkewitz.enora2d.core.game.world.World;
 public class MainWorld extends World {
 
 
+  private final GameConfig config;
   private AirflowSystem airflowSystem = new AirflowSystem();
   private AiBubbleSystem aiBubbleSystem = new AiBubbleSystem();
   private AiEnemySystem aiEnemySystem = new AiEnemySystem();
@@ -37,13 +38,14 @@ public class MainWorld extends World {
 
   public MainWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
     super(staticMapContent, frameCount);
+    this.config = config;
   }
 
   public void tick(int tickTime, GameContext context) {
 
     super.tick(tickTime, context);
 
-    if (getWorldFrameCount(tickTime) > hurryUpTimeLimitInFrameCount && !hurryMode) {
+    if (getWorldFrameCount(tickTime) > hurryUpTimeLimitInFrameCount && !hurryMode && config.noNextLevel) {
       hurryUp.play();
       hurryMode = true;
 

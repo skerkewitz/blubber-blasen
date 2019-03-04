@@ -74,7 +74,7 @@ public class EntityFactory {
     entity.addComponent(new StateBaseBubbleComponent(tickTime, StateBaseBubbleComponent.State.FLOAT, StateBaseBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, TrapBubble.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, Bubble.TRAPPED_SPEED));
-    entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -6, 12, 12)));
+    entity.addComponent(new BoundingBoxComponent(new Rect2i(-4, -4, 8, 8)));
     entity.addComponent(new AnimationComponent(0, TrapBubble.IDLE, false));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 

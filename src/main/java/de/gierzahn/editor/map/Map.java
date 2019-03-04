@@ -26,5 +26,6 @@ public class Map {
 
   public final BaseMapLayer staticMapLayer = new BaseMapLayer(NUM_TILES_HORIZONTAL, NUM_TILES_VERTICAL);
   public final BaseMapLayer airflowMapLayer = new BaseMapLayer(NUM_TILES_HORIZONTAL, NUM_TILES_VERTICAL);
+  public final EnemyBaseMapLayer enemyMapLayer = new EnemyBaseMapLayer(NUM_TILES_HORIZONTAL, NUM_TILES_VERTICAL);
 
 }

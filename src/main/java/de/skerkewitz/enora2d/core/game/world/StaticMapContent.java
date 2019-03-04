@@ -1,10 +1,13 @@
 package de.skerkewitz.enora2d.core.game.world;
 
 import de.gierzahn.editor.map.AirflowDirection;
+import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.gierzahn.editor.map.Map;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 import de.skerkewitz.enora2d.core.game.world.tiles.TileContainer;
+
+import java.util.ArrayList;
 
 public class StaticMapContent {
 
@@ -53,5 +56,9 @@ public class StaticMapContent {
     }
 
     return AirflowDirection.fromCode(map.airflowMapLayer.getAt(p.x, p.y));
+  }
+
+  public ArrayList<EnemyBaseMapLayer.Enemy> getEnemySpawnList() {
+    return map.enemyMapLayer.toEnemyList();
   }
 }
