@@ -2,13 +2,11 @@ package de.skerkewitz.enora2d.core.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import de.skerkewitz.enora2d.core.game.world.tiles.TileContainer;
-import org.apache.commons.io.IOUtils;
+import de.gierzahn.editor.map.Map;
+import de.gierzahn.editor.map.io.DefaultMapReader;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class StaticMapContentLoader {
 
@@ -29,41 +27,11 @@ public class StaticMapContentLoader {
     Gdx.app.log(StaticMapContentLoader.class.getSimpleName(), "Loading level " + levelNum);
 
     final String padded = StringUtils.leftPad("" + levelNum, 2, "0");
-    FileHandle internal = Gdx.files.internal("level/level" + padded + ".txt");
-    List<String> strings = IOUtils.readLines(internal.read(), StandardCharsets.UTF_8);
+    FileHandle internal = Gdx.files.internal("level/round" + padded + ".map");
 
-    byte tileId = TileContainer.BB_STONE.getId();
-    switch (levelNum) {
-      case 2:
-        tileId = TileContainer.BB_LEVEL2_STONE.getId();
-        break;
-      case 3:
-        tileId = TileContainer.BB_LEVEL3_STONE.getId();
-        break;
-    }
+    DefaultMapReader defaultMapReader = new DefaultMapReader();
+    Map map = defaultMapReader.read(internal.read());
 
-    /* Ignore topline. */
-    strings = strings.subList(1, strings.size());
-
-    var tileWidth = StaticMapContent.WIDTH / 8;
-    var tileHeight = StaticMapContent.HEIGHT / 8;
-    var tiles = new byte[tileWidth * tileHeight];
-
-    for (int y = 0; y < tileHeight; y++) {
-      var l = strings.get(y);
-      for (int x = 0; x < tileWidth; x++) {
-        int index = x + y * tileWidth;
-        switch (l.charAt(x)) {
-          case '#':
-            tiles[index] = tileId;
-            break;
-          default:
-            tiles[index] = TileContainer.VOID.getId();
-            break;
-        }
-      }
-    }
-
-    return new StaticMapContent(tiles);
+    return new StaticMapContent(map);
   }
 }

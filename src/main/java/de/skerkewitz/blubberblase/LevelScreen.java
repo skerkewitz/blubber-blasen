@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
-import de.skerkewitz.blubberblase.esc.component.RenderDebugSystem;
-import de.skerkewitz.blubberblase.esc.component.RenderSpriteSystem;
+import de.skerkewitz.blubberblase.esc.RenderDebugSystem;
+import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;
 import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
@@ -88,6 +88,10 @@ public class LevelScreen implements Screen {
     }
 
     if (tickTime % 10 != 0) {
+      return ScreenAction.None;
+    }
+
+    if (config.noNextLevel) {
       return ScreenAction.None;
     }
 

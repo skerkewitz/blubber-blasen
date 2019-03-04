@@ -1,10 +1,10 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.GameContext;
-import de.skerkewitz.blubberblase.esc.component.BoundingBoxComponent;
-import de.skerkewitz.blubberblase.esc.component.EnemyComponent;
-import de.skerkewitz.blubberblase.esc.component.StateBaseBubbleComponent;
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.esc.BoundingBoxComponent;
+import de.skerkewitz.blubberblase.esc.EnemyComponent;
+import de.skerkewitz.blubberblase.esc.StateBaseBubbleComponent;
+import de.skerkewitz.blubberblase.esc.TransformComponent;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;

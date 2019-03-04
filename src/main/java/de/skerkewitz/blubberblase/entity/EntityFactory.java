@@ -1,7 +1,7 @@
 package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
-import de.skerkewitz.blubberblase.esc.component.*;
+import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -73,7 +73,7 @@ public class EntityFactory {
     entity.addComponent(new SpriteComponent());
     entity.addComponent(new StateBaseBubbleComponent(tickTime, StateBaseBubbleComponent.State.FLOAT, StateBaseBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, TrapBubble.MAX_LIFETIME_IN_TICKS));
-    entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, 0.3f));
+    entity.addComponent(new MovementComponent(tickTime, MoveDirection.Up, Bubble.TRAPPED_SPEED));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -6, 12, 12)));
     entity.addComponent(new AnimationComponent(0, TrapBubble.IDLE, false));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
