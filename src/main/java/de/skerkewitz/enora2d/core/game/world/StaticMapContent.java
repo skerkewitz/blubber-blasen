@@ -1,22 +1,28 @@
 package de.skerkewitz.enora2d.core.game.world;
 
+import de.gierzahn.editor.map.AirflowDirection;
+import de.gierzahn.editor.map.EnemyBaseMapLayer;
+import de.gierzahn.editor.map.Map;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
 import de.skerkewitz.enora2d.core.game.world.tiles.TileContainer;
 
+import java.util.ArrayList;
+
 public class StaticMapContent {
 
-  public static final int WIDTH = 256;
-  public static final int HEIGHT = 200;
+  public static final int WIDTH = Map.NUM_TILES_HORIZONTAL * Map.TILE_WIDTH;
+  public static final int HEIGHT = Map.NUM_TILES_VERTICAL * Map.TILE_HEIGHT;
 
   public int tileWidth;
   public int tileHeight;
-  private byte[] tiles;
 
-  protected StaticMapContent(byte[] tiles) {
+  private Map map;
+
+  protected StaticMapContent(Map map) {
     this.tileWidth = WIDTH / 8;
     this.tileHeight = HEIGHT / 8;
-    this.tiles = tiles;
-//    this.generateLevel();
+    this.map = map;
   }
 
   /**
@@ -27,7 +33,12 @@ public class StaticMapContent {
       return TileContainer.VOID;
     }
 
-    return TileContainer.tiles[tiles[x + y * tileWidth]];
+    int content = map.staticMapLayer.getAt(x, y);
+    if (content == 0) {
+      return TileContainer.VOID;
+    }
+
+    return TileContainer.BB_STONE;
   }
 
   public boolean isSolidGround(int x, int y) {
@@ -37,5 +48,17 @@ public class StaticMapContent {
     }
 
     return getTile(x, y).isSolid();
+  }
+
+  public AirflowDirection getAirflowAt(Point2i p) {
+    if (0 > p.x || p.x >= tileWidth || 0 > p.y || p.y >= tileHeight) {
+      return AirflowDirection.Empty;
+    }
+
+    return AirflowDirection.fromCode(map.airflowMapLayer.getAt(p.x, p.y));
+  }
+
+  public ArrayList<EnemyBaseMapLayer.Enemy> getEnemySpawnList() {
+    return map.enemyMapLayer.toEnemyList();
   }
 }

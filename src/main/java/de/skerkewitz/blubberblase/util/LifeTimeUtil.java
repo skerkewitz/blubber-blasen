@@ -1,6 +1,6 @@
 package de.skerkewitz.blubberblase.util;
 
-import de.skerkewitz.blubberblase.esc.component.LifeTimeComponent;
+import de.skerkewitz.blubberblase.esc.LifeTimeComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 public class LifeTimeUtil {

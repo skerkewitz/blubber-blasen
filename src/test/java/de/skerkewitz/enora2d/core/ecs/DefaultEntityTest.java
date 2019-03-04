@@ -1,6 +1,6 @@
 package de.skerkewitz.enora2d.core.ecs;
 
-import de.skerkewitz.blubberblase.esc.component.TransformComponent;
+import de.skerkewitz.blubberblase.esc.TransformComponent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

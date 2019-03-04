@@ -4,15 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
-import de.skerkewitz.blubberblase.esc.component.RenderDebugSystem;
-import de.skerkewitz.blubberblase.esc.component.RenderSpriteSystem;
+import de.skerkewitz.blubberblase.esc.RenderDebugSystem;
+import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;
 import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
+import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.game.world.tiles.BasicTile;
@@ -22,6 +24,7 @@ import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LevelScreen implements Screen {
 
@@ -47,7 +50,8 @@ public class LevelScreen implements Screen {
   }
 
   public static World loadWorldOfLevel(int frameCount, GameConfig config, int level) {
-    var world = new MainWorld(config, StaticMapContentLoader.load(level), frameCount);
+    StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
+    var world = new MainWorld(config, staticMapContent, frameCount);
 
 //    Controller first = Controllers.getControllers().first();
 //    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
@@ -55,28 +59,12 @@ public class LevelScreen implements Screen {
 
     world.addPlayer(EntityFactory.spawnBubblun(handler));
 
-    switch (level) {
-      case 1:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount, MoveDirection.Right, false));
-        world.prepareSpawnAtTime(frameCount + 21, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount, MoveDirection.Right, false));
-        world.prepareSpawnAtTime(frameCount + 41, EntityFactory.spawnZenChan(new Point2f(15 * 8, 4 * 8), frameCount, MoveDirection.Right, false));
-        break;
-      case 2:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8), frameCount, MoveDirection.Left, false));
-        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(14 * 8, 2 * 8), frameCount, MoveDirection.Left, false));
-        world.prepareSpawnAtTime(frameCount + 31, EntityFactory.spawnZenChan(new Point2f(18 * 8, 2 * 8), frameCount, MoveDirection.Right, false));
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(20 * 8, 4 * 8), frameCount, MoveDirection.Right, false));
-        break;
-      case 3:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(8 * 8, 4 * 8), frameCount, MoveDirection.Right, false));
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(12 * 8, 2 * 8), frameCount, MoveDirection.Right, false));
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(20 * 8, 2 * 8), frameCount, MoveDirection.Left, false));
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(24 * 8, 4 * 8), frameCount, MoveDirection.Left, false));
-        break;
-      default:
-        world.prepareSpawnAtTime(frameCount + 1, EntityFactory.spawnZenChan(new Point2f(12 * 8, 4 * 8), frameCount, MoveDirection.Left, false));
+    ArrayList<EnemyBaseMapLayer.Enemy> enemySpawnList = staticMapContent.getEnemySpawnList();
+    for (EnemyBaseMapLayer.Enemy enemy : enemySpawnList) {
+      Point2f position = new Point2f((enemy.x * 8) + 8, (enemy.y * 8) + 12);
+      MoveDirection moveDirection = enemy.isLookingLeft ? MoveDirection.Left : MoveDirection.Right;
+      world.prepareSpawnAtTime(frameCount, EntityFactory.spawnZenChan(position, frameCount, moveDirection, false));
     }
-
     return world;
   }
 
@@ -88,6 +76,10 @@ public class LevelScreen implements Screen {
     }
 
     if (tickTime % 10 != 0) {
+      return ScreenAction.None;
+    }
+
+    if (config.noNextLevel) {
       return ScreenAction.None;
     }
 

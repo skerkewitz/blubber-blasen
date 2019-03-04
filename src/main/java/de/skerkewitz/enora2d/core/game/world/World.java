@@ -1,6 +1,9 @@
 package de.skerkewitz.enora2d.core.game.world;
 
+import de.gierzahn.editor.map.AirflowDirection;
 import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.enora2d.common.Point2f;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.EntityContainer;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
@@ -128,5 +131,14 @@ public abstract class World {
     }
 
     return !staticMapContent.getTile(tx, ty - 6).isSolid();
+  }
+
+  public Point2i convertWorldToTileSpace(Point2f pos) {
+    return new Point2i((int) (pos.x) >> 3, (int) (pos.y) >> 3);
+  }
+
+  public AirflowDirection getAirflowAt(Point2f position) {
+    var tilePos = convertWorldToTileSpace(position);
+    return staticMapContent.getAirflowAt(tilePos);
   }
 }

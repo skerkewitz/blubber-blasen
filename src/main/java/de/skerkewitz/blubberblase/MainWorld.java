@@ -2,9 +2,9 @@ package de.skerkewitz.blubberblase;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import de.skerkewitz.blubberblase.esc.component.*;
+import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.blubberblase.util.TimeUtil;
-import de.skerkewitz.enora2d.core.ecs.system.MovementSystem;
+import de.skerkewitz.enora2d.core.ecs.system.AirflowSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
@@ -12,7 +12,8 @@ import de.skerkewitz.enora2d.core.game.world.World;
 public class MainWorld extends World {
 
 
-  private MovementSystem movementSystem = new MovementSystem();
+  private final GameConfig config;
+  private AirflowSystem airflowSystem = new AirflowSystem();
   private AiBubbleSystem aiBubbleSystem = new AiBubbleSystem();
   private AiEnemySystem aiEnemySystem = new AiEnemySystem();
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
@@ -37,13 +38,14 @@ public class MainWorld extends World {
 
   public MainWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
     super(staticMapContent, frameCount);
+    this.config = config;
   }
 
   public void tick(int tickTime, GameContext context) {
 
     super.tick(tickTime, context);
 
-    if (getWorldFrameCount(tickTime) > hurryUpTimeLimitInFrameCount && !hurryMode) {
+    if (getWorldFrameCount(tickTime) > hurryUpTimeLimitInFrameCount && !hurryMode && config.noNextLevel) {
       hurryUp.play();
       hurryMode = true;
 
@@ -61,7 +63,7 @@ public class MainWorld extends World {
 
     aiBubbleSystem.update(tickTime, this, entityContainer.stream(), context);
     aiEnemySystem.update(tickTime, this, entityContainer.stream(), context);
-    movementSystem.update(tickTime, entityContainer.stream());
+    airflowSystem.update(tickTime, this, entityContainer.stream(), context);
 
     playerSystem.update(tickTime, this, entityContainer.stream(), context);
     thrownEnemySystem.update(tickTime, this, entityContainer.stream(), context);
