@@ -12,6 +12,11 @@ application {
     mainClassName = 'de.skerkewitz.blubberblase.Main'
 }
 
+compileJava {
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
+}
+
 dependencies {
     
     version = '1.0'
