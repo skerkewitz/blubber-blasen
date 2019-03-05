@@ -30,7 +30,7 @@ public class LevelScreen implements Screen {
     this.gameContext.clampLevelNum();
 
     this.config = config;
-    this.world = LevelUtils.loadWorldOfLevel(frameCount, config, gameContext.currentLevelNum, null);
+    this.world = LevelUtils.loadWorld(frameCount, config, gameContext.currentLevelNum, null);
 
     Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
   }

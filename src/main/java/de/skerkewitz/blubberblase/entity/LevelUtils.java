@@ -24,6 +24,9 @@ public class LevelUtils {
 
   public static final int PLAYER1_SPAWN_X = 32;
   public static final int PLAYER1_SPAWN_Y = ((Map.MAX_DOWN) * 8) - 1;
+  public static final Point2i PLAYER_SPAWN_POINT2I = new Point2i(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y);
+
+  public static final Point2f PLAYER1_SPAWN_POINT2F = new Point2f(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y);
 
   public LevelUtils() {
     /* No instance allowed. */
@@ -61,18 +64,17 @@ public class LevelUtils {
     gameContext.currentLevelNum += 1;
     gameContext.clampLevelNum();
 
-    return loadWorldOfLevel(tickTime, config, gameContext.currentLevelNum, previousWorld);
+    return loadWorld(tickTime, config, gameContext.currentLevelNum, previousWorld);
   }
 
-  public static World loadWorldOfLevel(int frameCount, GameConfig config, int level, World previousWorld) {
-    StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
+  public static World loadWorld(int frameCount, GameConfig config, int level, World previousWorld) {
+
+    /* Load the map from file. */
+    final StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
     var world = new MainWorld(config, staticMapContent, frameCount);
 
-//    Controller first = Controllers.getControllers().first();
-//    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
-    InputHandler handler = new GdxKeyboardInputHandler();
 
-    Entity playerEntity = createPlayerEntity(handler, previousWorld);
+    Entity playerEntity = createPlayerEntity(previousWorld);
     world.addPlayer(playerEntity);
 
     ArrayList<EnemyBaseMapLayer.Enemy> enemySpawnList = staticMapContent.getEnemySpawnList();
@@ -87,18 +89,19 @@ public class LevelUtils {
     return world;
   }
 
-  private static Entity createPlayerEntity(InputHandler handler, World previousWorld) {
+  private static Entity createPlayerEntity(World previousWorld) {
+
+    InputHandler handler = new GdxKeyboardInputHandler();
 
     Point2f lastPosition = null;
     if (previousWorld != null) {
       lastPosition = previousWorld.getPlayerEntity().getComponent(TransformComponent.class).position;
     }
 
-    Point2f playerSpawnPosition = (lastPosition == null) ? new Point2f(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y) : lastPosition;
+    Point2f playerSpawnPosition = (lastPosition == null) ? PLAYER1_SPAWN_POINT2F : lastPosition;
     Entity playerEntity = EntityFactory.spawnBubblun(handler, playerSpawnPosition);
 
-    Point2i playerTargetPosition = new Point2i(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y);
-    playerEntity.addComponent(new TargetMoveComponent(playerTargetPosition, 1));
+    playerEntity.addComponent(new TargetMoveComponent(PLAYER_SPAWN_POINT2I, 1));
 
     return playerEntity;
   }
