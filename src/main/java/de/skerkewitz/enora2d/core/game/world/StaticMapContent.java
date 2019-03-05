@@ -70,13 +70,61 @@ public class StaticMapContent {
       return null;
     }
 
+    // OH boy, need to clean this up ASAP! :D
+    final Sprite sprite = tilesetSprite;
+    sprite.setSize(8, 8);
+
     int content = map.staticMapLayer.getAt(x, y);
     if (content == 0) {
+
+      /* Do we have content above? */
+      if (y > 0 && map.staticMapLayer.getAt(x, y - 1) != 0) {
+
+        /* Above and on the left .*/
+        if (x > 0 && map.staticMapLayer.getAt(x - 1, y) != 0) {
+          sprite.setRegion(16, 8, 8, 8);
+          sprite.setFlip(false, true);
+          return sprite;
+        }
+
+        /* Also top left corner? ? */
+        if (x > 0 && y > 0 && map.staticMapLayer.getAt(x - 1, y - 1) != 0) {
+          sprite.setRegion(24, 8, 8, 8);
+          sprite.setFlip(false, true);
+          return sprite;
+        }
+
+        /* Start shadow. */
+        sprite.setRegion(40, 32, 8, 8);
+        sprite.setFlip(false, true);
+        return sprite;
+      }
+
+      /* None above, but on the left? */
+      if (x > 0 && map.staticMapLayer.getAt(x - 1, y) != 0) {
+
+        /* Also top left? */
+        if (x > 0 && y > 0 && map.staticMapLayer.getAt(x - 1, y - 1) != 0) {
+          sprite.setRegion(16, 16, 8, 8);
+          sprite.setFlip(false, true);
+          return sprite;
+        }
+
+        sprite.setRegion(24, 24, 8, 8);
+        sprite.setFlip(false, true);
+        return sprite;
+      }
+
+      /* None above, none on the left but on the top left? */
+      if (x > 0 && y > 0 && map.staticMapLayer.getAt(x - 1, y - 1) != 0) {
+        sprite.setRegion(24, 32, 8, 8);
+        sprite.setFlip(false, true);
+        return sprite;
+      }
+
       return null;
     }
 
-    final Sprite sprite = tilesetSprite;
-    sprite.setSize(8, 8);
 
     if (x == 0 || x == tileWidth - 2) {
       sprite.setRegion(0, y % 2 * 8, 8, 8);
@@ -85,9 +133,6 @@ public class StaticMapContent {
     } else {
       sprite.setRegion(3 * 8, 0, 8, 8);
     }
-
-    sprite.setFlip(false, true);
-
 
     return tilesetSprite;
   }
