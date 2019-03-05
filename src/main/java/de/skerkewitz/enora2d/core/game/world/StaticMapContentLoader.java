@@ -24,6 +24,24 @@ public class StaticMapContentLoader {
     }
   }
 
+  public static class SpriteTileset {
+    Sprite defaultBlock = null;
+
+    Sprite fourBlock_topLeft;
+    Sprite fourBlock_topright;
+    Sprite fourBlock_bottomLeft;
+    Sprite fourBlock_bottomRight;
+
+    Sprite shadow_straightHorizontal;
+    Sprite shadow_straightVertical;
+
+    Sprite shadow_startHorizontal;
+    Sprite shadow_startVertical;
+
+    Sprite shadow_innerCorner;
+    Sprite shadow_outerCorner;
+  }
+
   private static StaticMapContent loadInternal(int levelNum) throws IOException {
 
     Gdx.app.log(StaticMapContentLoader.class.getSimpleName(), "Loading level " + levelNum);
@@ -35,17 +53,42 @@ public class StaticMapContentLoader {
     Map map = defaultMapReader.read(internal.read());
 
     /* Also load the tile set for that level. */
-    final Sprite tilesetSprite = getTilesetSprite(padded);
+    final Texture tilesetTexture = loadTilesetTexture(padded);
 
-    return new StaticMapContent(map, tilesetSprite);
+    SpriteTileset spriteTileset = new SpriteTileset();
+
+    spriteTileset.defaultBlock = getTileSpriteFromTexture(tilesetTexture, 2, 0, 8, 8);
+
+    spriteTileset.fourBlock_topLeft = getTileSpriteFromTexture(tilesetTexture, 0, 0, 8, 8);
+    spriteTileset.fourBlock_topright = getTileSpriteFromTexture(tilesetTexture, 1, 0, 8, 8);
+    spriteTileset.fourBlock_bottomLeft = getTileSpriteFromTexture(tilesetTexture, 0, 1, 8, 8);
+    spriteTileset.fourBlock_bottomRight = getTileSpriteFromTexture(tilesetTexture, 1, 1, 8, 8);
+
+    spriteTileset.shadow_straightHorizontal = getTileSpriteFromTexture(tilesetTexture, 3, 1, 8, 8);
+    spriteTileset.shadow_straightVertical = getTileSpriteFromTexture(tilesetTexture, 2, 2, 8, 8);
+
+    spriteTileset.shadow_startHorizontal = getTileSpriteFromTexture(tilesetTexture, 5, 1, 8, 8);
+    spriteTileset.shadow_startVertical = getTileSpriteFromTexture(tilesetTexture, 4, 0, 8, 8);
+
+    spriteTileset.shadow_innerCorner = getTileSpriteFromTexture(tilesetTexture, 2, 1, 8, 8);
+    spriteTileset.shadow_outerCorner = getTileSpriteFromTexture(tilesetTexture, 4, 1, 8, 8);
+
+    return new StaticMapContent(map, spriteTileset);
   }
 
-  private static Sprite getTilesetSprite(String padded) {
+  private static Sprite getTileSpriteFromTexture(Texture tilesetTexture, int x, int y, int w, int h) {
+    final Sprite sprite = new Sprite(tilesetTexture);
+    sprite.setSize(w, h);
+    sprite.setRegion(x * 8, y * 8, 8, 8);
+    sprite.setFlip(false, true);
+    return sprite;
+  }
+
+  private static Texture loadTilesetTexture(String padded) {
     FileHandle tilesetFileHandle = Gdx.files.internal("level/round" + padded + ".png");
     if (!tilesetFileHandle.exists()) {
       tilesetFileHandle = Gdx.files.internal("level/round01.png");
     }
-    final Texture tilesetTexture = new Texture(tilesetFileHandle);
-    return new Sprite(tilesetTexture);
+    return new Texture(tilesetFileHandle);
   }
 }

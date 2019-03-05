@@ -14,14 +14,14 @@ public class StaticMapContent {
 
   public static final int WIDTH = Map.NUM_TILES_HORIZONTAL * Map.TILE_WIDTH;
   public static final int HEIGHT = Map.NUM_TILES_VERTICAL * Map.TILE_HEIGHT;
-  private final Sprite tilesetSprite;
+  private final StaticMapContentLoader.SpriteTileset tilesetSprite;
 
   public int tileWidth;
   public int tileHeight;
 
   private Map map;
 
-  protected StaticMapContent(Map map, Sprite tilesetSprite) {
+  protected StaticMapContent(Map map, StaticMapContentLoader.SpriteTileset tilesetSprite) {
     this.tilesetSprite = tilesetSprite;
     this.tileWidth = WIDTH / 8;
     this.tileHeight = HEIGHT / 8;
@@ -71,8 +71,6 @@ public class StaticMapContent {
     }
 
     // OH boy, need to clean this up ASAP! :D
-    final Sprite sprite = tilesetSprite;
-    sprite.setSize(8, 8);
 
     int content = map.staticMapLayer.getAt(x, y);
     if (content == 0) {
@@ -82,22 +80,16 @@ public class StaticMapContent {
 
         /* Above and on the left .*/
         if (x > 0 && map.staticMapLayer.getAt(x - 1, y) != 0) {
-          sprite.setRegion(16, 8, 8, 8);
-          sprite.setFlip(false, true);
-          return sprite;
+          return tilesetSprite.shadow_innerCorner;
         }
 
         /* Also top left corner? ? */
         if (x > 0 && y > 0 && map.staticMapLayer.getAt(x - 1, y - 1) != 0) {
-          sprite.setRegion(24, 8, 8, 8);
-          sprite.setFlip(false, true);
-          return sprite;
+          return tilesetSprite.shadow_straightHorizontal;
         }
 
         /* Start shadow. */
-        sprite.setRegion(40, 32, 8, 8);
-        sprite.setFlip(false, true);
-        return sprite;
+        return tilesetSprite.shadow_startHorizontal;
       }
 
       /* None above, but on the left? */
@@ -105,21 +97,15 @@ public class StaticMapContent {
 
         /* Also top left? */
         if (x > 0 && y > 0 && map.staticMapLayer.getAt(x - 1, y - 1) != 0) {
-          sprite.setRegion(16, 16, 8, 8);
-          sprite.setFlip(false, true);
-          return sprite;
+          return tilesetSprite.shadow_straightVertical;
         }
 
-        sprite.setRegion(24, 24, 8, 8);
-        sprite.setFlip(false, true);
-        return sprite;
+        return tilesetSprite.shadow_startVertical;
       }
 
       /* None above, none on the left but on the top left? */
       if (x > 0 && y > 0 && map.staticMapLayer.getAt(x - 1, y - 1) != 0) {
-        sprite.setRegion(24, 32, 8, 8);
-        sprite.setFlip(false, true);
-        return sprite;
+        return tilesetSprite.shadow_outerCorner;
       }
 
       return null;
@@ -127,13 +113,11 @@ public class StaticMapContent {
 
 
     if (x == 0 || x == tileWidth - 2) {
-      sprite.setRegion(0, y % 2 * 8, 8, 8);
+      return y % 2 == 0 ? tilesetSprite.fourBlock_topLeft : tilesetSprite.fourBlock_bottomLeft;
     } else if (x == 1 || x == tileWidth - 1) {
-      sprite.setRegion(8, y % 2 * 8, 8, 8);
-    } else {
-      sprite.setRegion(3 * 8, 0, 8, 8);
+      return y % 2 == 0 ? tilesetSprite.fourBlock_topright : tilesetSprite.fourBlock_bottomRight;
     }
 
-    return tilesetSprite;
+    return tilesetSprite.defaultBlock;
   }
 }

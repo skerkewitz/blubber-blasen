@@ -24,8 +24,6 @@ public class EntityFactory {
 
   public static Entity spawnBubblun(InputHandler inputHandler, Point2f position) {
 
-//    var sheet = new SpriteSheet(new ImageData("/sprite_sheet.png"));
-
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new PlayerComponent());
@@ -110,7 +108,6 @@ public class EntityFactory {
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new AnimationComponent(0, ZenChan.THROW, false));
     entity.addComponent(new ThrownEnemyComponent(frameCount, new Point2i(currentMoveDirection.getHorizontalMoveVector(), -1)));
-    //    entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = ZenChan.THROW_COLOR_PALETTE;

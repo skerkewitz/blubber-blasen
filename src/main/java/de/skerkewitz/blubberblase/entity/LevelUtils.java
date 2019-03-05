@@ -124,16 +124,6 @@ public class LevelUtils {
             });
   }
 
-  /**
-   * True if the object is standing on ground.
-   *
-   * @param world
-   * @return
-   */
-  public static boolean isOnGround(Entity entity, World world) {
-    return hasCollided(entity, world, 0, +1);
-  }
-
   public static boolean isGapInFront(int moveX, Point2f position, Rect2i boundingBox, World world) {
 
     /* If we don't move left or right then there is no gap. */
