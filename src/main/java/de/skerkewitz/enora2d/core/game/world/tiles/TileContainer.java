@@ -10,6 +10,7 @@ public class TileContainer {
   public static final Tile BB_LEVEL2_STONE = new BasicSolidTile(5, 5, 0, RgbColorPalette.mergeRgbColors(-1, 0xAA2926, 0xE1DA61, -1));
   public static final Tile BB_LEVEL3_STONE = new BasicSolidTile(6, 4, 0, RgbColorPalette.mergeRgbColors(-1, 0xAA2926, 0xE1DA61, -1));
 
+
   public static void registerTile(Tile tile) {
     if (tiles[tile.id] != null) {
       throw new RuntimeException("Duplicate tile id on " + tile.id);

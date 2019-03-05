@@ -2,6 +2,8 @@ package de.skerkewitz.enora2d.core.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import de.gierzahn.editor.map.Map;
 import de.gierzahn.editor.map.io.DefaultMapReader;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,18 @@ public class StaticMapContentLoader {
     DefaultMapReader defaultMapReader = new DefaultMapReader();
     Map map = defaultMapReader.read(internal.read());
 
-    return new StaticMapContent(map);
+    /* Also load the tile set for that level. */
+    final Sprite tilesetSprite = getTilesetSprite(padded);
+
+    return new StaticMapContent(map, tilesetSprite);
+  }
+
+  private static Sprite getTilesetSprite(String padded) {
+    FileHandle tilesetFileHandle = Gdx.files.internal("level/round" + padded + ".png");
+    if (!tilesetFileHandle.exists()) {
+      tilesetFileHandle = Gdx.files.internal("level/round01.png");
+    }
+    final Texture tilesetTexture = new Texture(tilesetFileHandle);
+    return new Sprite(tilesetTexture);
   }
 }

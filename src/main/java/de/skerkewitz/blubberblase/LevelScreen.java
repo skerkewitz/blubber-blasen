@@ -17,7 +17,6 @@ import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
 import de.skerkewitz.enora2d.core.game.world.World;
-import de.skerkewitz.enora2d.core.game.world.tiles.BasicTile;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
@@ -122,16 +121,13 @@ public class LevelScreen implements Screen {
     spriteBatch.begin();
     for (int y = 0; y < world.numVerticalTiles; y++) {
       for (int x = 0; x < world.numHorizontalTiles; x++) {
-        final BasicTile tile = (BasicTile) world.staticMapContent.getTile(x, y);
 
-        int xTile = tile.getTileId() % 32;
-        int yTile = tile.getTileId() / 32;
+        final Sprite sprite = world.staticMapContent.getTileSprite(x, y);
+        if (sprite == null) {
+          continue;
+        }
 
-        Sprite sprite = gdxTextureContainer.getTextureNamedResourceAndPalette(Ressources.SpriteSheet, tile.getTileColour(), imageDataContainer);
-        sprite.setSize(8, 8);
         sprite.setPosition(x * 8, y * 8);
-        sprite.setRegion(xTile * 8, yTile * 8, 8, 8);
-        sprite.setFlip(false, true);
         sprite.draw(spriteBatch);
       }
     }
