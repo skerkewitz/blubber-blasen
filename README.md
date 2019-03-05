@@ -16,3 +16,6 @@ cd blubber-blasen
 gradlew run
 ```
 
+## Level Editor
+If you would like to create your own maps/level/rooms you can use the [GierzahnEditor](https://github.com/skerkewitz/GierzahnEditor)
+
