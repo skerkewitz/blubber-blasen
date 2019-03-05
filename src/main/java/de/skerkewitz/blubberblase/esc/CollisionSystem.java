@@ -22,7 +22,7 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
   }
 
   @Override
-  public void executor(int tickTime, World world, Stream<Entity> stream, GameContext context) {
+  public boolean executor(int tickTime, World world, Stream<Entity> stream, GameContext context) {
 
     final List<Tuple> tuples = getTuples(stream).collect(Collectors.toList());
 
@@ -31,13 +31,15 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
 
     /* We need at least two element to compare something. */
     if (tuples.size() < 2) {
-      return;
+      return false;
     }
 
     for (int i = 0; i < tuples.size() - 1; i++) {
       final Tuple t = tuples.get(i);
       tuples.subList(i + 1, tuples.size()).stream().forEach(o -> execute(tickTime, t, o, world));
     }
+
+    return true;
   }
 
   private void execute(int tickTime, Tuple t, Tuple o, World world) {

@@ -45,6 +45,11 @@ public class DefaultEntity implements Entity {
   }
 
   @Override
+  public void removeComponent(Component component) {
+    components.remove(component);
+  }
+
+  @Override
   public final boolean isExpired() {
     return expired;
   }

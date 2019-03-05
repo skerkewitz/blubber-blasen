@@ -40,8 +40,8 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   }
 
   @Override
-  public void didExecute(int tickTime, World world) {
-    super.didExecute(tickTime, world);
+  public void didExecute(int tickTime, World world, boolean didProcessAnything) {
+    super.didExecute(tickTime, world, didProcessAnything);
     spriteBatch.end();
   }
 

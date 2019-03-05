@@ -120,7 +120,6 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
 
     AnimationComponent animationComponent = t.entity.getComponent(AnimationComponent.class);
     animationComponent.flipX = t.movementComponent.currentMoveDirection == MoveDirection.Right;
-
   }
 
   /**

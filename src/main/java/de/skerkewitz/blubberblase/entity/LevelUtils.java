@@ -1,22 +1,29 @@
 package de.skerkewitz.blubberblase.entity;
 
+import de.gierzahn.editor.map.EnemyBaseMapLayer;
+import de.gierzahn.editor.map.Map;
 import de.skerkewitz.blubberblase.GameContext;
-import de.skerkewitz.blubberblase.esc.BoundingBoxComponent;
-import de.skerkewitz.blubberblase.esc.EnemyComponent;
-import de.skerkewitz.blubberblase.esc.StateBaseBubbleComponent;
-import de.skerkewitz.blubberblase.esc.TransformComponent;
+import de.skerkewitz.blubberblase.MainWorld;
+import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
+import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
+import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
+import de.skerkewitz.enora2d.core.input.InputHandler;
 
-import static de.skerkewitz.blubberblase.LevelScreen.loadWorldOfLevel;
+import java.util.ArrayList;
 
 public class LevelUtils {
+
+  public static final int PLAYER1_SPAWN_X = 32;
+  public static final int PLAYER1_SPAWN_Y = ((Map.MAX_DOWN) * 8) - 1;
 
   public LevelUtils() {
     /* No instance allowed. */
@@ -49,12 +56,51 @@ public class LevelUtils {
 
   }
 
-  public static World loadNextLevel(int tickTime, GameContext gameContext, GameConfig config) {
+  public static World loadNextLevel(int tickTime, GameContext gameContext, GameConfig config, World previousWorld) {
 
     gameContext.currentLevelNum += 1;
     gameContext.clampLevelNum();
 
-    return loadWorldOfLevel(tickTime, config, gameContext.currentLevelNum);
+    return loadWorldOfLevel(tickTime, config, gameContext.currentLevelNum, previousWorld);
+  }
+
+  public static World loadWorldOfLevel(int frameCount, GameConfig config, int level, World previousWorld) {
+    StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
+    var world = new MainWorld(config, staticMapContent, frameCount);
+
+//    Controller first = Controllers.getControllers().first();
+//    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
+    InputHandler handler = new GdxKeyboardInputHandler();
+
+    Entity playerEntity = createPlayerEntity(handler, previousWorld);
+    world.addPlayer(playerEntity);
+
+    ArrayList<EnemyBaseMapLayer.Enemy> enemySpawnList = staticMapContent.getEnemySpawnList();
+    for (EnemyBaseMapLayer.Enemy enemy : enemySpawnList) {
+      Point2f spawnPosition = new Point2f((enemy.x * 8) + 8, 8);
+      Point2i targetPosition = new Point2i((enemy.x * 8) + 8, (enemy.y * 8) + 12);
+      MoveDirection moveDirection = enemy.isLookingLeft ? MoveDirection.Left : MoveDirection.Right;
+      Entity entity = EntityFactory.spawnZenChan(spawnPosition, frameCount, moveDirection, false);
+      entity.addComponent(new TargetMoveComponent(targetPosition, 1));
+      world.prepareSpawnAtTime(frameCount, entity);
+    }
+    return world;
+  }
+
+  private static Entity createPlayerEntity(InputHandler handler, World previousWorld) {
+
+    Point2f lastPosition = null;
+    if (previousWorld != null) {
+      lastPosition = previousWorld.getPlayerEntity().getComponent(TransformComponent.class).position;
+    }
+
+    Point2f playerSpawnPosition = (lastPosition == null) ? new Point2f(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y) : lastPosition;
+    Entity playerEntity = EntityFactory.spawnBubblun(handler, playerSpawnPosition);
+
+    Point2i playerTargetPosition = new Point2i(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y);
+    playerEntity.addComponent(new TargetMoveComponent(playerTargetPosition, 1));
+
+    return playerEntity;
   }
 
   public static boolean isLevelCleared(World world) {

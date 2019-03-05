@@ -23,6 +23,7 @@ public class MainWorld extends World {
   private PlayerSystem playerSystem = new PlayerSystem();
   private ThrownEnemySystem thrownEnemySystem = new ThrownEnemySystem();
   private BonusItemSystem bonusItemSystem = new BonusItemSystem();
+  private TargetMoveSystem targetMoveSystem = new TargetMoveSystem();
 
   private InputSystem inputSystem = new InputSystem();
 
@@ -56,16 +57,22 @@ public class MainWorld extends World {
     lifeTimeSystem.update(tickTime, this, entityContainer.stream(), context);
     entityContainer.purgeExpired();
 
+    boolean isTargetMoving = targetMoveSystem.update(tickTime, this, entityContainer.stream(), context);
+
+
     collisionComponent.update(tickTime, this, entityContainer.stream(), context);
 
     groundDataSystemSystem.update(tickTime, this, entityContainer.stream(), context);
     inputSystem.update(tickTime, this, entityContainer.stream(), context);
 
     aiBubbleSystem.update(tickTime, this, entityContainer.stream(), context);
-    aiEnemySystem.update(tickTime, this, entityContainer.stream(), context);
     airflowSystem.update(tickTime, this, entityContainer.stream(), context);
 
-    playerSystem.update(tickTime, this, entityContainer.stream(), context);
+    if (!isTargetMoving) {
+      aiEnemySystem.update(tickTime, this, entityContainer.stream(), context);
+      playerSystem.update(tickTime, this, entityContainer.stream(), context);
+    }
+
     thrownEnemySystem.update(tickTime, this, entityContainer.stream(), context);
     bonusItemSystem.update(tickTime, this, entityContainer.stream(), context);
 

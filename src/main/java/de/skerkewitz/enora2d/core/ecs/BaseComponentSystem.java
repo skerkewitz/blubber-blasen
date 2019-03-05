@@ -6,7 +6,7 @@ import de.skerkewitz.enora2d.core.game.world.World;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends ComponentSystem.TupleFactory<T>> implements ComponentSystem<T> {
+public abstract class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends ComponentSystem.TupleFactory<T>> implements ComponentSystem<T> {
 
   private F tupleFactory;
 
@@ -15,15 +15,21 @@ public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends Comp
   }
 
   @Override
-  public void update(int tickTime, World world, Stream<Entity> stream, GameContext context) {
+  public boolean update(int tickTime, World world, Stream<Entity> stream, GameContext context) {
     willExecute(tickTime, world);
-    executor(tickTime, world, stream, context);
-    didExecute(tickTime, world);
+    boolean didProcessAnything = executor(tickTime, world, stream, context);
+    didExecute(tickTime, world, didProcessAnything);
+    return didProcessAnything;
   }
 
   @Override
-  public void executor(int tickTime, World world, Stream<Entity> stream, GameContext context) {
-    getTuples(stream).forEach(tuple -> execute(tickTime, tuple, world, context));
+  public boolean executor(int tickTime, World world, Stream<Entity> stream, GameContext context) {
+    return getTuples(stream).map(tuple -> invokeExecute(tickTime, tuple, world, context)).count() > 0;
+  }
+
+  private boolean invokeExecute(int tickTime, T tuple, World world, GameContext context) {
+    execute(tickTime, tuple, world, context);
+    return true;
   }
 
   @Override
@@ -32,12 +38,10 @@ public class BaseComponentSystem<T extends ComponentSystem.Tuple, F extends Comp
   }
 
   @Override
-  public void execute(int tickTime, T t, World world, GameContext context) {
-
-  }
+  public abstract void execute(int tickTime, T t, World world, GameContext context);
 
   @Override
-  public void didExecute(int tickTime, World world) {
+  public void didExecute(int tickTime, World world, boolean didProcessAnything) {
 
   }
 

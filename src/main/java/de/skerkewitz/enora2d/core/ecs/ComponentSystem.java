@@ -7,15 +7,15 @@ import java.util.stream.Stream;
 
 public interface ComponentSystem<T extends ComponentSystem.Tuple> {
 
-  void update(int tickTime, World world, Stream<Entity> stream, GameContext context);
+  boolean update(int tickTime, World world, Stream<Entity> stream, GameContext context);
 
-  void executor(int tickTime, World world, Stream<Entity> stream, GameContext context);
+  boolean executor(int tickTime, World world, Stream<Entity> stream, GameContext context);
 
   void willExecute(int tickTime, World world);
 
   void execute(int tickTime, T t, World world, GameContext context);
 
-  void didExecute(int tickTime, World world);
+  void didExecute(int tickTime, World world, boolean didProcessAnything);
 
   Stream<T> getTuples(Stream<Entity> stream);
 

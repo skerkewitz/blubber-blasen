@@ -4,26 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import de.gierzahn.editor.map.EnemyBaseMapLayer;
-import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.blubberblase.esc.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;
 import de.skerkewitz.blubberblase.util.TimeUtil;
-import de.skerkewitz.enora2d.common.Point2f;
-import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
-import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
-import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
 import de.skerkewitz.enora2d.core.game.world.World;
-import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
-import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
-import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
-import de.skerkewitz.enora2d.core.input.InputHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class LevelScreen implements Screen {
 
@@ -31,8 +20,6 @@ public class LevelScreen implements Screen {
   private final GameContext gameContext;
   private SpriteBatch spriteBatch = new SpriteBatch();
   private World world;
-  private ImageDataContainer imageDataContainer = new ImageDataContainer();
-  private GdxTextureContainer gdxTextureContainer = new GdxTextureContainer();
 
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
@@ -43,29 +30,13 @@ public class LevelScreen implements Screen {
     this.gameContext.clampLevelNum();
 
     this.config = config;
-    this.world = loadWorldOfLevel(frameCount, config, gameContext.currentLevelNum);
+    this.world = LevelUtils.loadWorldOfLevel(frameCount, config, gameContext.currentLevelNum, null);
 
     Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
   }
 
-  public static World loadWorldOfLevel(int frameCount, GameConfig config, int level) {
-    StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
-    var world = new MainWorld(config, staticMapContent, frameCount);
 
-//    Controller first = Controllers.getControllers().first();
-//    InputHandler handler = first == null ? new GdxKeyboardInputHandler() : new GdxGamepadInputHandler(first);
-    InputHandler handler = new GdxKeyboardInputHandler();
 
-    world.addPlayer(EntityFactory.spawnBubblun(handler));
-
-    ArrayList<EnemyBaseMapLayer.Enemy> enemySpawnList = staticMapContent.getEnemySpawnList();
-    for (EnemyBaseMapLayer.Enemy enemy : enemySpawnList) {
-      Point2f position = new Point2f((enemy.x * 8) + 8, (enemy.y * 8) + 12);
-      MoveDirection moveDirection = enemy.isLookingLeft ? MoveDirection.Left : MoveDirection.Right;
-      world.prepareSpawnAtTime(frameCount, EntityFactory.spawnZenChan(position, frameCount, moveDirection, false));
-    }
-    return world;
-  }
 
   @Override
   public ScreenAction update(int tickTime) {
@@ -91,7 +62,7 @@ public class LevelScreen implements Screen {
     } else {
 
       if (tickTime > gameContext.isLevelClearedTimer) {
-        this.world = LevelUtils.loadNextLevel(tickTime, gameContext, config);
+        this.world = LevelUtils.loadNextLevel(tickTime, gameContext, config, world);
         gameContext.isLevelClearedTimer = -1;
       }
     }
