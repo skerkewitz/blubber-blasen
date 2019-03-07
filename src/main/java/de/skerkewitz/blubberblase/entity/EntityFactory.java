@@ -55,11 +55,13 @@ public class EntityFactory {
     entity.addComponent(new MovementComponent(tickTime, moveDirection, state == StateBaseBubbleComponent.State.SHOOT ? 4 : 1));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -6, 12, 12)));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER, CollisionComponent.Layer.ENEMY)));
+    entity.addComponent(new AnimationComponent(0, Bubble.BUBBLE, false));
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
-    spriteComponent.colorPalette = Bubble.COLOR_PALETTE;
-    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet);
+    spriteComponent.colorPalette = -1;
+    spriteComponent.renderSprite = new RenderSprite(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet_Bubble);
     spriteComponent.pivotPoint = new Point2i(-8, -8);
+    spriteComponent.alpha = 0.9f;
     spriteComponent.priority = SPRITE_PRIORITY_BUBBLE;
     return entity;
   }
@@ -74,6 +76,7 @@ public class EntityFactory {
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-4, -4, 8, 8)));
     entity.addComponent(new AnimationComponent(0, TrapBubble.IDLE, false));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.TRAP_BUBBLE), EnumSet.of(CollisionComponent.Layer.PLAYER)));
+
 
     SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
     spriteComponent.colorPalette = TrapBubble.COLOR_PALETTE;

@@ -68,4 +68,34 @@ public class GdxTextureContainer {
       this.palette = palette;
     }
   }
+
+  public Sprite getTextureNamedResource(NamedResource namedResource) {
+
+    var entries = knownResources.get(namedResource);
+    if (entries != null) {
+      for (var entry : entries) {
+        if (entry.palette == -1) {
+          return entry.sprite;
+        }
+      }
+    }
+
+    Gdx.app.log(this.getClass().getSimpleName(), "Cache miss for: " + namedResource + " palette " + -1);
+
+    var sprite = new Sprite(new Texture(Gdx.files.internal(namedResource.name), false));
+
+    Entry entry = new Entry(sprite, -1);
+
+    if (entries != null) {
+      entries.add(entry);
+    } else {
+      var list = new ArrayList<Entry>();
+      list.add(entry);
+      knownResources.put(namedResource, list);
+    }
+
+    return sprite;
+
+
+  }
 }

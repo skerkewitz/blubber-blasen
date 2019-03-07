@@ -6,10 +6,12 @@ public final class NamedResource {
 
   public final String name;
   public final SpriteSheet sheet;
+  public final boolean directColor;
 
-  public NamedResource(String name, SpriteSheet sheet) {
+  public NamedResource(String name, SpriteSheet sheet, boolean directColor) {
     this.name = name;
     this.sheet = sheet;
+    this.directColor = directColor;
   }
 
   @Override

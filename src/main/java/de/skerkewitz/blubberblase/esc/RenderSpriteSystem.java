@@ -11,6 +11,7 @@ import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
+import de.skerkewitz.enora2d.core.gfx.NamedResource;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -48,15 +49,22 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   @Override
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
-    SpriteComponent spriteComponent = t.spriteComponent;
-    Sprite sprite = textureContainer.getTextureNamedResourceAndPalette(spriteComponent.renderSprite.namedResource, spriteComponent.colorPalette, imageDataContainer);
+    final SpriteComponent spriteComponent = t.spriteComponent;
+
+    final Sprite sprite;
+    final NamedResource namedResource = spriteComponent.renderSprite.namedResource;
+    if (namedResource.directColor) {
+      sprite = textureContainer.getTextureNamedResource(namedResource);
+    } else {
+      sprite = textureContainer.getTextureNamedResourceAndPalette(namedResource, spriteComponent.colorPalette, imageDataContainer);
+    }
 
     final Point2f pos = t.transformComponent.position.plus(spriteComponent.pivotPoint);
     sprite.setSize(spriteComponent.size.x, spriteComponent.size.y);
     sprite.setPosition(pos.x, pos.y);
     sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, spriteComponent.size.x, spriteComponent.size.y);
     sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
-    sprite.draw(spriteBatch);
+    sprite.draw(spriteBatch, spriteComponent.alpha);
   }
 
   public Stream<Tuple> getTuples(Stream<Entity> stream) {

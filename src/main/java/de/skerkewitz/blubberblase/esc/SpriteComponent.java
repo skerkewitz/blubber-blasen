@@ -40,6 +40,8 @@ public class SpriteComponent implements Component {
     }
   }
 
+  public float alpha = 1.0f;
+
   //  class ObjectAttributes {
 //
 //    int size = 1; // 1 means 8x8, 2 means 16x16
