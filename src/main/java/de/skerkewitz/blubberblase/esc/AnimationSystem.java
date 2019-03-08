@@ -18,7 +18,8 @@ public class AnimationSystem extends BaseComponentSystem<AnimationSystem.Tuple, 
   @Override
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
     t.spriteComponent.flipX = t.animationComponent.flipX;
-    t.spriteComponent.renderSprite = t.animationComponent.animation.currentFrame(tickTime, t.animationComponent.currentAnimationStartTimeTick);
+    t.spriteComponent.renderSprite = t.animationComponent.animation.currentFrame(tickTime,
+            t.animationComponent.currentAnimationStartTimeTick, t.animationComponent.animationSpeedOffsetInTicks);
   }
 
   /**

@@ -6,6 +6,7 @@ import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.entity.Bubble;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
 import de.skerkewitz.blubberblase.entity.GamePlay;
+import de.skerkewitz.blubberblase.entity.TrapBubble;
 import de.skerkewitz.blubberblase.util.LifeTimeUtil;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, AiBubbleSystem.TupleFactory> {
 
   private Sound sfxBurstTrapBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/sfx_coin_double7.wav"));
+  private Sound sfxBurstBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/bubble-burst.wav"));
 
   public AiBubbleSystem() {
     super(new TupleFactory());
@@ -73,6 +75,12 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
         movementComponent.speed = Bubble.FLOATING_SPEED;
       }
     }
+
+    /* Did it burst? */
+    final int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.entity.getComponent(LifeTimeComponent.class));
+    if (ageFrameCount > Bubble.MAX_LIFETIME_BEFORE_BURST) {
+      burstBubble(tickTime, world, t);
+    }
   }
 
   private void handleTrapBubble(int tickTime, World world, Tuple t) {
@@ -82,17 +90,17 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
 
     /* Should it blink. */
     t.entity.getComponent(SpriteComponent.class).visible = true;
-    if (ageFrameCount > Bubble.MAX_LIFETIME_BEFORE_BURST - GamePlay.PRE_ACTION_INDICATION_FRAMECOUNT) {
+    if (ageFrameCount > TrapBubble.MAX_LIFETIME_BEFORE_BURST - GamePlay.PRE_ACTION_INDICATION_FRAMECOUNT) {
       t.entity.getComponent(SpriteComponent.class).visible = tickTime / 10 % 2 == 0;
     }
 
 
     /* Did it burst? */
-    if (ageFrameCount > Bubble.MAX_LIFETIME_BEFORE_BURST) {
-      t.entity.expired();
+    if (ageFrameCount > TrapBubble.MAX_LIFETIME_BEFORE_BURST) {
       Entity entity = EntityFactory.spawnZenChan(t.transformComponent.position, tickTime, MoveDirection.Left, true);
       EnemyUtil.setupDidEscapeTrapBubble(entity.getComponent(EnemyComponent.class));
       world.addEntity(entity);
+      burstBubble(tickTime, world, t);
       return;
     }
 
@@ -103,14 +111,22 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       /* Search for a monster collision. */
       Optional<Entity> player = collisionComponent.getCollisions().filter(entity -> entity.hasComponent(PlayerComponent.class)).findFirst();
       if (player.isPresent()) {
-        t.entity.expired();
         sfxBurstTrapBubble.play();
         //world.addEntity(EntityFactory.spawnDiamond(tickTime, t.transformComponent.position));
         world.addEntity(EntityFactory.spawnThrownEnemy(tickTime, t.transformComponent.position, player.get().getComponent(PlayerComponent.class).movingDir));
+
+        burstBubble(tickTime, world, t);
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());
     }
+  }
+
+  private void burstBubble(int tickTime, World world, Tuple t) {
+    t.entity.expired();
+    world.addEntity(EntityFactory.spawnBubbleBurst(tickTime, t.transformComponent.position.cloneCopy()));
+    sfxBurstBubble.play(0.5f, 1.0f + (float) (Math.random() * 0.05), 0);
+    Gdx.app.log("AiBubble", "burst " + t.entity);
   }
 
   /**

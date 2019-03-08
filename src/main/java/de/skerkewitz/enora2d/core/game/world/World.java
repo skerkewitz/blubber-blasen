@@ -137,6 +137,7 @@ public abstract class World {
     return new Point2i((int) (pos.x) >> 3, (int) (pos.y) >> 3);
   }
 
+
   public AirflowDirection getAirflowAt(Point2f position) {
     var tilePos = convertWorldToTileSpace(position);
     return staticMapContent.getAirflowAt(tilePos);

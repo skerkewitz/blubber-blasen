@@ -10,6 +10,6 @@ public class LifeTimeUtil {
   }
 
   public static int getAge(int tickTime, World world, LifeTimeComponent lifetimeComponent) {
-    return world.getWorldFrameCount(tickTime) - lifetimeComponent.spawnTimeFrameCount;
+    return tickTime - lifetimeComponent.spawnTimeFrameCount;
   }
 }

@@ -29,4 +29,7 @@ public class Point2f {
   }
 
 
+  public Point2f cloneCopy() {
+    return new Point2f(this);
+  }
 }

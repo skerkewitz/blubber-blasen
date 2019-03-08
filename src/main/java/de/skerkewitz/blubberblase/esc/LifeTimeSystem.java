@@ -21,7 +21,7 @@ public class LifeTimeSystem extends BaseComponentSystem<LifeTimeSystem.Tuple, Li
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
     int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.lifetimeComponent);
-    if (ageFrameCount > t.lifetimeComponent.maxLifeTimeFrameCount) {
+    if (ageFrameCount > t.lifetimeComponent.maxLifeTimeFrameCount && t.lifetimeComponent.autoRemove) {
       t.entity.expired();
     }
   }

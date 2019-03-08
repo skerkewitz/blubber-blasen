@@ -12,4 +12,8 @@ public interface Ressources {
   NamedResource SpriteSheet_Enemies = new NamedResource("/Enemies.png", new SpriteSheet(Size5x5, Size5x5, Size16x16), false);
 
   NamedResource SpriteSheet_Bubble = new NamedResource("spritesheet/bubble.png", new SpriteSheet(Size2i.ZERO, Size2i.ZERO, Size16x16), true);
+
+  NamedResource SpriteSheet_Zenchan = new NamedResource("spritesheet/zanchan.png", new SpriteSheet(Size2i.ZERO, Size2i.ZERO, Size16x16), true);
+  NamedResource SpriteSheet_BubbleCapture = new NamedResource("spritesheet/bubble-capture.png", new SpriteSheet(Size2i.ZERO, Size2i.ZERO, Size16x16), true);
+  NamedResource SpriteSheet_BubbleBurst = new NamedResource("spritesheet/bubble-burst.png", new SpriteSheet(Size2i.ZERO, Size2i.ZERO, Size16x16), true);
 }

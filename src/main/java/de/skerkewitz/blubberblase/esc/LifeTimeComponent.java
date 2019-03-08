@@ -4,8 +4,8 @@ import de.skerkewitz.enora2d.core.ecs.Component;
 
 public class LifeTimeComponent implements Component {
 
-  public final int lifeTimeFrameCount = 0;
   public final int spawnTimeFrameCount;
+  public boolean autoRemove = true;
 
   /**
    * Use -1 for unlimited.

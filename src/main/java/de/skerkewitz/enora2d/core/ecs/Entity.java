@@ -8,6 +8,13 @@ public interface Entity {
 
   boolean addComponent(Component component);
 
+  interface ComponentInitializer<E extends Component> {
+
+    void init(E component);
+  }
+
+  <T extends Component> boolean addComponent(T component, ComponentInitializer<T> init);
+
   <T extends Component> T getComponent(Class<T> type);
 
   void expired();

@@ -73,20 +73,31 @@ public class LevelUtils {
     final StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
     var world = new MainWorld(config, staticMapContent, frameCount);
 
-
-    Entity playerEntity = createPlayerEntity(previousWorld);
+    final Entity playerEntity = createPlayerEntity(previousWorld);
     world.addPlayer(playerEntity);
 
     ArrayList<EnemyBaseMapLayer.Enemy> enemySpawnList = staticMapContent.getEnemySpawnList();
     for (EnemyBaseMapLayer.Enemy enemy : enemySpawnList) {
-      Point2f spawnPosition = new Point2f((enemy.x * 8) + 8, 8);
-      Point2i targetPosition = new Point2i((enemy.x * 8) + 8, (enemy.y * 8) + 12);
-      MoveDirection moveDirection = enemy.isLookingLeft ? MoveDirection.Left : MoveDirection.Right;
-      Entity entity = EntityFactory.spawnZenChan(spawnPosition, frameCount, moveDirection, false);
-      entity.addComponent(new TargetMoveComponent(targetPosition, 1));
-      world.prepareSpawnAtTime(frameCount, entity);
+      Entity entity = createEnemyEntity(frameCount, enemy);
+      world.addEntity(entity);
     }
     return world;
+  }
+
+  private static Entity createEnemyEntity(int frameCount, EnemyBaseMapLayer.Enemy enemy) {
+    final var invertPivot = ZenChan.spritePivotPoint.invert();
+    final var spawnLocation = convertTileToWorldSpace(enemy.x, enemy.y);
+
+    final Point2f spawnPosition = new Point2f(spawnLocation.x + invertPivot.x, 8);
+    final Point2i targetPosition = new Point2i(spawnLocation.x + invertPivot.x, spawnLocation.y + invertPivot.y);
+    final MoveDirection moveDirection = enemy.isLookingLeft ? MoveDirection.Left : MoveDirection.Right;
+    final Entity entity = EntityFactory.spawnZenChan(spawnPosition, frameCount, moveDirection, false);
+    entity.addComponent(new TargetMoveComponent(targetPosition, 1));
+    return entity;
+  }
+
+  public static Point2f convertTileToWorldSpace(int x, int y) {
+    return new Point2f(x << 3, y << 3);
   }
 
   private static Entity createPlayerEntity(World previousWorld) {

@@ -23,6 +23,16 @@ public class DefaultEntity implements Entity {
   }
 
   @Override
+  public <T extends Component> boolean addComponent(T component, ComponentInitializer<T> init) {
+    if (addComponent(component)) {
+      init.init(component);
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
   public <T extends Component> T getComponent(Class<T> type) {
 
     for (var c : components) {

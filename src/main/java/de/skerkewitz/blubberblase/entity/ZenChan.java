@@ -2,6 +2,7 @@ package de.skerkewitz.blubberblase.entity;
 
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.util.TimeUtil;
+import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Square2i16;
 import de.skerkewitz.enora2d.core.gfx.Animation;
 import de.skerkewitz.enora2d.core.gfx.RenderSprite;
@@ -22,8 +23,10 @@ public interface ZenChan {
   int THROW_FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.1);
 
   Animation ANIMATION_IDLE = new Animation("idle", FRAME_ANIMATION_SPEED,
-          new RenderSprite(Ressources.SpriteSheet_Enemies.sheet.rectFor(0, 0), Ressources.SpriteSheet_Enemies),
-          new RenderSprite(Ressources.SpriteSheet_Enemies.sheet.rectFor(1, 0), Ressources.SpriteSheet_Enemies)
+          new RenderSprite(new Point2i(0, 0), Ressources.SpriteSheet_Zenchan),
+          new RenderSprite(new Point2i(1, 0), Ressources.SpriteSheet_Zenchan),
+          new RenderSprite(new Point2i(2, 0), Ressources.SpriteSheet_Zenchan),
+          new RenderSprite(new Point2i(3, 0), Ressources.SpriteSheet_Zenchan)
   );
 
   Animation THROW = new Animation("throw", THROW_FRAME_ANIMATION_SPEED,
@@ -38,4 +41,5 @@ public interface ZenChan {
           new RenderSprite(new Square2i16(20 + 48, 5), Ressources.SpriteSheet_Enemies)
   );
 
+  Point2i spritePivotPoint = new Point2i(-8, -15);
 }
