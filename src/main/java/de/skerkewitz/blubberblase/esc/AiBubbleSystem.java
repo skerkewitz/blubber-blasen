@@ -1,7 +1,5 @@
 package de.skerkewitz.blubberblase.esc;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.entity.Bubble;
 import de.skerkewitz.blubberblase.entity.EntityFactory;
@@ -21,8 +19,6 @@ import java.util.Optional;
  */
 public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, AiBubbleSystem.TupleFactory> {
 
-  private Sound sfxBurstTrapBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/sfx_coin_double7.wav"));
-  private Sound sfxBurstBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/bubble-burst.wav"));
 
   public AiBubbleSystem() {
     super(new TupleFactory());
@@ -111,10 +107,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       /* Search for a monster collision. */
       Optional<Entity> player = collisionComponent.getCollisions().filter(entity -> entity.hasComponent(PlayerComponent.class)).findFirst();
       if (player.isPresent()) {
-        sfxBurstTrapBubble.play();
-        //world.addEntity(EntityFactory.spawnDiamond(tickTime, t.transformComponent.position));
         world.addEntity(EntityFactory.spawnThrownEnemy(tickTime, t.transformComponent.position, player.get().getComponent(PlayerComponent.class).movingDir));
-
         burstBubble(tickTime, world, t);
         return;
       }
@@ -125,8 +118,6 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
   private void burstBubble(int tickTime, World world, Tuple t) {
     t.entity.expired();
     world.addEntity(EntityFactory.spawnBubbleBurst(tickTime, t.transformComponent.position.cloneCopy()));
-    sfxBurstBubble.play(0.5f, 1.0f + (float) (Math.random() * 0.05), 0);
-    Gdx.app.log("AiBubble", "burst " + t.entity);
   }
 
   /**

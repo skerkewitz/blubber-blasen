@@ -7,8 +7,6 @@ import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 
-import java.util.stream.Stream;
-
 /**
  * A system to render all SpriteComponents.
  */
@@ -16,6 +14,7 @@ public class LifeTimeSystem extends BaseComponentSystem<LifeTimeSystem.Tuple, Li
 
   public LifeTimeSystem() {
     super(new LifeTimeSystem.TupleFactory());
+    this.componentPredicate = tuple -> tuple.lifetimeComponent.maxLifeTimeFrameCount >= 0;
   }
 
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
@@ -24,11 +23,6 @@ public class LifeTimeSystem extends BaseComponentSystem<LifeTimeSystem.Tuple, Li
     if (ageFrameCount > t.lifetimeComponent.maxLifeTimeFrameCount && t.lifetimeComponent.autoRemove) {
       t.entity.expired();
     }
-  }
-
-  @Override
-  public Stream<Tuple> getTuples(Stream<Entity> stream) {
-    return super.getTuples(stream).filter(t -> t.lifetimeComponent.maxLifeTimeFrameCount >= 0);
   }
 
   /**

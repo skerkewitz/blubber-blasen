@@ -11,7 +11,6 @@ import de.skerkewitz.enora2d.core.game.world.World;
 
 public class MainWorld extends World {
 
-
   private final GameConfig config;
   private AirflowSystem airflowSystem = new AirflowSystem();
   private AiBubbleSystem aiBubbleSystem = new AiBubbleSystem();
@@ -24,6 +23,7 @@ public class MainWorld extends World {
   private ThrownEnemySystem thrownEnemySystem = new ThrownEnemySystem();
   private BonusItemSystem bonusItemSystem = new BonusItemSystem();
   private TargetMoveSystem targetMoveSystem = new TargetMoveSystem();
+  private SoundSystem soundSystem = new SoundSystem();
 
   private InputSystem inputSystem = new InputSystem();
 
@@ -77,5 +77,6 @@ public class MainWorld extends World {
     bonusItemSystem.update(tickTime, this, entityContainer.stream(), context);
 
     animationSystem.update(tickTime, this, entityContainer.stream(), context);
+    soundSystem.update(tickTime, this, entityContainer.stream(), context);
   }
 }

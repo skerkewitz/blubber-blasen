@@ -14,7 +14,6 @@ import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
 import de.skerkewitz.enora2d.core.gfx.NamedResource;
 
 import java.util.Comparator;
-import java.util.stream.Stream;
 
 /**
  * A system to render all SpriteComponents.
@@ -30,6 +29,8 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   public RenderSpriteSystem() {
     super(new RenderSpriteSystem.TupleFactory());
+    this.componentPredicate = tuple -> tuple.spriteComponent.renderSprite != null && tuple.spriteComponent.visible;
+    this.componentComparator = Comparator.comparingInt(o -> o.spriteComponent.priority);
   }
 
   @Override
@@ -65,13 +66,6 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
     sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, spriteComponent.size.x, spriteComponent.size.y);
     sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
     sprite.draw(spriteBatch, spriteComponent.alpha);
-  }
-
-  public Stream<Tuple> getTuples(Stream<Entity> stream) {
-    return super.getTuples(stream)
-            .filter(tuple -> tuple.spriteComponent.renderSprite != null)
-            .filter(tuple -> tuple.spriteComponent.visible)
-            .sorted(Comparator.comparingInt(o -> o.spriteComponent.priority));
   }
 
   @Override

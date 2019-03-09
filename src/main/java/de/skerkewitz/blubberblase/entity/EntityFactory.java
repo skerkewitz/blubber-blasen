@@ -71,6 +71,7 @@ public class EntityFactory {
       component.priority = SPRITE_PRIORITY_BUBBLE;
     });
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.BURST_MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new SoundComponent(Bubble.sfxBurstBubble, 0.5f));
 
     return entity;
   }
@@ -108,9 +109,6 @@ public class EntityFactory {
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -10, 13, 11)));
     entity.addComponent(new CollisionComponent(EnumSet.of(CollisionComponent.Layer.BONUS), EnumSet.of(CollisionComponent.Layer.PLAYER)));
 
-
-    SpriteComponent spriteComponent = entity.getComponent(SpriteComponent.class);
-
     return entity;
   }
 
@@ -126,6 +124,7 @@ public class EntityFactory {
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
     entity.addComponent(new AnimationComponent(0, ZenChan.THROW, false, 0));
     entity.addComponent(new ThrownEnemyComponent(frameCount, new Point2i(currentMoveDirection.getHorizontalMoveVector(), -1)));
+    entity.addComponent(new SoundComponent(Bubble.sfxBurstBubble, 1.0f));
 
     return entity;
   }
