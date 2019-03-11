@@ -17,6 +17,11 @@ compileJava {
     targetCompatibility = 1.10
 }
 
+if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+ // Required to run lwjgl java apps on Mac OSX
+ jvmArgs = ["-XstartOnFirstThread"]
+}
+
 dependencies {
     
     version = '1.0'
