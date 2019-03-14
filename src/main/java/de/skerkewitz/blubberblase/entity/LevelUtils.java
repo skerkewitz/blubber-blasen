@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.entity;
 
+import com.badlogic.gdx.controllers.Controllers;
 import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.gierzahn.editor.map.Map;
 import de.skerkewitz.blubberblase.GameContext;
@@ -15,8 +16,10 @@ import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
+import de.skerkewitz.enora2d.core.input.GdxGamepadInputHandler;
 import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
 import de.skerkewitz.enora2d.core.input.InputHandler;
+import de.skerkewitz.enora2d.core.input.InputHandlerCombiner;
 
 import java.util.ArrayList;
 
@@ -102,7 +105,12 @@ public class LevelUtils {
 
   private static Entity createPlayerEntity(World previousWorld) {
 
-    InputHandler handler = new GdxKeyboardInputHandler();
+    final InputHandler handler;
+    if (Controllers.getControllers().size > 0) {
+      handler = new InputHandlerCombiner(new GdxKeyboardInputHandler(), new GdxGamepadInputHandler(Controllers.getControllers().first()));
+    } else {
+      handler = new GdxKeyboardInputHandler();
+    }
 
     Point2f lastPosition = null;
     if (previousWorld != null) {
