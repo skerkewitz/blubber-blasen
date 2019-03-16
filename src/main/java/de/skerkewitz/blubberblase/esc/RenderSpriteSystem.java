@@ -27,10 +27,19 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   private Camera camera = null;
 
-  public RenderSpriteSystem() {
-    super(new RenderSpriteSystem.TupleFactory());
-    this.componentPredicate = tuple -> tuple.spriteComponent.renderSprite != null && tuple.spriteComponent.visible;
-    this.componentComparator = Comparator.comparingInt(o -> o.spriteComponent.priority);
+  /**
+   * Declares the component needed by this system.
+   */
+  static class Tuple implements ComponentSystem.Tuple {
+    Entity entity;
+    TransformComponent transformComponent;
+    RenderSpriteComponent renderSpriteComponent;
+
+    Tuple(Entity entity, TransformComponent transformComponent, RenderSpriteComponent renderSpriteComponent) {
+      this.entity = entity;
+      this.transformComponent = transformComponent;
+      this.renderSpriteComponent = renderSpriteComponent;
+    }
   }
 
   @Override
@@ -47,50 +56,9 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
     spriteBatch.end();
   }
 
-  @Override
-  public void execute(int tickTime, Tuple t, World world, GameContext context) {
-
-    final SpriteComponent spriteComponent = t.spriteComponent;
-
-    final Sprite sprite;
-    final NamedResource namedResource = spriteComponent.renderSprite.namedResource;
-    if (namedResource.directColor) {
-      sprite = textureContainer.getTextureNamedResource(namedResource);
-    } else {
-      sprite = textureContainer.getTextureNamedResourceAndPalette(namedResource, spriteComponent.colorPalette, imageDataContainer);
-    }
-
-    final Point2f pos = t.transformComponent.position.plus(spriteComponent.pivotPoint);
-    sprite.setSize(spriteComponent.size.x, spriteComponent.size.y);
-    sprite.setPosition(pos.x, pos.y);
-    sprite.setRegion(spriteComponent.renderSprite.rect.origin.x, spriteComponent.renderSprite.rect.origin.y, spriteComponent.size.x, spriteComponent.size.y);
-    sprite.setFlip(spriteComponent.flipX, !spriteComponent.flipY);
-    sprite.draw(spriteBatch, spriteComponent.alpha);
-  }
-
-  @Override
-  public void applyActiveCamera(Camera camera) {
-    this.camera = camera;
-  }
-
-  /**
-   * Declares the component needed by this system.
-   */
-  static class Tuple implements ComponentSystem.Tuple {
-    Entity entity;
-    TransformComponent transformComponent;
-    SpriteComponent spriteComponent;
-
-    Tuple(Entity entity, TransformComponent transformComponent, SpriteComponent spriteComponent) {
-      this.entity = entity;
-      this.transformComponent = transformComponent;
-      this.spriteComponent = spriteComponent;
-    }
-  }
-
   static class TupleFactory implements ComponentSystem.TupleFactory<Tuple> {
     public Tuple map(Entity entity) {
-      var sprite = entity.getComponent(SpriteComponent.class);
+      var sprite = entity.getComponent(RenderSpriteComponent.class);
       var transform = entity.getComponent(TransformComponent.class);
       if (sprite != null && transform != null) {
         return new Tuple(entity, transform, sprite);
@@ -98,5 +66,37 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
         return null;
       }
     }
+  }
+
+  @Override
+  public void applyActiveCamera(Camera camera) {
+    this.camera = camera;
+  }
+
+  public RenderSpriteSystem() {
+    super(new RenderSpriteSystem.TupleFactory());
+    this.componentPredicate = tuple -> tuple.renderSpriteComponent.spriteSource != null && tuple.renderSpriteComponent.isVisible();
+    this.componentComparator = Comparator.comparingInt(o -> o.renderSpriteComponent.getPriority());
+  }
+
+  @Override
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
+
+    final RenderSpriteComponent renderSpriteComponent = t.renderSpriteComponent;
+
+    final Sprite sprite;
+    final NamedResource namedResource = renderSpriteComponent.spriteSource.namedResource;
+    if (namedResource.directColor) {
+      sprite = textureContainer.getTextureNamedResource(namedResource);
+    } else {
+      sprite = textureContainer.getTextureNamedResourceAndPalette(namedResource, renderSpriteComponent.colorPalette, imageDataContainer);
+    }
+
+    final Point2f pos = t.transformComponent.position.plus(renderSpriteComponent.pivotPoint);
+    sprite.setSize(renderSpriteComponent.size.x, renderSpriteComponent.size.y);
+    sprite.setPosition(pos.x, pos.y);
+    sprite.setRegion(renderSpriteComponent.spriteSource.rect.origin.x, renderSpriteComponent.spriteSource.rect.origin.y, renderSpriteComponent.size.x, renderSpriteComponent.size.y);
+    sprite.setFlip(renderSpriteComponent.flipX, !renderSpriteComponent.flipY);
+    sprite.draw(spriteBatch, renderSpriteComponent.getAlpha());
   }
 }

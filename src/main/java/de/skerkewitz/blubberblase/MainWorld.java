@@ -8,6 +8,7 @@ import de.skerkewitz.enora2d.core.ecs.system.AirflowSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
+import org.apache.commons.lang3.StringUtils;
 
 public class MainWorld extends World {
 
@@ -78,5 +79,9 @@ public class MainWorld extends World {
 
     animationSystem.update(tickTime, this, entityContainer.stream(), context);
     soundSystem.update(tickTime, this, entityContainer.stream(), context);
+
+    /* Update player score. */
+    RenderTextComponent component = this.getPlayerScoreEntity().getComponent(RenderTextComponent.class);
+    component.text = StringUtils.leftPad("" + context.scorePlayer1, 8);
   }
 }

@@ -27,5 +27,4 @@ public class PlayerComponent implements Component {
   public int jumpTickRemaining = 0;
 
   public MoveDirection movingDir = MoveDirection.Right;
-
 }

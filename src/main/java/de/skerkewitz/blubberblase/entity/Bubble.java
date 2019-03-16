@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.gfx.Animation;
-import de.skerkewitz.enora2d.core.gfx.RenderSprite;
+import de.skerkewitz.enora2d.core.gfx.SpriteSource;
 
 public interface Bubble {
 
@@ -20,9 +20,9 @@ public interface Bubble {
   int MAX_LIFETIME_BEFORE_BURST = TimeUtil.secondsToTickTime(10);
 
   Animation BUBBLE = new Animation("bubble", FRAME_ANIMATION_SPEED,
-          new RenderSprite(Ressources.SpriteSheet_Bubble.sheet.rectFor(0, 0), Ressources.SpriteSheet_Bubble),
-          new RenderSprite(Ressources.SpriteSheet_Bubble.sheet.rectFor(1, 0), Ressources.SpriteSheet_Bubble),
-          new RenderSprite(Ressources.SpriteSheet_Bubble.sheet.rectFor(2, 0), Ressources.SpriteSheet_Bubble)
+          new SpriteSource(Ressources.SpriteSheet_Bubble.sheet.rectFor(0, 0), Ressources.SpriteSheet_Bubble),
+          new SpriteSource(Ressources.SpriteSheet_Bubble.sheet.rectFor(1, 0), Ressources.SpriteSheet_Bubble),
+          new SpriteSource(Ressources.SpriteSheet_Bubble.sheet.rectFor(2, 0), Ressources.SpriteSheet_Bubble)
   );
 
 

@@ -111,11 +111,11 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
 
     if (t.enemyComponent.isAngry) {
       t.entity.getComponent(AnimationComponent.class).animation = ZenChan.ANGRY_ANIMATION_IDLE;
-      t.entity.getComponent(SpriteComponent.class).colorPalette = ZenChan.ANGRY_COLOR_PALETTE;
+      t.entity.getComponent(RenderSpriteComponent.class).colorPalette = ZenChan.ANGRY_COLOR_PALETTE;
     }
 
     if (t.enemyComponent.didEscapeTrapBubble) {
-      t.entity.getComponent(SpriteComponent.class).colorPalette = ZenChan.ESCAPE_COLOR_PALETTE;
+      t.entity.getComponent(RenderSpriteComponent.class).colorPalette = ZenChan.ESCAPE_COLOR_PALETTE;
     }
 
     AnimationComponent animationComponent = t.entity.getComponent(AnimationComponent.class);

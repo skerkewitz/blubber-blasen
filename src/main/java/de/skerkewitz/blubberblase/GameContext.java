@@ -10,6 +10,8 @@ public class GameContext {
   public int isLevelClearedTimer = -1;
   public boolean gameOver = false;
 
+  public int scorePlayer1 = 0;
+
   public void clampLevelNum() {
     currentLevelNum = Math.max(1, currentLevelNum % (GameContext.MAX_LEVEL + 1));
   }

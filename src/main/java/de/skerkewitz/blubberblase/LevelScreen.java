@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.blubberblase.esc.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;
+import de.skerkewitz.blubberblase.esc.RenderTextSystem;
 import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
@@ -22,6 +23,7 @@ public class LevelScreen implements Screen {
   private World world;
 
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
+  private RenderTextSystem renderTextSystem = new RenderTextSystem();
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
 
   public LevelScreen(GameConfig config, int frameCount, int levelNum) {
@@ -79,6 +81,10 @@ public class LevelScreen implements Screen {
     /* Render all the entities. */
     renderSpriteSystem.applyActiveCamera(camera);
     renderSpriteSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
+
+    /* Render all the entities. */
+    renderTextSystem.applyActiveCamera(camera);
+    renderTextSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
 
     if (config.cmd.hasOption("showbbox")) {
       renderDebugSystem.applyActiveCamera(camera);

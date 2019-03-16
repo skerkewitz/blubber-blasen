@@ -18,6 +18,7 @@ public abstract class World {
   public StaticMapContent staticMapContent;
 
   private Entity playerEntity;
+  private Entity playerScoreEntity;
 
   private final int levelStartFrameCount;
 
@@ -82,9 +83,11 @@ public abstract class World {
     this.playerEntity = playerEntity;
   }
 
-  public void addPlayer(Entity playerEntity) {
+  public void addPlayer(Entity playerEntity, Entity playerScoreEntity) {
     addEntity(playerEntity);
     setPlayerEntity(playerEntity);
+    addEntity(playerScoreEntity);
+    this.playerScoreEntity = playerScoreEntity;
   }
 
   public boolean canGapJumpAtPosition(int x, int y, int moveDir) {
@@ -141,5 +144,9 @@ public abstract class World {
   public AirflowDirection getAirflowAt(Point2f position) {
     var tilePos = convertWorldToTileSpace(position);
     return staticMapContent.getAirflowAt(tilePos);
+  }
+
+  public Entity getPlayerScoreEntity() {
+    return playerScoreEntity;
   }
 }

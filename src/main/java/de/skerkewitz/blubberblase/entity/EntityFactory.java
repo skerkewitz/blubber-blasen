@@ -9,7 +9,7 @@ import de.skerkewitz.enora2d.core.ecs.DefaultEntity;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
 import de.skerkewitz.enora2d.core.gfx.Animation;
-import de.skerkewitz.enora2d.core.gfx.RenderSprite;
+import de.skerkewitz.enora2d.core.gfx.SpriteSource;
 import de.skerkewitz.enora2d.core.input.InputHandler;
 
 import java.util.EnumSet;
@@ -29,10 +29,10 @@ public class EntityFactory {
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new PlayerComponent());
     entity.addComponent(new InputComponent(inputHandler));
-    entity.addComponent(new SpriteComponent(), component -> {
+    entity.addComponent(new RenderSpriteComponent(), component -> {
       component.colorPalette = Bubblun.COLOR_PALETTE;
       component.pivotPoint = new Point2i(-8, -15);
-      component.priority = SPRITE_PRIORITY_PLAYER;
+      component.setPriority(SPRITE_PRIORITY_PLAYER);
     });
     entity.addComponent(new GroundDataComponent(-4, 4, 0));
     entity.addComponent(new AnimationComponent(0, Bubblun.ANIMATION_IDLE, false, 0));
@@ -45,10 +45,10 @@ public class EntityFactory {
   public static Entity spawnBubble(int tickTime, Point2f position, MoveDirection moveDirection, StateBaseBubbleComponent.State state) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
-    entity.addComponent(new SpriteComponent(), component -> {
-      component.renderSprite = new RenderSprite(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet_Bubble);
+    entity.addComponent(new RenderSpriteComponent(), component -> {
+      component.spriteSource = new SpriteSource(new Rect2i(0, 25 * 8, 16, 16), Ressources.SpriteSheet_Bubble);
       component.pivotPoint = new Point2i(-8, -8);
-      component.priority = SPRITE_PRIORITY_BUBBLE;
+      component.setPriority(SPRITE_PRIORITY_BUBBLE);
     });
     entity.addComponent(new StateBaseBubbleComponent(tickTime, state, StateBaseBubbleComponent.Type.NORMAL, false));
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.MAX_LIFETIME_BEFORE_BURST), component -> component.autoRemove = false);
@@ -65,10 +65,10 @@ public class EntityFactory {
   public static Entity spawnBubbleBurst(int tickTime, Point2f position) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
-    entity.addComponent(new SpriteComponent(), component -> {
-      component.renderSprite = new RenderSprite(new Point2i(0, 0), Ressources.SpriteSheet_BubbleBurst);
+    entity.addComponent(new RenderSpriteComponent(), component -> {
+      component.spriteSource = new SpriteSource(new Point2i(0, 0), Ressources.SpriteSheet_BubbleBurst);
       component.pivotPoint = new Point2i(-8, -8);
-      component.priority = SPRITE_PRIORITY_BUBBLE;
+      component.setPriority(SPRITE_PRIORITY_BUBBLE);
     });
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.BURST_MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new SoundComponent(Bubble.sfxBurstBubble, 0.5f));
@@ -79,9 +79,9 @@ public class EntityFactory {
   public static Entity spawnTrapBubble(int tickTime, Point2f position) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
-    entity.addComponent(new SpriteComponent(), component -> {
+    entity.addComponent(new RenderSpriteComponent(), component -> {
       component.pivotPoint = new Point2i(-8, -8);
-      component.priority = SPRITE_PRIORITY_TRAP_BUBBLE;
+      component.setPriority(SPRITE_PRIORITY_TRAP_BUBBLE);
     });
     entity.addComponent(new StateBaseBubbleComponent(tickTime, StateBaseBubbleComponent.State.FLOAT, StateBaseBubbleComponent.Type.TRAP, false));
     entity.addComponent(new LifeTimeComponent(tickTime, TrapBubble.MAX_LIFETIME_IN_TICKS));
@@ -98,11 +98,11 @@ public class EntityFactory {
   public static Entity spawnDiamond(int tickTime, Point2f position) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
-    entity.addComponent(new SpriteComponent(), component -> {
-      component.renderSprite = new RenderSprite(new Rect2i(0, 2 * 8, 16, 16), Ressources.SpriteSheet);
+    entity.addComponent(new RenderSpriteComponent(), component -> {
+      component.spriteSource = new SpriteSource(new Rect2i(0, 2 * 8, 16, 16), Ressources.SpriteSheet);
       component.colorPalette = BonusDiamond.COLOR_PALETTE;
       component.pivotPoint = new Point2i(-8, -15);
-      component.priority = SPRITE_PRIORITY_BONUS_ITEMS;
+      component.setPriority(SPRITE_PRIORITY_BONUS_ITEMS);
     });
     entity.addComponent(new BonusItemComponent());
     entity.addComponent(new LifeTimeComponent(tickTime, BonusDiamond.MAX_LIFETIME_IN_TICKS));
@@ -115,10 +115,10 @@ public class EntityFactory {
   public static Entity spawnThrownEnemy(int frameCount, Point2f position, MoveDirection currentMoveDirection) {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
-    entity.addComponent(new SpriteComponent(), component -> {
+    entity.addComponent(new RenderSpriteComponent(), component -> {
       component.colorPalette = ZenChan.THROW_COLOR_PALETTE;
       component.pivotPoint = new Point2i(-8, -15);
-      component.priority = SPRITE_PRIORITY_BONUS_ITEMS;
+      component.setPriority(SPRITE_PRIORITY_BONUS_ITEMS);
     });
     entity.addComponent(new LifeTimeComponent(frameCount, ThrownEnemy.MAX_LIFETIME_IN_TICKS));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-8, -8, 12, 12)));
@@ -134,10 +134,10 @@ public class EntityFactory {
     Entity entity = newEntity();
     entity.addComponent(new TransformComponent(position));
     entity.addComponent(new EnemyComponent(isAngry));
-    entity.addComponent(new SpriteComponent(), component -> {
+    entity.addComponent(new RenderSpriteComponent(), component -> {
       component.colorPalette = ZenChan.COLOR_PALETTE;
       component.pivotPoint = ZenChan.spritePivotPoint;
-      component.priority = SPRITE_PRIORITY_ENEMY;
+      component.setPriority(SPRITE_PRIORITY_ENEMY);
     });
     entity.addComponent(new AnimationComponent(0, ZenChan.ANIMATION_IDLE, movingDir == MoveDirection.Right, 0));
     entity.addComponent(new BoundingBoxComponent(new Rect2i(-6, -14, 12, 15)));
@@ -148,7 +148,7 @@ public class EntityFactory {
     return entity;
   }
 
-  private static Entity newEntity() {
+  public static Entity newEntity() {
     return new DefaultEntity();
   }
 }

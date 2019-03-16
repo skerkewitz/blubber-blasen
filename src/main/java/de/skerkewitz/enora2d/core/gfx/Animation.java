@@ -15,19 +15,19 @@ public class Animation {
   private String name;
   private LoopStyle loopStyle = LoopStyle.CycleForward;
   private int animationSpeedInTicks;
-  private List<RenderSprite> frames = new ArrayList<>(5);
+  private List<SpriteSource> frames = new ArrayList<>(5);
 
   public Animation(String name, int animationSpeedInTicks) {
     this.animationSpeedInTicks = animationSpeedInTicks;
     this.name = name;
   }
 
-  public Animation(String name, int animationSpeedInTicks, RenderSprite... frames) {
+  public Animation(String name, int animationSpeedInTicks, SpriteSource... frames) {
     this(name, animationSpeedInTicks);
     this.frames.addAll(Arrays.asList(frames));
   }
 
-  public void addFrame(RenderSprite sprite) {
+  public void addFrame(SpriteSource sprite) {
     frames.add(sprite);
   }
 
@@ -39,7 +39,7 @@ public class Animation {
     this.loopStyle = loopStyle;
   }
 
-  public RenderSprite currentFrame(int currentTime, int animationStartTime, int animationSpeedOffsetInTicks) {
+  public SpriteSource currentFrame(int currentTime, int animationStartTime, int animationSpeedOffsetInTicks) {
 
     switch (loopStyle) {
       case CycleForward: {

@@ -32,6 +32,7 @@ public class BonusItemSystem extends BaseComponentSystem<BonusItemSystem.Tuple, 
       if (player.isPresent()) {
         t.entity.expired();
         sfxBonusItemCollected.play();
+        context.scorePlayer1 += 500;
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());

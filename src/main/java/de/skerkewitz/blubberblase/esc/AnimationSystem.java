@@ -15,31 +15,24 @@ public class AnimationSystem extends BaseComponentSystem<AnimationSystem.Tuple, 
     super(new AnimationSystem.TupleFactory());
   }
 
-  @Override
-  public void execute(int tickTime, Tuple t, World world, GameContext context) {
-    t.spriteComponent.flipX = t.animationComponent.flipX;
-    t.spriteComponent.renderSprite = t.animationComponent.animation.currentFrame(tickTime,
-            t.animationComponent.currentAnimationStartTimeTick, t.animationComponent.animationSpeedOffsetInTicks);
-  }
-
   /**
    * Declares the component needed by this system.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;
-    SpriteComponent spriteComponent;
+    RenderSpriteComponent renderSpriteComponent;
     AnimationComponent animationComponent;
 
-    Tuple(Entity entity, AnimationComponent animationComponent, SpriteComponent spriteComponent) {
+    Tuple(Entity entity, AnimationComponent animationComponent, RenderSpriteComponent renderSpriteComponent) {
       this.entity = entity;
       this.animationComponent = animationComponent;
-      this.spriteComponent = spriteComponent;
+      this.renderSpriteComponent = renderSpriteComponent;
     }
   }
 
   static class TupleFactory implements ComponentSystem.TupleFactory<Tuple> {
     public Tuple map(Entity entity) {
-      var sprite = entity.getComponent(SpriteComponent.class);
+      var sprite = entity.getComponent(RenderSpriteComponent.class);
       var animationComponent = entity.getComponent(AnimationComponent.class);
       if (sprite != null && animationComponent != null) {
         return new Tuple(entity, animationComponent, sprite);
@@ -47,5 +40,12 @@ public class AnimationSystem extends BaseComponentSystem<AnimationSystem.Tuple, 
 
       return null;
     }
+  }
+
+  @Override
+  public void execute(int tickTime, Tuple t, World world, GameContext context) {
+    t.renderSpriteComponent.flipX = t.animationComponent.flipX;
+    t.renderSpriteComponent.spriteSource = t.animationComponent.animation.currentFrame(tickTime,
+            t.animationComponent.currentAnimationStartTimeTick, t.animationComponent.animationSpeedOffsetInTicks);
   }
 }

@@ -85,9 +85,9 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
     final int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.entity.getComponent(LifeTimeComponent.class));
 
     /* Should it blink. */
-    t.entity.getComponent(SpriteComponent.class).visible = true;
+    t.entity.getComponent(RenderSpriteComponent.class).setVisible(true);
     if (ageFrameCount > TrapBubble.MAX_LIFETIME_BEFORE_BURST - GamePlay.PRE_ACTION_INDICATION_FRAMECOUNT) {
-      t.entity.getComponent(SpriteComponent.class).visible = tickTime / 10 % 2 == 0;
+      t.entity.getComponent(RenderSpriteComponent.class).setVisible(tickTime / 10 % 2 == 0);
     }
 
 
