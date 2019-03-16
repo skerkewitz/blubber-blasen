@@ -31,7 +31,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
         handleNormalBubble(tickTime, world, t);
         break;
       case TRAP:
-        handleTrapBubble(tickTime, world, t);
+        handleTrapBubble(tickTime, world, t, context);
         break;
     }
   }
@@ -79,7 +79,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
     }
   }
 
-  private void handleTrapBubble(int tickTime, World world, Tuple t) {
+  private void handleTrapBubble(int tickTime, World world, Tuple t, GameContext context) {
 
     /* Check if we need to burst the bubble */
     final int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.entity.getComponent(LifeTimeComponent.class));
@@ -109,6 +109,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       if (player.isPresent()) {
         world.addEntity(EntityFactory.spawnThrownEnemy(tickTime, t.transformComponent.position, player.get().getComponent(PlayerComponent.class).movingDir));
         burstBubble(tickTime, world, t);
+        context.scorePlayer1 += 1000;
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());

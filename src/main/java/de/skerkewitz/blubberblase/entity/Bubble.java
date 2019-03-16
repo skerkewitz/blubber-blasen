@@ -12,7 +12,7 @@ public interface Bubble {
   Sound sfxBurstTrapBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/sfx_coin_double7.wav"));
   Sound sfxBurstBubble = Gdx.audio.newSound(Gdx.files.internal("sfx/bubble-burst.wav"));
 
-  int BURST_MAX_LIFETIME_IN_TICKS = TimeUtil.secondsToTickTime(0.1);
+  int BURST_MAX_LIFETIME_IN_TICKS = TimeUtil.secondsToTickTime(0.5);
 
   int FRAME_ANIMATION_SPEED = TimeUtil.secondsToTickTime(0.1);
   int FRAME_ANIMATION_SPEED_RND_OFFSET = TimeUtil.secondsToTickTime(0.1);

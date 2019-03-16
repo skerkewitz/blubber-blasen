@@ -21,9 +21,10 @@ public class RenderSpriteComponent extends AbstractRenderComponent {
   public boolean flipY = false;
   public Size size = Size.Big;
 
-  enum Size {
+  public enum Size {
     Small(8, 8),
-    Big(16, 16);
+    Big(16, 16),
+    Wide(16, 8);
 
     public final int x;
     public final int y;

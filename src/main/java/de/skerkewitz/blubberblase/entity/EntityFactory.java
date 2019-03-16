@@ -1,8 +1,10 @@
 package de.skerkewitz.blubberblase.entity;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.*;
+import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -20,8 +22,11 @@ public class EntityFactory {
   private final static byte SPRITE_PRIORITY_BUBBLE = 0;
   private final static byte SPRITE_PRIORITY_BONUS_ITEMS = 2;
   private final static byte SPRITE_PRIORITY_TRAP_BUBBLE = 3;
-  private final static byte SPRITE_PRIORITY_ENEMY = 4;
-  private final static byte SPRITE_PRIORITY_PLAYER = 5;
+
+  private final static byte SPRITE_PRIORITY_BONUS_POINT_PICKUP_ITEMS = 50;
+
+  private final static byte SPRITE_PRIORITY_ENEMY = 100;
+  private final static byte SPRITE_PRIORITY_PLAYER = 120;
 
 
   public static Entity spawnBubblun(InputHandler inputHandler, Point2f position) {
@@ -72,6 +77,7 @@ public class EntityFactory {
       component.setPriority(SPRITE_PRIORITY_BUBBLE);
     });
     entity.addComponent(new LifeTimeComponent(tickTime, Bubble.BURST_MAX_LIFETIME_IN_TICKS));
+    entity.addComponent(new RenderSpriteAlphaAnimatorComponent(1.0f, 0.0f, tickTime, tickTime + Bubble.BURST_MAX_LIFETIME_IN_TICKS, Interpolation.circle));
     entity.addComponent(new SoundComponent(Bubble.sfxBurstBubble, 0.5f));
 
     return entity;
@@ -151,18 +157,40 @@ public class EntityFactory {
 
   public static Entity spawnTextEntity(Point2f position, String text, Color color) {
 
-    final Entity textEntity = EntityFactory.newEntity();
-    textEntity.addComponent(new TransformComponent(position));
-    textEntity.addComponent(new RenderTextComponent(text, null), component -> {
+    final Entity entity = EntityFactory.newEntity();
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new RenderTextComponent(text, null), component -> {
       component.spriteSource = new SpriteSource(new Point2i(0, 0), Ressources.SpriteSheet_Text);
       component.color = color;
     });
 
-    return textEntity;
+    return entity;
+  }
+
+  public static Entity spawnPointPickup(int tickTime, Point2f position) {
+
+    int lifetime = TimeUtil.secondsToTickTime(1);
+
+    final Entity entity = EntityFactory.newEntity();
+    entity.addComponent(new LifeTimeComponent(tickTime, lifetime));
+    entity.addComponent(new TransformComponent(position));
+    entity.addComponent(new RenderSpriteComponent(), component -> {
+      component.size = RenderSpriteComponent.Size.Wide;
+      component.spriteSource = new SpriteSource(new Point2i(0, 0), Ressources.SpriteSheet_PickupPoints);
+      component.pivotPoint = new Point2i(-8, -8);
+      component.setPriority(SPRITE_PRIORITY_BONUS_POINT_PICKUP_ITEMS);
+    });
+
+    entity.addComponent(new TransformAnimatorComponent(position, position.plus(0.0f, -25.0f), tickTime, tickTime + lifetime, Interpolation.linear));
+    entity.addComponent(new RenderSpriteAlphaAnimatorComponent(1.0f, 0.0f, tickTime, tickTime + lifetime, Interpolation.pow5In));
+
+    return entity;
   }
 
 
   public static Entity newEntity() {
     return new DefaultEntity();
   }
+
+
 }

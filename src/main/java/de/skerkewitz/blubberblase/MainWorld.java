@@ -26,6 +26,9 @@ public class MainWorld extends World {
   private TargetMoveSystem targetMoveSystem = new TargetMoveSystem();
   private SoundSystem soundSystem = new SoundSystem();
 
+  private TransformAnimatorSystem transformAnimatorSystem = new TransformAnimatorSystem();
+  private RenderSpriteAlphaAnimatorSystem renderSpriteAlphaAnimatorSystem = new RenderSpriteAlphaAnimatorSystem();
+
   private InputSystem inputSystem = new InputSystem();
 
   private Sound hurryUp = Gdx.audio.newSound(Gdx.files.internal("sfx/hurry-up.mp3"));
@@ -79,6 +82,9 @@ public class MainWorld extends World {
 
     animationSystem.update(tickTime, this, entityContainer.stream(), context);
     soundSystem.update(tickTime, this, entityContainer.stream(), context);
+
+    transformAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
+    renderSpriteAlphaAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
 
     /* Update player score. */
     RenderTextComponent component = this.getPlayerScoreEntity().getComponent(RenderTextComponent.class);
