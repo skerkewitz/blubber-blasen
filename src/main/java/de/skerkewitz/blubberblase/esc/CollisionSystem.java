@@ -6,6 +6,7 @@ import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, CollisionSystem.TupleFactory> {
 
@@ -69,7 +70,7 @@ public class CollisionSystem extends BaseComponentSystem<CollisionSystem.Tuple, 
   }
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

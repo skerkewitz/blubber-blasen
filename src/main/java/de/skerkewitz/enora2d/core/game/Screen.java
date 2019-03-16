@@ -1,7 +1,7 @@
 package de.skerkewitz.enora2d.core.game;
 
 import com.badlogic.gdx.graphics.Camera;
-import de.skerkewitz.blubberblase.ScreenAction;
+import de.skerkewitz.blubberblase.screen.ScreenAction;
 
 import java.io.IOException;
 

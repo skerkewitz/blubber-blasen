@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase;
+package de.skerkewitz.blubberblase.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 

@@ -30,6 +30,7 @@ public abstract class World {
 
   public void tick(int tickTime, GameContext context) {
     spawnSheduler.spawnEntities(tickTime, this);
+    getEntityContainer().purgeExpired();
   }
 
   public int getWorldFrameCount(int tickTime) {

@@ -5,6 +5,7 @@ import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
@@ -13,7 +14,7 @@ import de.skerkewitz.enora2d.core.game.world.World;
 public class TargetMoveSystem extends BaseComponentSystem<TargetMoveSystem.Tuple, TargetMoveSystem.TupleFactory> {
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

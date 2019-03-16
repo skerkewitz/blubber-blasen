@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase;
+package de.skerkewitz.blubberblase.screen;
 
 import com.badlogic.gdx.graphics.Camera;
 import de.skerkewitz.enora2d.core.game.GameConfig;

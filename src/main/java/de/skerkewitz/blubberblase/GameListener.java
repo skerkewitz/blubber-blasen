@@ -9,6 +9,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bitfire.utils.ShaderLoader;
+import de.skerkewitz.blubberblase.screen.HighscoreScreen;
+import de.skerkewitz.blubberblase.screen.LevelScreen;
+import de.skerkewitz.blubberblase.screen.ScreenAction;
+import de.skerkewitz.blubberblase.screen.ScreenController;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 
@@ -58,7 +62,8 @@ class GameListener implements ApplicationListener {
       int level = Integer.parseInt(config.cmd.getOptionValue(GameConfig.CMD_OPTION_LEVEL));
       screenController.changeScreen(new LevelScreen(config, frameCount, level));
     } else {
-      screenController.changeScreen(new TitleScreen(config));
+      //screenController.changeScreen(new TitleScreen(config));
+      screenController.changeScreen(new HighscoreScreen(config));
     }
   }
 

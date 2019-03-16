@@ -4,13 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.blubberblase.util.TimeUtil;
-import de.skerkewitz.enora2d.core.ecs.system.AirflowSystem;
+import de.skerkewitz.enora2d.core.ecs.common.LifeTimeSystem;
+import de.skerkewitz.enora2d.core.ecs.common.SoundSystem;
+import de.skerkewitz.enora2d.core.ecs.common.TransformAnimatorSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
 import org.apache.commons.lang3.StringUtils;
 
-public class MainWorld extends World {
+public class LevelScreenWorld extends World {
 
   private final GameConfig config;
   private AirflowSystem airflowSystem = new AirflowSystem();
@@ -41,7 +43,7 @@ public class MainWorld extends World {
   public int hurryUpTimeLimitInSeconds = 30;
   public int hurryUpTimeLimitInFrameCount = TimeUtil.secondsToTickTime(hurryUpTimeLimitInSeconds);
 
-  public MainWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
+  public LevelScreenWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
     super(staticMapContent, frameCount);
     this.config = config;
   }

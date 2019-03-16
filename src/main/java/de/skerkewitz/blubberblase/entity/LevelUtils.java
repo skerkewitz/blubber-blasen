@@ -5,13 +5,17 @@ import com.badlogic.gdx.graphics.Color;
 import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.gierzahn.editor.map.Map;
 import de.skerkewitz.blubberblase.GameContext;
-import de.skerkewitz.blubberblase.MainWorld;
-import de.skerkewitz.blubberblase.esc.*;
+import de.skerkewitz.blubberblase.LevelScreenWorld;
+import de.skerkewitz.blubberblase.esc.BoundingBoxComponent;
+import de.skerkewitz.blubberblase.esc.EnemyComponent;
+import de.skerkewitz.blubberblase.esc.StateBaseBubbleComponent;
+import de.skerkewitz.blubberblase.esc.TargetMoveComponent;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
@@ -75,7 +79,7 @@ public class LevelUtils {
 
     /* Load the map from file. */
     final StaticMapContent staticMapContent = StaticMapContentLoader.load(level);
-    var world = new MainWorld(config, staticMapContent, frameCount);
+    var world = new LevelScreenWorld(config, staticMapContent, frameCount);
 
     /* Create player score entity. */
     final Entity scoreEntity = EntityFactory.spawnTextEntity(new Point2f(0, 8), "", Color.WHITE);

@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase.esc;
+package de.skerkewitz.enora2d.core.ecs.common;
 
 import com.badlogic.gdx.math.Interpolation;
 import de.skerkewitz.enora2d.common.Point2f;

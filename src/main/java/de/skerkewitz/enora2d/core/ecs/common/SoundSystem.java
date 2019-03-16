@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase.esc;
+package de.skerkewitz.enora2d.core.ecs.common;
 
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
@@ -7,12 +7,12 @@ import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class SoundSystem extends BaseComponentSystem<SoundSystem.Tuple, SoundSystem.TupleFactory> {
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

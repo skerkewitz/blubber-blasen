@@ -9,6 +9,8 @@ import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.RenderSystem;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.ImageDataContainer;
@@ -17,7 +19,7 @@ import de.skerkewitz.enora2d.core.gfx.NamedResource;
 import java.util.Comparator;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.Tuple, RenderSpriteSystem.TupleFactory> implements RenderSystem {
 
@@ -31,7 +33,7 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
   private Vector3 translate;
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

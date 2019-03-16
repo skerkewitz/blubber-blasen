@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase;
+package de.skerkewitz.blubberblase.screen;
 
 public enum ScreenAction {
   None, GoTile, GoLevel, GoGameOver

@@ -1,10 +1,11 @@
-package de.skerkewitz.blubberblase;
+package de.skerkewitz.blubberblase.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.blubberblase.esc.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;

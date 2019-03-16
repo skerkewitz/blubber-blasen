@@ -8,12 +8,12 @@ import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class RenderSpriteAlphaAnimatorSystem extends BaseComponentSystem<RenderSpriteAlphaAnimatorSystem.Tuple, RenderSpriteAlphaAnimatorSystem.TupleFactory> {
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

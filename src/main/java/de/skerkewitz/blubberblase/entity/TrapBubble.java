@@ -9,7 +9,7 @@ import de.skerkewitz.enora2d.core.gfx.SpriteSource;
 public interface TrapBubble {
 
   /**
-   * Will never be remove by the lifecycle system.
+   * Will never be remove by the lifecycle common.
    */
   int MAX_LIFETIME_IN_TICKS = -1;
 

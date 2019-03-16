@@ -9,6 +9,8 @@ import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.RenderSystem;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.gfx.GdxTextureContainer;
 import de.skerkewitz.enora2d.core.gfx.NamedResource;
@@ -16,12 +18,12 @@ import de.skerkewitz.enora2d.core.gfx.NamedResource;
 import java.util.Comparator;
 
 /**
- * A system to render all {@link RenderTextComponent}.
+ * A common to render all {@link RenderTextComponent}.
  */
 public class RenderTextSystem extends BaseComponentSystem<RenderTextSystem.Tuple, RenderTextSystem.TupleFactory> implements RenderSystem {
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;
