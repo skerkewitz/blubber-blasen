@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.enora2d.common.Point2f;
@@ -147,6 +148,19 @@ public class EntityFactory {
 
     return entity;
   }
+
+  public static Entity spawnTextEntity(Point2f position, String text, Color color) {
+
+    final Entity textEntity = EntityFactory.newEntity();
+    textEntity.addComponent(new TransformComponent(position));
+    textEntity.addComponent(new RenderTextComponent(text, null), component -> {
+      component.spriteSource = new SpriteSource(new Point2i(0, 0), Ressources.SpriteSheet_Text);
+      component.color = color;
+    });
+
+    return textEntity;
+  }
+
 
   public static Entity newEntity() {
     return new DefaultEntity();

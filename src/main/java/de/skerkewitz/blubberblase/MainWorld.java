@@ -82,6 +82,6 @@ public class MainWorld extends World {
 
     /* Update player score. */
     RenderTextComponent component = this.getPlayerScoreEntity().getComponent(RenderTextComponent.class);
-    component.text = StringUtils.leftPad("" + context.scorePlayer1, 8);
+    component.text = StringUtils.center("" + context.scorePlayer1, 10);
   }
 }

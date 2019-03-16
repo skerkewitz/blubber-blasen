@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase.esc;
 
+import com.badlogic.gdx.graphics.Color;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.core.ecs.AbstractRenderComponent;
 import de.skerkewitz.enora2d.core.gfx.SpriteSource;
@@ -16,6 +17,7 @@ public class RenderTextComponent extends AbstractRenderComponent {
   public SpriteSource spriteSource = null;
 
   public String text;
+  public Color color = Color.WHITE;
 
 
   public RenderTextComponent(String text, SpriteSource spriteSource) {

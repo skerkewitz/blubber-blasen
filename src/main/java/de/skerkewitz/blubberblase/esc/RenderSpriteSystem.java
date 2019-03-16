@@ -3,6 +3,7 @@ package de.skerkewitz.blubberblase.esc;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
@@ -27,6 +28,8 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
 
   private Camera camera = null;
 
+  private Vector3 translate;
+
   /**
    * Declares the component needed by this system.
    */
@@ -42,12 +45,11 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
     }
   }
 
-  @Override
-  public void willExecute(int tickTime, World world) {
-    super.willExecute(tickTime, world);
-
-    spriteBatch.setProjectionMatrix(camera.combined);
-    spriteBatch.begin();
+  public RenderSpriteSystem(Vector3 translate) {
+    super(new RenderSpriteSystem.TupleFactory());
+    this.translate = translate;
+    this.componentPredicate = tuple -> tuple.renderSpriteComponent.spriteSource != null && tuple.renderSpriteComponent.isVisible();
+    this.componentComparator = Comparator.comparingInt(o -> o.renderSpriteComponent.getPriority());
   }
 
   @Override
@@ -73,10 +75,13 @@ public class RenderSpriteSystem extends BaseComponentSystem<RenderSpriteSystem.T
     this.camera = camera;
   }
 
-  public RenderSpriteSystem() {
-    super(new RenderSpriteSystem.TupleFactory());
-    this.componentPredicate = tuple -> tuple.renderSpriteComponent.spriteSource != null && tuple.renderSpriteComponent.isVisible();
-    this.componentComparator = Comparator.comparingInt(o -> o.renderSpriteComponent.getPriority());
+  @Override
+  public void willExecute(int tickTime, World world) {
+    super.willExecute(tickTime, world);
+
+
+    spriteBatch.setProjectionMatrix(camera.combined.cpy().translate(translate));
+    spriteBatch.begin();
   }
 
   @Override

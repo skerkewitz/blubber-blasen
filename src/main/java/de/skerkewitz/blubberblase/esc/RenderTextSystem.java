@@ -3,8 +3,9 @@ package de.skerkewitz.blubberblase.esc;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import de.skerkewitz.blubberblase.GameContext;
-import de.skerkewitz.enora2d.common.Point2i;
+import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
@@ -51,7 +52,7 @@ public class RenderTextSystem extends BaseComponentSystem<RenderTextSystem.Tuple
   private SpriteBatch spriteBatch = new SpriteBatch();
   private Camera camera = null;
 
-  public RenderTextSystem() {
+  public RenderTextSystem(Vector3 zero) {
     super(new RenderTextSystem.TupleFactory());
     this.componentPredicate = tuple -> tuple.renderTextComponent.spriteSource != null && tuple.renderTextComponent.isVisible();
     this.componentComparator = Comparator.comparingInt(o -> o.renderTextComponent.getPriority());
@@ -93,12 +94,12 @@ public class RenderTextSystem extends BaseComponentSystem<RenderTextSystem.Tuple
           throw new UnsupportedOperationException("Only direct color is supported!");
         }
 
-        //final Point2f pos = t.transformComponent.position.plus(renderTextComponent.pivotPoint);
-        final Point2i pos = renderTextComponent.pivotPoint;
+        final Point2f pos = t.transformComponent.position.plus(renderTextComponent.pivotPoint);
         sprite.setSize(8, 8);
         sprite.setPosition(pos.x + (i * 8), pos.y);
         sprite.setRegion(renderTextComponent.spriteSource.rect.origin.x + xOffset, renderTextComponent.spriteSource.rect.origin.y + yOffset, 8, 8);
         sprite.setFlip(false, true);
+        sprite.setColor(t.renderTextComponent.color);
         sprite.draw(spriteBatch, renderTextComponent.getAlpha());
 
       }

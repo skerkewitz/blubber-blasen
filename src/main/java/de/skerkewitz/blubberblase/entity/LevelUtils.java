@@ -1,11 +1,11 @@
 package de.skerkewitz.blubberblase.entity;
 
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Color;
 import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.gierzahn.editor.map.Map;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.MainWorld;
-import de.skerkewitz.blubberblase.Ressources;
 import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
@@ -17,7 +17,6 @@ import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContentLoader;
 import de.skerkewitz.enora2d.core.game.world.World;
 import de.skerkewitz.enora2d.core.game.world.tiles.Tile;
-import de.skerkewitz.enora2d.core.gfx.SpriteSource;
 import de.skerkewitz.enora2d.core.input.GdxGamepadInputHandler;
 import de.skerkewitz.enora2d.core.input.GdxKeyboardInputHandler;
 import de.skerkewitz.enora2d.core.input.InputHandler;
@@ -79,11 +78,11 @@ public class LevelUtils {
     var world = new MainWorld(config, staticMapContent, frameCount);
 
     /* Create player score entity. */
-    final Entity scoreEntity = EntityFactory.newEntity();
-    scoreEntity.addComponent(new TransformComponent());
-    scoreEntity.addComponent(new RenderTextComponent("", null), component -> {
-      component.spriteSource = new SpriteSource(new Point2i(0, 0), Ressources.SpriteSheet_Text);
-    });
+    final Entity scoreEntity = EntityFactory.spawnTextEntity(new Point2f(0, 8), "", Color.WHITE);
+
+    world.addEntity(EntityFactory.spawnTextEntity(LevelUtils.convertTileToWorldSpace(3, 0), "1UP", Color.GREEN));
+    world.addEntity(EntityFactory.spawnTextEntity(LevelUtils.convertTileToWorldSpace(11, 0), "HIGHSCORE", Color.RED));
+    //world.addEntity(EntityFactory.spawnTextEntity(new Point2f(0,0), "1UP", Color.GREEN));
 
     final Entity playerEntity = createPlayerEntity(previousWorld);
     world.addPlayer(playerEntity, scoreEntity);

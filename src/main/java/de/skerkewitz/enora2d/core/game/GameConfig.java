@@ -25,13 +25,13 @@ public class GameConfig {
 
   public final CommandLine cmd;
 
-  public GameConfig(int width, int height, int scale, String name, String[] args) throws ParseException {
-    this.width = width;
-    this.height = height;
+  public GameConfig(int screenWidth, int screenHeight, int scale, String name, String[] args) throws ParseException {
+    this.width = screenWidth;
+    this.height = screenHeight;
     this.scale = scale;
     this.name = name;
 
-    displayDimensions = new Dimension(width * scale, height * scale);
+    displayDimensions = new Dimension(screenWidth * scale, screenHeight * scale);
 
     final Options options = new Options();
     options.addOption(CMD_OPTION_SHOWBBOX, false, "show bounding boxes");

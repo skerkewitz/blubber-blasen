@@ -3,6 +3,7 @@ package de.skerkewitz.blubberblase.esc;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
@@ -18,7 +19,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
   private ShapeRenderer shapeRenderer = new ShapeRenderer();
   private Camera camera = null;
 
-  public RenderDebugSystem() {
+  public RenderDebugSystem(Vector3 translateOffset) {
     super(new RenderDebugSystem.TupleFactory());
   }
 

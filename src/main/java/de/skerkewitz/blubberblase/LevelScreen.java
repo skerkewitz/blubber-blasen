@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import de.skerkewitz.blubberblase.entity.LevelUtils;
 import de.skerkewitz.blubberblase.esc.RenderDebugSystem;
 import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;
@@ -22,9 +23,10 @@ public class LevelScreen implements Screen {
   private SpriteBatch spriteBatch = new SpriteBatch();
   private World world;
 
-  private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem();
-  private RenderTextSystem renderTextSystem = new RenderTextSystem();
-  private RenderDebugSystem renderDebugSystem = new RenderDebugSystem();
+  private final Vector3 translateOffset = new Vector3(0, 16, 0);
+  private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem(translateOffset);
+  private RenderTextSystem renderTextSystem = new RenderTextSystem(Vector3.Zero);
+  private RenderDebugSystem renderDebugSystem = new RenderDebugSystem(translateOffset);
 
   public LevelScreen(GameConfig config, int frameCount, int levelNum) {
     this.gameContext = new GameContext();
@@ -94,7 +96,7 @@ public class LevelScreen implements Screen {
 
   private void renderStaticWorld(int tickTime, Camera camera) throws IOException {
 
-    spriteBatch.setProjectionMatrix(camera.combined);
+    spriteBatch.setProjectionMatrix(camera.combined.cpy().translate(translateOffset));
     spriteBatch.begin();
     for (int y = 0; y < world.numVerticalTiles; y++) {
       for (int x = 0; x < world.numHorizontalTiles; x++) {
