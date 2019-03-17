@@ -45,11 +45,11 @@ public class TitleScreen extends AbstractWorldRenderScreen {
   public ScreenAction update(int tickTime) {
 
     if (!wasSpacePressed) {
-      if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+      if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
         wasSpacePressed = true;
       }
     } else {
-      if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+      if (!Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
         return ScreenAction.GoLevel;
       }
     }
