@@ -5,8 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 
 class HighscoreText implements RenderTextComponent.Text {
 
-  final static String[] places = {"1ST", "2ND", "3RD", "4TH", "5TH"};
-
   public int score;
   int round;
   String name;
@@ -22,7 +20,7 @@ class HighscoreText implements RenderTextComponent.Text {
   @Override
   public String getText() {
 
-    return places[place]
+    return StringUtils.leftPad("" + (place + 1), 2, ' ') + "."
             + "  "
             + StringUtils.leftPad("" + score, 6, ' ')
             + "  "

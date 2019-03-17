@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.HighscoreScreenWorld;
@@ -41,9 +40,9 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
   private RenderSpriteSystem renderSpriteSystem = new RenderSpriteSystem(translateOffset);
   private RenderTextSystem renderTextSystem = new RenderTextSystem(Vector3.Zero);
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem(translateOffset);
-  private SpriteBatch spriteBatch = new SpriteBatch();
-  private ScoreText currentScore = new ScoreText(112560);
-  private ScoreText bestScore = new ScoreText(112560);
+
+  private ScoreText currentScore = new ScoreText(0);
+  private ScoreText bestScore = new ScoreText(0);
   private EnterNameScoreText enterNameScoreText = new EnterNameScoreText(112560, 2);
   private List<HighscoreText> highscore = new ArrayList<>();
   private int playerHighScoreIndex = 0;
@@ -53,7 +52,7 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
     super(config, gameContext);
     setWorld(new HighscoreScreenWorld(config, 0));
 
-    setup(gameContext.scorePlayer1, gameContext.currentLevelNum);
+    loadHighscore();
 
     /* Create player score entity. */
     getWorld().addEntity(spawnTextEntity(convertTileToWorldSpace(3, 0), () -> "1UP", Color.GREEN));
@@ -72,44 +71,56 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
       getWorld().addEntity(entity);
     });
 
+    setup(gameContext.scorePlayer1, gameContext.currentLevelNum);
+
     /* Top five. */
     /* Score and round. */
     getWorld().addEntity(spawnTextEntity(convertTileToWorldSpace(3, 14), () -> "      Score  RD        Name", Color.WHITE));
-    for (int i = 0; i < Math.max(5, highscore.size()); i++) {
-      final Color color = i == 0 ? Color.YELLOW : Color.WHITE;
+    for (int i = 0; i < Math.min(5, highscore.size()); i++) {
+      final Color color = i == playerHighScoreIndex ? Color.YELLOW : Color.WHITE;
       getWorld().addEntity(spawnTextEntity(convertTileToWorldSpace(3, 16 + (i * 2)), highscore.get(i), color));
     }
   }
 
   private void setup(int playerScore, int round) {
 
-    /* Load the current highscore. */
-    highscore.add(new HighscoreText(0, 900, 34, "ATEAM"));
-    highscore.add(new HighscoreText(1, 800, 32, "Emkay"));
-    highscore.add(new HighscoreText(2, 700, 28, "Vader"));
-    highscore.add(new HighscoreText(3, 600, 24, "Tuffyr"));
-    highscore.add(new HighscoreText(4, 500, 20, "Kim"));
-
     bestScore.score = Math.max(highscore.get(0).score, playerScore);
+    currentScore.score = playerScore;
+    enterNameScoreText.score = playerScore;
 
     /* Find the position where there score in the highscore list is less then our score. */
     playerHighScoreIndex = highscore.size();
     Optional<HighscoreText> first = highscore.stream().filter(highscoreText -> highscoreText.score < playerScore).findFirst();
     if (first.isPresent()) {
       playerHighScoreIndex = highscore.indexOf(first.get());
+    } else {
+      setStateGameOver();
     }
 
     highscore.add(playerHighScoreIndex, new HighscoreText(0, playerScore, round, ""));
 
+    for (int i = 0; i < highscore.size(); i++) {
+      highscore.get(i).place = i;
+    }
 
-    // We need the current score and the player round as input. */
+  }
+
+  private void loadHighscore() {
+    /* Load the current highscore. */
+    highscore.add(new HighscoreText(0, 500000, 10, "Rascal"));
+    highscore.add(new HighscoreText(1, 100000, 8, "VonBlubba"));
+    highscore.add(new HighscoreText(2, 50000, 4, "Banebou"));
+    highscore.add(new HighscoreText(3, 15000, 2, "Pulpul"));
+    highscore.add(new HighscoreText(4, 5000, 1, "Zenchan"));
   }
 
   private void confirmName() {
     highscore.get(playerHighScoreIndex).name = this.enterNameScoreText.name;
+    setStateGameOver();
+  }
 
+  private void setStateGameOver() {
     enterNamesEntities.forEach(entity -> entity.expired());
-
     getWorld().addEntity(spawnTextEntity(convertTileToWorldSpace(7, 8), () -> "G A M E    O V E R", Color.RED));
     state = State.GameOver;
   }

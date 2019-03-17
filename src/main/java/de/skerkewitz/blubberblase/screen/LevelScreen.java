@@ -43,7 +43,7 @@ public class LevelScreen extends AbstractWorldRenderScreen {
     if (!gameContext.isGameOver()) {
       world.tick(tickTime, gameContext);
     } else {
-      if (gameContext.getGameOverTickTime() + TimeUtil.secondsToTickTime(5) < tickTime) {
+      if (gameContext.getGameOverTickTime() + TimeUtil.secondsToTickTime(4) < tickTime) {
         return ScreenAction.GoGameOver;
       }
     }
