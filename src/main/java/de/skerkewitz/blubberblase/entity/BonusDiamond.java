@@ -8,7 +8,7 @@ public interface BonusDiamond {
   int COLOR_PALETTE = RgbColorPalette.mergeRgbColors(RgbColorPalette.NONE, 0x540BFF, 0xFF00FF, 0xffffff);
 
   /**
-   * Will never be remove by the lifecycle system.
+   * Will never be remove by the lifecycle common.
    */
   int MAX_LIFETIME_IN_TICKS = TimeUtil.secondsToTickTime(10.0f);
 

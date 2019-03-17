@@ -13,13 +13,14 @@ import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 import static de.skerkewitz.blubberblase.esc.AiEnemySystem.AiEnemyUtils.RelativePlayerHeight.Above;
 import static de.skerkewitz.blubberblase.esc.AiEnemySystem.AiEnemyUtils.RelativePlayerHeight.Below;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEnemySystem.TupleFactory> {
 
@@ -111,11 +112,11 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
 
     if (t.enemyComponent.isAngry) {
       t.entity.getComponent(AnimationComponent.class).animation = ZenChan.ANGRY_ANIMATION_IDLE;
-      t.entity.getComponent(SpriteComponent.class).colorPalette = ZenChan.ANGRY_COLOR_PALETTE;
+      t.entity.getComponent(RenderSpriteComponent.class).colorPalette = ZenChan.ANGRY_COLOR_PALETTE;
     }
 
     if (t.enemyComponent.didEscapeTrapBubble) {
-      t.entity.getComponent(SpriteComponent.class).colorPalette = ZenChan.ESCAPE_COLOR_PALETTE;
+      t.entity.getComponent(RenderSpriteComponent.class).colorPalette = ZenChan.ESCAPE_COLOR_PALETTE;
     }
 
     AnimationComponent animationComponent = t.entity.getComponent(AnimationComponent.class);
@@ -123,7 +124,7 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
   }
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

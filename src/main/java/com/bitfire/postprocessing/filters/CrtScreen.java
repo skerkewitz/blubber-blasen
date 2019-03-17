@@ -56,7 +56,7 @@ public final class CrtScreen extends Filter<CrtScreen> {
     setTime(0f);
 //    setTint(1.0f, 1.0f, 0.85f);
     setTint(1.0f, 1.0f, 1.0f);
-    setDistortion(0.1f);
+    setDistortion(0.08f);
     setZoom(1f);
     setRgbMode(mode);
 
@@ -66,7 +66,7 @@ public final class CrtScreen extends Filter<CrtScreen> {
         setChromaticDispersion(-0.1f, -0.1f);
         break;
       case RgbShift:
-        setColorOffset(0.003f);
+        setColorOffset(0.001f);
         break;
       case None:
         break;

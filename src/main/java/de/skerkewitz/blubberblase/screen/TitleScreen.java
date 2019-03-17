@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase;
+package de.skerkewitz.blubberblase.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,13 +10,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
+import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.core.game.GameConfig;
-import de.skerkewitz.enora2d.core.game.Screen;
 
-public class TitleScreen implements Screen {
+public class TitleScreen extends AbstractWorldRenderScreen {
 
-  private final GameConfig config;
-  private final GameContext gameContext;
   private final Music music;
   private final Texture texture;
   private final Sprite sprite;
@@ -26,8 +24,7 @@ public class TitleScreen implements Screen {
   private boolean wasSpacePressed = false;
 
   public TitleScreen(GameConfig config) {
-    this.gameContext = new GameContext();
-    this.config = config;
+    super(config, new GameContext());
 
     texture = new Texture(Gdx.files.internal("png/tile-screen.png"));
     sprite = new Sprite(texture);
@@ -41,19 +38,18 @@ public class TitleScreen implements Screen {
     Texture texture = new Texture(Gdx.files.internal("font/text.png"), true); // true enables mipmaps
     texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear); // linear filtering in nearest mipmap image
     font = new BitmapFont(Gdx.files.internal("font/text.fnt"), new TextureRegion(texture), true);
-
-
   }
+
 
   @Override
   public ScreenAction update(int tickTime) {
 
     if (!wasSpacePressed) {
-      if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+      if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
         wasSpacePressed = true;
       }
     } else {
-      if (!Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+      if (!Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
         return ScreenAction.GoLevel;
       }
     }
@@ -77,16 +73,6 @@ public class TitleScreen implements Screen {
 
   @Override
   public void screenWillDisappear() {
-
-  }
-
-  @Override
-  public void screenWillAppear() {
-
-  }
-
-  @Override
-  public void screenDidDisappear() {
     music.stop();
   }
 

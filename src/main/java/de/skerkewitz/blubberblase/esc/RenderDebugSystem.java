@@ -3,22 +3,25 @@ package de.skerkewitz.blubberblase.esc;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.enora2d.common.Rect2i;
 import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
+import de.skerkewitz.enora2d.core.ecs.RenderSystem;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tuple, RenderDebugSystem.TupleFactory> implements RenderSystem {
 
   private ShapeRenderer shapeRenderer = new ShapeRenderer();
   private Camera camera = null;
 
-  public RenderDebugSystem() {
+  public RenderDebugSystem(Vector3 translateOffset) {
     super(new RenderDebugSystem.TupleFactory());
   }
 
@@ -51,7 +54,7 @@ public class RenderDebugSystem extends BaseComponentSystem<RenderDebugSystem.Tup
   }
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

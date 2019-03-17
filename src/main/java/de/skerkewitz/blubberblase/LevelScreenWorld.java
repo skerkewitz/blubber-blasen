@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.blubberblase.util.TimeUtil;
-import de.skerkewitz.enora2d.core.ecs.system.AirflowSystem;
+import de.skerkewitz.enora2d.core.ecs.common.LifeTimeSystem;
+import de.skerkewitz.enora2d.core.ecs.common.SoundSystem;
+import de.skerkewitz.enora2d.core.ecs.common.TransformAnimatorSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
-public class MainWorld extends World {
+public class LevelScreenWorld extends World {
 
   private final GameConfig config;
   private AirflowSystem airflowSystem = new AirflowSystem();
@@ -25,6 +27,9 @@ public class MainWorld extends World {
   private TargetMoveSystem targetMoveSystem = new TargetMoveSystem();
   private SoundSystem soundSystem = new SoundSystem();
 
+  private TransformAnimatorSystem transformAnimatorSystem = new TransformAnimatorSystem();
+  private RenderSpriteAlphaAnimatorSystem renderSpriteAlphaAnimatorSystem = new RenderSpriteAlphaAnimatorSystem();
+
   private InputSystem inputSystem = new InputSystem();
 
   private Sound hurryUp = Gdx.audio.newSound(Gdx.files.internal("sfx/hurry-up.mp3"));
@@ -37,7 +42,7 @@ public class MainWorld extends World {
   public int hurryUpTimeLimitInSeconds = 30;
   public int hurryUpTimeLimitInFrameCount = TimeUtil.secondsToTickTime(hurryUpTimeLimitInSeconds);
 
-  public MainWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
+  public LevelScreenWorld(GameConfig config, StaticMapContent staticMapContent, int frameCount) {
     super(staticMapContent, frameCount);
     this.config = config;
   }
@@ -78,5 +83,8 @@ public class MainWorld extends World {
 
     animationSystem.update(tickTime, this, entityContainer.stream(), context);
     soundSystem.update(tickTime, this, entityContainer.stream(), context);
+
+    transformAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
+    renderSpriteAlphaAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
   }
 }

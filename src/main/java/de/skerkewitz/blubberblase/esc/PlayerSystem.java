@@ -12,10 +12,11 @@ import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, PlayerSystem.TupleFactory> {
 
@@ -37,7 +38,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
       var monsterHit = collisionComponent.getCollisions().anyMatch(entity -> entity.hasComponent(EnemyComponent.class));
       if (monsterHit) {
         sfxGameOver.play();
-        context.gameOver = true;
+        context.setGameOver(tickTime);
         return;
       }
     }
@@ -106,7 +107,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
   }
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

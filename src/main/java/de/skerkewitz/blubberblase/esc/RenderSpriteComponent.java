@@ -1,10 +1,10 @@
 package de.skerkewitz.blubberblase.esc;
 
 import de.skerkewitz.enora2d.common.Point2i;
-import de.skerkewitz.enora2d.core.ecs.Component;
-import de.skerkewitz.enora2d.core.gfx.RenderSprite;
+import de.skerkewitz.enora2d.core.ecs.AbstractRenderComponent;
+import de.skerkewitz.enora2d.core.gfx.SpriteSource;
 
-public class SpriteComponent implements Component {
+public class RenderSpriteComponent extends AbstractRenderComponent {
 
   /**
    * How much we need to move the upper left corner of the sprite relative to the transform position.
@@ -13,22 +13,18 @@ public class SpriteComponent implements Component {
   /**
    * The actual sprite to render.
    */
-  public RenderSprite renderSprite = null;
+  public SpriteSource spriteSource = null;
   /** The 4 color palette for this sprite. */
   public int colorPalette = 0;
-  /**
-   * Render priority, lower get rendered first therefore higher sprites are in front.
-   */
-  public byte priority = 0;
 
   public boolean flipX = false;
   public boolean flipY = false;
-  public boolean visible = true;
   public Size size = Size.Big;
 
-  enum Size {
+  public enum Size {
     Small(8, 8),
-    Big(16, 16);
+    Big(16, 16),
+    Wide(16, 8);
 
     public final int x;
     public final int y;
@@ -40,8 +36,6 @@ public class SpriteComponent implements Component {
     }
   }
 
-  public float alpha = 1.0f;
-
   //  class ObjectAttributes {
 //
 //    int size = 1; // 1 means 8x8, 2 means 16x16
@@ -50,7 +44,5 @@ public class SpriteComponent implements Component {
 //  }
 //
 //  // Size (8x8, 16x16), pos, prio, flipv, fliph, first tile, color palette
-
-
 
 }

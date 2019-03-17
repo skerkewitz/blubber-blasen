@@ -11,7 +11,7 @@ public class Main {
   public static void main(String[] args) throws ParseException {
 
     // most SNES games used 256x224 pixels since higher resolutions caused slowdow
-    GameConfig config = new GameConfig(StaticMapContent.WIDTH, StaticMapContent.HEIGHT, 4, "Blubber Blase", args);
+    GameConfig config = new GameConfig(StaticMapContent.WIDTH, StaticMapContent.HEIGHT + 16, 4, "Blubber Blase", args);
 
     Lwjgl3ApplicationConfiguration lwjglApplicationConfiguration = new Lwjgl3ApplicationConfiguration();
     lwjglApplicationConfiguration.setWindowedMode(config.width * 4, config.height * 4);

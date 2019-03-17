@@ -1,12 +1,12 @@
 package de.skerkewitz.enora2d.core.game;
 
 import com.badlogic.gdx.graphics.Camera;
-import de.skerkewitz.blubberblase.ScreenAction;
+import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.blubberblase.screen.ScreenAction;
 
 import java.io.IOException;
 
 public interface Screen {
-
 
   ScreenAction update(int tickTime);
 
@@ -19,4 +19,6 @@ public interface Screen {
   void screenDidDisappear();
 
   void screenDidAppear();
+
+  GameContext getGameContext();
 }

@@ -10,12 +10,14 @@ import de.skerkewitz.enora2d.core.ecs.BaseComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.ComponentSystem;
 import de.skerkewitz.enora2d.core.ecs.Entity;
 import de.skerkewitz.enora2d.core.ecs.MoveDirection;
+import de.skerkewitz.enora2d.core.ecs.common.LifeTimeComponent;
+import de.skerkewitz.enora2d.core.ecs.common.TransformComponent;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 import java.util.Optional;
 
 /**
- * A system to render all SpriteComponents.
+ * A common to render all SpriteComponents.
  */
 public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, AiBubbleSystem.TupleFactory> {
 
@@ -31,7 +33,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
         handleNormalBubble(tickTime, world, t);
         break;
       case TRAP:
-        handleTrapBubble(tickTime, world, t);
+        handleTrapBubble(tickTime, world, t, context);
         break;
     }
   }
@@ -79,15 +81,15 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
     }
   }
 
-  private void handleTrapBubble(int tickTime, World world, Tuple t) {
+  private void handleTrapBubble(int tickTime, World world, Tuple t, GameContext context) {
 
     /* Check if we need to burst the bubble */
     final int ageFrameCount = LifeTimeUtil.getAge(tickTime, world, t.entity.getComponent(LifeTimeComponent.class));
 
     /* Should it blink. */
-    t.entity.getComponent(SpriteComponent.class).visible = true;
+    t.entity.getComponent(RenderSpriteComponent.class).setVisible(true);
     if (ageFrameCount > TrapBubble.MAX_LIFETIME_BEFORE_BURST - GamePlay.PRE_ACTION_INDICATION_FRAMECOUNT) {
-      t.entity.getComponent(SpriteComponent.class).visible = tickTime / 10 % 2 == 0;
+      t.entity.getComponent(RenderSpriteComponent.class).setVisible(tickTime / 10 % 2 == 0);
     }
 
 
@@ -109,6 +111,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
       if (player.isPresent()) {
         world.addEntity(EntityFactory.spawnThrownEnemy(tickTime, t.transformComponent.position, player.get().getComponent(PlayerComponent.class).movingDir));
         burstBubble(tickTime, world, t);
+        context.scorePlayer1 += 1000;
         return;
       }
       throw new IllegalStateException("Trap bubble collision with unknown entity " + collisionComponent.getCollisions());
@@ -121,7 +124,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
   }
 
   /**
-   * Declares the component needed by this system.
+   * Declares the component needed by this common.
    */
   static class Tuple implements ComponentSystem.Tuple {
     Entity entity;

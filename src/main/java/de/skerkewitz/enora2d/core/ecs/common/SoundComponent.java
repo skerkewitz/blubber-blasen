@@ -1,4 +1,4 @@
-package de.skerkewitz.blubberblase.esc;
+package de.skerkewitz.enora2d.core.ecs.common;
 
 import com.badlogic.gdx.audio.Sound;
 import de.skerkewitz.enora2d.core.ecs.Component;

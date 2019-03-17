@@ -64,7 +64,7 @@ public final class PostProcessing implements Disposable, PostProcessorListener {
     curvature = new Curvature();
     zoomer = new Zoomer(vpW, vpH, isDesktop ? RadialBlur.Quality.VeryHigh : RadialBlur.Quality.Low);
     int effects = Effect.TweakContrast.v | Effect.PhosphorVibrance.v | Effect.Scanlines.v | Effect.Tint.v;
-    crt = new CrtMonitor(vpW, vpH, true, true, RgbMode.ChromaticAberrations, effects);
+    crt = new CrtMonitor(vpW, vpH, true, true, RgbMode.RgbShift, effects);
     Combine combine = crt.getCombinePass();
     combine.setSource1Intensity(0f);
     combine.setSource2Intensity(1f);

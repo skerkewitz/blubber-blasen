@@ -17,7 +17,11 @@ public class Point2f {
 
 
   public Point2f plus(Point2f o) {
-    return new Point2f(x + o.x, y + o.y);
+    return plus(o.x, o.y);
+  }
+
+  public Point2f plus(float x, float y) {
+    return new Point2f(this.x + x, this.y + y);
   }
 
   public Point2f plus(Point2i o) {
