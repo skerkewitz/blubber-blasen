@@ -1,6 +1,8 @@
 package de.skerkewitz.blubberblase.screen;
 
 import com.badlogic.gdx.graphics.Camera;
+import de.skerkewitz.blubberblase.GameContext;
+import de.skerkewitz.blubberblase.screen.highscore.HighscoreScreen;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.Screen;
 
@@ -9,6 +11,11 @@ import java.io.IOException;
 public class ScreenController {
 
   public final static Screen emptyScreen = new Screen() {
+
+    @Override
+    public GameContext getGameContext() {
+      return null;
+    }
 
     @Override
     public ScreenAction update(int tickTime) {
@@ -52,7 +59,7 @@ public class ScreenController {
     return currentScreen;
   }
 
-  public boolean handleScreenChange(ScreenAction update, int frameCount) {
+  public boolean handleScreenChange(ScreenAction update, int frameCount, GameContext gameContext) {
     switch (update) {
       case None:
         break;
@@ -63,6 +70,7 @@ public class ScreenController {
         changeScreen(new LevelScreen(config, frameCount, 1));
         return true;
       case GoGameOver:
+        changeScreen(new HighscoreScreen(config, gameContext));
         break;
     }
 

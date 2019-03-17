@@ -7,6 +7,14 @@ import de.skerkewitz.enora2d.core.gfx.SpriteSource;
 
 public class RenderTextComponent extends AbstractRenderComponent {
 
+  public interface Text {
+
+    Text Empty = () -> "";
+
+    String getText();
+  }
+
+
   /**
    * How much we need to move the upper left corner of the sprite relative to the transform position.
    */
@@ -16,11 +24,11 @@ public class RenderTextComponent extends AbstractRenderComponent {
    */
   public SpriteSource spriteSource = null;
 
-  public String text;
+  public Text text;
   public Color color = Color.WHITE;
 
 
-  public RenderTextComponent(String text, SpriteSource spriteSource) {
+  public RenderTextComponent(Text text, SpriteSource spriteSource) {
     this.text = text;
     this.spriteSource = spriteSource;
   }

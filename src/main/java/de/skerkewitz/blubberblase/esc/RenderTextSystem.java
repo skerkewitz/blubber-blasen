@@ -77,7 +77,7 @@ public class RenderTextSystem extends BaseComponentSystem<RenderTextSystem.Tuple
   @Override
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
-    var text = t.renderTextComponent.text.toUpperCase();
+    var text = t.renderTextComponent.text.getText().toUpperCase();
 
     for (int i = 0; i < text.length(); i += 1) {
       int charIndex = chars.indexOf(text.charAt(i));

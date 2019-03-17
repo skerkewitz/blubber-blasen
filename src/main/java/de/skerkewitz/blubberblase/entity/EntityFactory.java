@@ -159,7 +159,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public static Entity spawnTextEntity(Point2f position, String text, Color color) {
+  public static Entity spawnTextEntity(Point2f position, RenderTextComponent.Text text, Color color) {
 
     final Entity entity = EntityFactory.newEntity();
     entity.addComponent(new TransformComponent(position));

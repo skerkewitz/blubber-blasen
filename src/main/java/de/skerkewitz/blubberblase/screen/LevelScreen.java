@@ -12,15 +12,12 @@ import de.skerkewitz.blubberblase.esc.RenderSpriteSystem;
 import de.skerkewitz.blubberblase.esc.RenderTextSystem;
 import de.skerkewitz.blubberblase.util.TimeUtil;
 import de.skerkewitz.enora2d.core.game.GameConfig;
-import de.skerkewitz.enora2d.core.game.Screen;
 import de.skerkewitz.enora2d.core.game.world.World;
 
 import java.io.IOException;
 
-public class LevelScreen implements Screen {
+public class LevelScreen extends AbstractWorldRenderScreen {
 
-  private final GameConfig config;
-  private final GameContext gameContext;
   private SpriteBatch spriteBatch = new SpriteBatch();
   private World world;
 
@@ -30,30 +27,32 @@ public class LevelScreen implements Screen {
   private RenderDebugSystem renderDebugSystem = new RenderDebugSystem(translateOffset);
 
   public LevelScreen(GameConfig config, int frameCount, int levelNum) {
-    this.gameContext = new GameContext();
-    this.gameContext.currentLevelNum = levelNum;
-    this.gameContext.clampLevelNum();
+    super(config, new GameContext());
+    getGameContext().currentLevelNum = levelNum;
+    getGameContext().clampLevelNum();
 
-    this.config = config;
-    this.world = LevelUtils.loadWorld(frameCount, config, gameContext.currentLevelNum, null);
+    this.world = LevelUtils.loadWorld(frameCount, config, getGameContext().currentLevelNum, null);
 
     Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (21).wav")).play();
   }
 
-
-
-
   @Override
   public ScreenAction update(int tickTime) {
 
-    if (!gameContext.gameOver) {
+    GameContext gameContext = getGameContext();
+    if (!gameContext.isGameOver()) {
       world.tick(tickTime, gameContext);
+    } else {
+      if (gameContext.getGameOverTickTime() + TimeUtil.secondsToTickTime(5) < tickTime) {
+        return ScreenAction.GoGameOver;
+      }
     }
 
     if (tickTime % 10 != 0) {
       return ScreenAction.None;
     }
 
+    GameConfig config = getConfig();
     if (config.noNextLevel) {
       return ScreenAction.None;
     }
@@ -83,13 +82,14 @@ public class LevelScreen implements Screen {
 
     /* Render all the entities. */
     renderSpriteSystem.applyActiveCamera(camera);
+    GameContext gameContext = getGameContext();
     renderSpriteSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
 
     /* Render all the entities. */
     renderTextSystem.applyActiveCamera(camera);
     renderTextSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
 
-    if (config.cmd.hasOption("showbbox")) {
+    if (getConfig().cmd.hasOption("showbbox")) {
       renderDebugSystem.applyActiveCamera(camera);
       renderDebugSystem.update(tickTime, world, world.getEntityContainer().stream(), gameContext);
     }
@@ -112,25 +112,5 @@ public class LevelScreen implements Screen {
       }
     }
     spriteBatch.end();
-  }
-
-  @Override
-  public void screenWillDisappear() {
-
-  }
-
-  @Override
-  public void screenWillAppear() {
-
-  }
-
-  @Override
-  public void screenDidDisappear() {
-
-  }
-
-  @Override
-  public void screenDidAppear() {
-
   }
 }

@@ -90,6 +90,6 @@ public class LevelScreenWorld extends World {
 
     /* Update player score. */
     RenderTextComponent component = this.getPlayerScoreEntity().getComponent(RenderTextComponent.class);
-    component.text = StringUtils.center("" + context.scorePlayer1, 10);
+    component.text = () -> StringUtils.center("" + context.scorePlayer1, 10);
   }
 }

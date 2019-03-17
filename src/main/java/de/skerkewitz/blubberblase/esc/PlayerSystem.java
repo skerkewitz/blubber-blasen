@@ -38,7 +38,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
       var monsterHit = collisionComponent.getCollisions().anyMatch(entity -> entity.hasComponent(EnemyComponent.class));
       if (monsterHit) {
         sfxGameOver.play();
-        context.gameOver = true;
+        context.setGameOver(tickTime);
         return;
       }
     }

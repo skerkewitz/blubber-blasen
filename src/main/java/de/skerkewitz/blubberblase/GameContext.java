@@ -8,11 +8,26 @@ public class GameContext {
   public int currentLevelNum = 1;
 
   public int isLevelClearedTimer = -1;
-  public boolean gameOver = false;
+
+  private boolean gameOver = false;
+  private int gameOverTickTime = 0;
 
   public int scorePlayer1 = 0;
 
   public void clampLevelNum() {
     currentLevelNum = Math.max(1, currentLevelNum % (GameContext.MAX_LEVEL + 1));
+  }
+
+  public boolean isGameOver() {
+    return gameOver;
+  }
+
+  public void setGameOver(int tickTime) {
+    gameOver = true;
+    gameOverTickTime = tickTime;
+  }
+
+  public int getGameOverTickTime() {
+    return gameOverTickTime;
   }
 }

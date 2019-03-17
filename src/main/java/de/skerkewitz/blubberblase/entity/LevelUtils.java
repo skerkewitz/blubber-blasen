@@ -6,10 +6,7 @@ import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.gierzahn.editor.map.Map;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.LevelScreenWorld;
-import de.skerkewitz.blubberblase.esc.BoundingBoxComponent;
-import de.skerkewitz.blubberblase.esc.EnemyComponent;
-import de.skerkewitz.blubberblase.esc.StateBaseBubbleComponent;
-import de.skerkewitz.blubberblase.esc.TargetMoveComponent;
+import de.skerkewitz.blubberblase.esc.*;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -82,10 +79,10 @@ public class LevelUtils {
     var world = new LevelScreenWorld(config, staticMapContent, frameCount);
 
     /* Create player score entity. */
-    final Entity scoreEntity = EntityFactory.spawnTextEntity(new Point2f(0, 8), "", Color.WHITE);
+    final Entity scoreEntity = EntityFactory.spawnTextEntity(new Point2f(0, 8), RenderTextComponent.Text.Empty, Color.WHITE);
 
-    world.addEntity(EntityFactory.spawnTextEntity(LevelUtils.convertTileToWorldSpace(3, 0), "1UP", Color.GREEN));
-    world.addEntity(EntityFactory.spawnTextEntity(LevelUtils.convertTileToWorldSpace(11, 0), "HIGHSCORE", Color.RED));
+    world.addEntity(EntityFactory.spawnTextEntity(LevelUtils.convertTileToWorldSpace(3, 0), () -> "1UP", Color.GREEN));
+    world.addEntity(EntityFactory.spawnTextEntity(LevelUtils.convertTileToWorldSpace(11, 0), () -> "HIGHSCORE", Color.RED));
     //world.addEntity(EntityFactory.spawnTextEntity(new Point2f(0,0), "1UP", Color.GREEN));
 
     final Entity playerEntity = createPlayerEntity(previousWorld);
