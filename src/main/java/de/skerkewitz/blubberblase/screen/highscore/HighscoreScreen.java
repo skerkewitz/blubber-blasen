@@ -88,6 +88,7 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
     bestScore.score = Math.max(highscore.get(0).score, playerScore);
     currentScore.score = playerScore;
     enterNameScoreText.score = playerScore;
+    enterNameScoreText.round = round;
 
     /* Find the position where there score in the highscore list is less then our score. */
     playerHighScoreIndex = highscore.size();
