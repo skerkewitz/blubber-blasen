@@ -144,6 +144,8 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
       String sIdx = StringUtils.leftPad("" + i, 2, '0');
       prefs.putString("place-" + sIdx, "" + highscore.get(i).score + ";" + highscore.get(i).round + ";" + highscore.get(i).name);
     }
+
+    prefs.flush();
   }
 
   private void confirmName() {

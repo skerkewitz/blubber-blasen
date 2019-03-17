@@ -3,7 +3,7 @@ package de.skerkewitz.blubberblase.screen.highscore;
 import de.skerkewitz.blubberblase.esc.RenderTextComponent;
 import org.apache.commons.lang3.StringUtils;
 
-class HighscoreText implements RenderTextComponent.Text {
+public class HighscoreText implements RenderTextComponent.Text {
 
   public int score;
   int round;

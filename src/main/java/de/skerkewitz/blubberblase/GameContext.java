@@ -8,6 +8,7 @@ public class GameContext {
   public int currentLevelNum = 1;
 
   public int isLevelClearedTimer = -1;
+  public int currentHighScore = 0;
 
   private boolean gameOver = false;
   private int gameOverTickTime = 0;

@@ -10,7 +10,6 @@ import de.skerkewitz.enora2d.core.ecs.common.TransformAnimatorSystem;
 import de.skerkewitz.enora2d.core.game.GameConfig;
 import de.skerkewitz.enora2d.core.game.world.StaticMapContent;
 import de.skerkewitz.enora2d.core.game.world.World;
-import org.apache.commons.lang3.StringUtils;
 
 public class LevelScreenWorld extends World {
 
@@ -87,9 +86,5 @@ public class LevelScreenWorld extends World {
 
     transformAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
     renderSpriteAlphaAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
-
-    /* Update player score. */
-    RenderTextComponent component = this.getPlayerScoreEntity().getComponent(RenderTextComponent.class);
-    component.text = () -> StringUtils.center("" + context.scorePlayer1, 10);
   }
 }
