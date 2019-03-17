@@ -2,6 +2,7 @@ package de.skerkewitz.blubberblase.screen.highscore;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -44,7 +45,7 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
   private ScoreText currentScore = new ScoreText(0);
   private ScoreText bestScore = new ScoreText(0);
   private EnterNameScoreText enterNameScoreText = new EnterNameScoreText(112560, 2);
-  private List<HighscoreText> highscore = new ArrayList<>();
+  private List<HighscoreText> highscore;
   private int playerHighScoreIndex = 0;
   private Music music = Gdx.audio.newMusic(Gdx.files.internal("music/highscore.mp3"));
 
@@ -52,7 +53,7 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
     super(config, gameContext);
     setWorld(new HighscoreScreenWorld(config, 0));
 
-    loadHighscore();
+    this.highscore = loadHighscore();
 
     /* Create player score entity. */
     getWorld().addEntity(spawnTextEntity(convertTileToWorldSpace(3, 0), () -> "1UP", Color.GREEN));
@@ -105,17 +106,48 @@ public class HighscoreScreen extends AbstractWorldRenderScreen implements InputP
 
   }
 
-  private void loadHighscore() {
+  public static List<HighscoreText> loadHighscore() {
+
+    List<HighscoreText> highscore = new ArrayList<>();
+
+    try {
+      Preferences prefs = Gdx.app.getPreferences("highscore");
+      for (int i = 0; i < 5; i++) {
+        String sIdx = StringUtils.leftPad("" + i, 2, '0');
+        String[] split = StringUtils.split(prefs.getString("place-" + sIdx), ";");
+        highscore.add(new HighscoreText(i, Integer.parseInt(split[0]), Integer.parseInt(split[1]), split[2]));
+      }
+
+      return highscore;
+    } catch (Exception e) {
+      Gdx.app.log(HighscoreScreen.class.getSimpleName(), "Could not load high score because of: " + e, e);
+    }
+
     /* Load the current highscore. */
-    highscore.add(new HighscoreText(0, 500000, 10, "Rascal"));
-    highscore.add(new HighscoreText(1, 100000, 8, "VonBlubba"));
-    highscore.add(new HighscoreText(2, 50000, 4, "Banebou"));
-    highscore.add(new HighscoreText(3, 15000, 2, "Pulpul"));
-    highscore.add(new HighscoreText(4, 5000, 1, "Zenchan"));
+    highscore.clear();
+    highscore.add(new HighscoreText(0, 25000, 10, "Rascal"));
+    highscore.add(new HighscoreText(1, 15000, 8, "VonBlubba"));
+    highscore.add(new HighscoreText(2, 10000, 4, "Banebou"));
+    highscore.add(new HighscoreText(3, 5000, 2, "Pulpul"));
+    highscore.add(new HighscoreText(4, 1000, 1, "Zenchan"));
+
+    return highscore;
+  }
+
+  public static void storeHighscore(List<HighscoreText> highscore) {
+
+    Preferences prefs = Gdx.app.getPreferences("highscore");
+    prefs.clear();
+
+    for (int i = 0; i < 5; i++) {
+      String sIdx = StringUtils.leftPad("" + i, 2, '0');
+      prefs.putString("place-" + sIdx, "" + highscore.get(i).score + ";" + highscore.get(i).round + ";" + highscore.get(i).name);
+    }
   }
 
   private void confirmName() {
     highscore.get(playerHighScoreIndex).name = this.enterNameScoreText.name;
+    storeHighscore(highscore);
     setStateGameOver();
   }
 
