@@ -1,6 +1,5 @@
 package de.skerkewitz.blubberblase;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import de.skerkewitz.enora2d.core.game.GameConfig;
@@ -22,7 +21,6 @@ public class Main {
 
     if (config.fullscreen) {
       lwjglApplicationConfiguration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
-      Gdx.input.setCursorCatched(true);
     } else {
       lwjglApplicationConfiguration.setWindowedMode(config.width * 4, config.height * 4);
     }

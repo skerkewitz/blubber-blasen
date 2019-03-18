@@ -44,6 +44,10 @@ class GameListener implements ApplicationListener {
   @Override
   public void create() {
 
+    if (config.fullscreen) {
+      Gdx.input.setCursorCatched(true);
+    }
+
     camera = new OrthographicCamera(config.width * 4, config.height * 4);
     ((OrthographicCamera) camera).setToOrtho(true);
     viewport = new FitViewport(config.width, config.height, camera);

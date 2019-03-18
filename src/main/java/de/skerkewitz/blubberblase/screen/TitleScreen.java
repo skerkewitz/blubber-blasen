@@ -54,6 +54,10 @@ public class TitleScreen extends AbstractWorldRenderScreen {
       }
     }
 
+    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+      Gdx.app.exit();
+    }
+
     return ScreenAction.None;
   }
 
