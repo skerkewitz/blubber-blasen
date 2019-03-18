@@ -1,7 +1,5 @@
 # Blubber Blasen
-The awesome blubber blasen game. Right now it's a big mess. Use cursor keys to move, SPACE to fire a bubble.
-
-There is a weird focus bug, you need to click into the game window first until you are able to move.
+The awesome blubber blasen game. Yes, if you are born before 1985 it may look familiar to you.
 
 ## Requirements
 * Java JDK11
@@ -14,6 +12,23 @@ Clone, build and run the application:
 git clone https://github.com/skerkewitz/blubber-blasen.git
 cd blubber-blasen
 gradlew run
+```
+
+## How to play
+
+Use cursor keys LEFT/RIGHT to move, UP to jump (hold to jump higher) and SPACE to fire a bubble. Trap monster in a bubble, then burst the bubble by touching it. If a monster touches you while not in a bubble you die. And since you have only live: if you die, YOU DIE!
+
+## Arguments
+
+Argument | Describtion 
+------------ | -------------
+-fullscreen | Run the game in fullscreen. Use ESC on the title screen to exit.
+-nopostfx | Disable the PostFX CRT shader.
+
+You can pass argument using gradle like this:
+
+```
+gradlew run --args='-fullscreen'
 ```
 
 ## Level Editor
