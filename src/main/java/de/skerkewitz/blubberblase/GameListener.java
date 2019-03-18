@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,7 +33,7 @@ class GameListener implements ApplicationListener {
   private Viewport viewport;
   private Camera camera;
   private final ScreenController screenController;
-  private PostProcessing post;
+  private PostProcessing postProcessing;
   private long startMs;
 
   public GameListener(GameConfig config) {
@@ -43,18 +44,17 @@ class GameListener implements ApplicationListener {
   @Override
   public void create() {
 
-    camera = new OrthographicCamera(config.width, config.height);
+    camera = new OrthographicCamera(config.width * 4, config.height * 4);
     ((OrthographicCamera) camera).setToOrtho(true);
     viewport = new FitViewport(config.width, config.height, camera);
-
-    camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-    camera.update();
+    viewport.update(config.width * 4, config.height * 4, true);
+    viewport.apply();
 
     ShaderLoader.BasePath = "shaders/";
 //    plex = new InputMultiplexer();
 //    plex.addProcessor( this );
 //    Gdx.input.setInputProcessor( plex );
-    post = new PostProcessing();
+    postProcessing = new PostProcessing();
     startMs = TimeUtils.millis();
 
     //currentScreen = new LevelScreen(config);
@@ -68,12 +68,20 @@ class GameListener implements ApplicationListener {
 
   @Override
   public void resize(int width, int height) {
+
     viewport.update(width, height, true);
+    camera.update(true);
+
+    /* Update the viewport of the postProcessing processor so FitViewport will still work. */
+    postProcessing.postProcessor.setViewport(new Rectangle(viewport.getScreenX(), viewport.getScreenY(),
+            viewport.getScreenWidth(), viewport.getScreenHeight()));
   }
 
   @Override
   public void render() {
     frameCount++;
+
+    camera.update();
 
     final Screen currentScreen = screenController.getCurrentScreen();
     final ScreenAction update = currentScreen.update(frameCount);
@@ -82,20 +90,20 @@ class GameListener implements ApplicationListener {
       return;
     }
 
-    post.setEnabled(!config.cmd.hasOption(CMD_OPTION_DISABLEPPFX));
+    postProcessing.setEnabled(!config.cmd.hasOption(CMD_OPTION_DISABLEPPFX));
 
     float elapsedSecs = (float) (TimeUtils.millis() - startMs) / 1000;
 
-    // post-processing
-    post.update(elapsedSecs);
+    // postProcessing-processing
+    postProcessing.update(elapsedSecs);
 
-    post.enableBlending();
+    postProcessing.enableBlending();
     Gdx.gl.glClearColor(0.0f, 0, 0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    post.begin();
+    postProcessing.begin();
 
-    camera.update();
+
 
     try {
       /* Render the staticMapContent into the screen. */
@@ -104,7 +112,7 @@ class GameListener implements ApplicationListener {
       e.printStackTrace();
     }
 
-    post.end();
+    postProcessing.end();
 
   }
 
@@ -121,7 +129,7 @@ class GameListener implements ApplicationListener {
 
   @Override
   public void dispose() {
-    post.dispose();
+    postProcessing.dispose();
 
   }
 }

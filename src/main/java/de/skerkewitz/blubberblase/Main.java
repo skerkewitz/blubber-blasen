@@ -1,5 +1,6 @@
 package de.skerkewitz.blubberblase;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import de.skerkewitz.enora2d.core.game.GameConfig;
@@ -11,11 +12,21 @@ public class Main {
   public static void main(String[] args) throws ParseException {
 
     // most SNES games used 256x224 pixels since higher resolutions caused slowdow
-    GameConfig config = new GameConfig(StaticMapContent.WIDTH, StaticMapContent.HEIGHT + 16, 4, "Blubber Blase", args);
+    final int width = StaticMapContent.WIDTH;
+    final int screenHeight = StaticMapContent.HEIGHT + 16; // some extra space for the score.
+    final GameConfig config = new GameConfig(width, screenHeight, 4, "Blubber Blasen", args);
 
-    Lwjgl3ApplicationConfiguration lwjglApplicationConfiguration = new Lwjgl3ApplicationConfiguration();
-    lwjglApplicationConfiguration.setWindowedMode(config.width * 4, config.height * 4);
+    final Lwjgl3ApplicationConfiguration lwjglApplicationConfiguration = new Lwjgl3ApplicationConfiguration();
     lwjglApplicationConfiguration.setTitle(config.name);
+
+
+    if (config.fullscreen) {
+      lwjglApplicationConfiguration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+      Gdx.input.setCursorCatched(true);
+    } else {
+      lwjglApplicationConfiguration.setWindowedMode(config.width * 4, config.height * 4);
+    }
+
     new Lwjgl3Application(new GameListener(config), lwjglApplicationConfiguration);
   }
 }

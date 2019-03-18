@@ -7,6 +7,7 @@ import java.awt.*;
 public class GameConfig {
 
   public static final String CMD_OPTION_SHOWBBOX = "showbbox";
+  public static final String CMD_OPTION_FULLSCREEN = "fullscreen";
   public static final String CMD_OPTION_DISABLEPPFX = "nopostfx";
   public static final String CMD_OPTION_LEVEL = "level";
   public static final String CMD_OPTION_NONEXTLEVEL = "nonextlevel";
@@ -21,6 +22,7 @@ public class GameConfig {
 
 
   public final boolean noNextLevel;
+  public final boolean fullscreen;
 
 
   public final CommandLine cmd;
@@ -38,10 +40,12 @@ public class GameConfig {
     options.addOption(CMD_OPTION_DISABLEPPFX, false, "disable post processing fx");
     options.addOption(CMD_OPTION_NONEXTLEVEL, false, "do not go to next level");
     options.addOption(CMD_OPTION_LEVEL, true, "specify start level");
+    options.addOption(CMD_OPTION_FULLSCREEN, false, "run in fullscreen");
 
     CommandLineParser parser = new DefaultParser();
     cmd = parser.parse(options, args);
 
     noNextLevel = cmd.hasOption(CMD_OPTION_NONEXTLEVEL);
+    fullscreen = cmd.hasOption(CMD_OPTION_FULLSCREEN);
   }
 }

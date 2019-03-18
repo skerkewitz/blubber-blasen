@@ -62,6 +62,8 @@ public class TitleScreen extends AbstractWorldRenderScreen {
   public void render(int tickTime, Camera camera) {
 
     spriteBatch.setProjectionMatrix(camera.combined);
+
+
     spriteBatch.begin();
     sprite.draw(spriteBatch);
 
