@@ -57,8 +57,7 @@ public class AiBubbleSystem extends BaseComponentSystem<AiBubbleSystem.Tuple, Ai
           enemyEntity.expired();
           t.entity.expired();
 
-          world.prepareSpawnAtTime(tickTime, EntityFactory.spawnTrapBubble(tickTime, transformComponent.position));
-
+          world.addEntity(EntityFactory.spawnTrapBubble(tickTime, transformComponent.position));
           return;
         }
       }
