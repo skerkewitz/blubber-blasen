@@ -79,7 +79,7 @@ public class LevelScreen extends AbstractWorldRenderScreen {
 
     /* Check any 100 ticks if the level is cleared. */
     if (gameContext.isLevelClearedTimer < 0) {
-      if (LevelUtils.isLevelCleared(getWorld())) {
+      if (LevelUtils.isLevelCleared(getWorld().getEntityContainer().stream())) {
         gameContext.isLevelClearedTimer = tickTime + TimeUtil.secondsToTickTime(5);
         Gdx.audio.newSound(Gdx.files.internal("sfx/SFX (16).wav")).play();
       }
@@ -118,6 +118,7 @@ public class LevelScreen extends AbstractWorldRenderScreen {
   }
 
   private void renderStaticWorld(int tickTime, Camera camera) throws IOException {
+
     World world = getWorld();
     spriteBatch.setProjectionMatrix(camera.combined.cpy().translate(translateOffset));
     spriteBatch.begin();

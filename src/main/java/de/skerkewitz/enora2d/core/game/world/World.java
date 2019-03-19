@@ -72,10 +72,6 @@ public abstract class World {
   }
 
 
-  public void prepareSpawnAtTime(int frameCount, Entity entity) {
-    this.spawnSheduler.prepareSpawnAtTime(frameCount, entity);
-  }
-
   public Entity getPlayerEntity() {
     return playerEntity;
   }

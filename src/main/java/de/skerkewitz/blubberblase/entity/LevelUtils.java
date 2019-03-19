@@ -24,6 +24,7 @@ import de.skerkewitz.enora2d.core.input.InputHandler;
 import de.skerkewitz.enora2d.core.input.InputHandlerCombiner;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class LevelUtils {
 
@@ -135,9 +136,8 @@ public class LevelUtils {
     return playerEntity;
   }
 
-  public static boolean isLevelCleared(World world) {
-    return world.getEntityContainer()
-            .stream()
+  public static boolean isLevelCleared(Stream<Entity> entityStream) {
+    return entityStream
             .filter(Entity::isAlive)
             .noneMatch(entity -> {
               if (entity.hasComponent(EnemyComponent.class)) {
@@ -160,20 +160,18 @@ public class LevelUtils {
       return false;
     }
 
-    final Tile tile;
+    final float ex;
+    final float ey;
     if (moveX < 0) {
-      float ex = position.x - (boundingBox.size.width / 2) + moveX;
-      float ey = position.y + 1;
-
-      tile = world.getTileAtPosition((int) ex, (int) ey);
+      ex = position.x - (boundingBox.size.width / 2.0f) + moveX;
+      ey = position.y + 1;
     } else {
-      float ex = position.x + (boundingBox.size.width / 2) + moveX;
-      float ey = position.y + 1;
-
-      tile = world.getTileAtPosition((int) ex, (int) ey);
+      ex = position.x + (boundingBox.size.width / 2.0f) + moveX;
+      ey = position.y + 1;
     }
 
     /* if tile is not solid then there is a gap. */
+    final Tile tile = world.getTileAtPosition((int) ex, (int) ey);
     return !tile.isSolid();
   }
 

@@ -86,5 +86,8 @@ public class LevelScreenWorld extends World {
 
     transformAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
     renderSpriteAlphaAnimatorSystem.update(tickTime, this, entityContainer.stream(), context);
+
+    /* We need to purge elements here, otherwise the level may be cleared even if it's not. */
+    getEntityContainer().purgeExpired();
   }
 }
