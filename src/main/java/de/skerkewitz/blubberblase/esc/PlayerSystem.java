@@ -28,6 +28,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
     super(new PlayerSystem.TupleFactory());
   }
 
+
   public void execute(int tickTime, Tuple t, World world, GameContext context) {
 
     /* Check for player/monster collision. */
@@ -53,38 +54,97 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
       sfxShootBubble.play();
     }
 
+    final float topSpeed = 3;
+    final float g1 = t.playerComponent.gUp * -1;
+    final float g2 = t.playerComponent.gDown * -1;
+    final float maxImpulse = t.playerComponent.accelerationYUp * -1;
+    final float minImpulse = t.playerComponent.accelerationYUp * -0.33f;
 
-    int ya = 0;
-    if (t.playerComponent.jumpTickRemaining > 0) {
-      t.playerComponent.jumpTickRemaining -= 1;
-      ya -= 1;
-
-      /* Limit Jump */
-      if (!inputComponent.jump && t.playerComponent.jumpTickRemaining < PlayerComponent.JUMP_HEIGHT_IN_PIXEL_MIN_JUMP && t.playerComponent.jumpTickRemaining > PlayerComponent.JUMP_HEIGHT_IN_PIXEL_MIN_JUMP - 5) {
-        t.playerComponent.jumpTickRemaining = 0;
-      }
-
-    } else {
+    float ya = 0;
+//    if (t.playerComponent.jumpTickRemaining > 0) {
+//      t.playerComponent.jumpTickRemaining -= 1;
+//
+//      var dt = (1.0f / PlayerComponent.JUMP_HEIGHT_IN_PIXEL) * (PlayerComponent.JUMP_HEIGHT_IN_PIXEL - t.playerComponent.jumpTickRemaining);
+//
+//      ya -= Math.max(Interpolation.linear.apply(dt) * 2, 0.2);
+//      //ya -= 1;
+//
+//      /* Limit Jump */
+//      if (!inputComponent.jump && t.playerComponent.jumpTickRemaining < PlayerComponent.JUMP_HEIGHT_IN_PIXEL_MIN_JUMP && t.playerComponent.jumpTickRemaining > PlayerComponent.JUMP_HEIGHT_IN_PIXEL_MIN_JUMP - 5) {
+//        t.playerComponent.jumpTickRemaining = 0;
+//      }
+//
+//    } else {
       boolean isOnGround = t.entity.getComponent(GroundDataComponent.class).isOnGround;
-      if (isOnGround) {
-        if (inputComponent.jump && isOnGround) {
-          t.playerComponent.jumpTickRemaining = PlayerComponent.JUMP_HEIGHT_IN_PIXEL;
-          sfxJump.play();
-        }
+    if (isOnGround && t.playerComponent.velocityY >= 0) {
+      if (inputComponent.jump) {
+        t.playerComponent.jumpTickRemaining = PlayerComponent.JUMP_HEIGHT_IN_PIXEL;
+        sfxJump.play();
+        t.playerComponent.velocityY = maxImpulse; // Jump
+        ya = t.playerComponent.velocityY;
+        //t.playerComponent.velocityY += t.playerComponent.accelerationY;
       } else {
-        ya += 1;
+        t.playerComponent.velocityY = 0; // Jump
+        ya = t.playerComponent.velocityY;
       }
-    }
+      } else {
+      //ya += 1;
 
-    var moveX = 0;
+      if (!inputComponent.jump && t.playerComponent.velocityY < minImpulse) {
+        t.playerComponent.velocityY = minImpulse;
+      }
+
+      if (t.playerComponent.velocityY < 0) {
+        t.playerComponent.velocityY += g1; // Gravity
+      } else {
+        t.playerComponent.velocityY += g2; // Gravity
+      }
+//        t.playerComponent.velocityY += g; // Gravity
+      if (t.playerComponent.velocityY > maxImpulse * -1) {
+        t.playerComponent.velocityY = maxImpulse * -1;
+      }
+
+      ya = t.playerComponent.velocityY;
+//        t.playerComponent.velocityY += t.playerComponent.accelerationY;
+    }
+//    }
+
+    final float maxX = t.playerComponent.maxVelocityX;
+    final float accX = t.playerComponent.accelerationX;
+
+
+    var moveX = 0.0f;
     var playerMoveDirection = t.playerComponent.movingDir;
     if (inputComponent.horizontal < 0) {
-      moveX--;
+      t.playerComponent.velocityX -= accX;
+      if (t.playerComponent.velocityX < maxX * -1) {
+        t.playerComponent.velocityX = maxX * -1;
+      }
+//      moveX--;
       playerMoveDirection = MoveDirection.Left;
     } else if (inputComponent.horizontal > 0) {
-      moveX++;
+      t.playerComponent.velocityX += accX;
+      if (t.playerComponent.velocityX > maxX) {
+        t.playerComponent.velocityX = maxX;
+      }
+
+      //      moveX++;
       playerMoveDirection = MoveDirection.Right;
+    } else {
+      if (t.playerComponent.velocityX > 0) {
+        t.playerComponent.velocityX -= accX;
+        if (t.playerComponent.velocityX < 0) {
+          t.playerComponent.velocityX = 0.0f;
+        }
+      }
+      if (t.playerComponent.velocityX < 0) {
+        t.playerComponent.velocityX += accX;
+        if (t.playerComponent.velocityX > 0) {
+          t.playerComponent.velocityX = 0.0f;
+        }
+      }
     }
+    moveX = t.playerComponent.velocityX;
 
     final Rect2i boundingBox = t.entity.getComponent(BoundingBoxComponent.class).getBoundingBox();
     moveX = LevelUtils.clipMoveX(moveX, transformComponent.position, boundingBox, world);
@@ -92,7 +152,7 @@ public class PlayerSystem extends BaseComponentSystem<PlayerSystem.Tuple, Player
     /* Update player position. */
     Point2f position = t.entity.getComponent(TransformComponent.class).position;
     position.x += moveX * t.playerComponent.speed;
-    position.y += ya * t.playerComponent.speed;
+    position.y += LevelUtils.clipMoveY(ya * t.playerComponent.speed, transformComponent.position, boundingBox, world);
 
     LevelUtils.clipPositionToLevelBounds(transformComponent.position, boundingBox);
 

@@ -35,7 +35,7 @@ public class AiEnemySystem extends BaseComponentSystem<AiEnemySystem.Tuple, AiEn
     final TransformComponent transformComponent = t.transformComponent;
     final BoundingBoxComponent boundingBoxComponent = t.entity.getComponent(BoundingBoxComponent.class);
 
-    int moveVectorX = 0;
+    float moveVectorX = 0.0f;
     int moveVectorY = 0;
 
     final AiEnemyUtils.RelativePlayerHeight playerRelativeYPosition = AiEnemyUtils.relativePlayerHeightPosition(t.entity, world.getPlayerEntity());

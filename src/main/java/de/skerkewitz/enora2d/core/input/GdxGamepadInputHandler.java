@@ -103,7 +103,9 @@ public class GdxGamepadInputHandler implements InputHandler {
   public GdxGamepadInputHandler(Controller controller) {
     this.controller = controller;
     fireA = new GdxInputButton(controller, Xbox.A);
-    up = new InputButtonCombiner(new GdxControllerPovInputButton(controller, GdxControllerPovInputButton.UP_DIRECTIONS), new GdxControllerStickPovInputButton(controller, Xbox.L_STICK_VERTICAL_AXIS, -1));
+//    up = new InputButtonCombiner(new GdxInputButton(controller, Xbox.B), new InputButtonCombiner(new GdxControllerPovInputButton(controller, GdxControllerPovInputButton.UP_DIRECTIONS),
+//            new GdxControllerStickPovInputButton(controller, Xbox.L_STICK_VERTICAL_AXIS, -1)));
+    up = new GdxInputButton(controller, Xbox.B);
     down = new InputButtonCombiner(new GdxControllerPovInputButton(controller, GdxControllerPovInputButton.downDirections), new GdxControllerStickPovInputButton(controller, Xbox.L_STICK_VERTICAL_AXIS, 1));
     left = new InputButtonCombiner(new GdxControllerPovInputButton(controller, GdxControllerPovInputButton.LEFT_DIRECTIONS), new GdxControllerStickPovInputButton(controller, Xbox.L_STICK_HORIZONTAL_AXIS, -1));
     right = new InputButtonCombiner(new GdxControllerPovInputButton(controller, GdxControllerPovInputButton.RIGHT_DIRECTIONS), new GdxControllerStickPovInputButton(controller, Xbox.L_STICK_HORIZONTAL_AXIS, 1));

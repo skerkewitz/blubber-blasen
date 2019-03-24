@@ -19,7 +19,7 @@ public class LevelScreenWorld extends World {
   private AiEnemySystem aiEnemySystem = new AiEnemySystem();
   private LifeTimeSystem lifeTimeSystem = new LifeTimeSystem();
   private AnimationSystem animationSystem = new AnimationSystem();
-  private GroundDataSystemSystem groundDataSystemSystem = new GroundDataSystemSystem();
+  private GroundDataSystem groundDataSystem = new GroundDataSystem();
   private CollisionSystem collisionComponent = new CollisionSystem();
   private PlayerSystem playerSystem = new PlayerSystem();
   private ThrownEnemySystem thrownEnemySystem = new ThrownEnemySystem();
@@ -67,7 +67,7 @@ public class LevelScreenWorld extends World {
 
     collisionComponent.update(tickTime, this, entityContainer.stream(), context);
 
-    groundDataSystemSystem.update(tickTime, this, entityContainer.stream(), context);
+    groundDataSystem.update(tickTime, this, entityContainer.stream(), context);
     inputSystem.update(tickTime, this, entityContainer.stream(), context);
 
     aiBubbleSystem.update(tickTime, this, entityContainer.stream(), context);

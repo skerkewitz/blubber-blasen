@@ -18,6 +18,7 @@ public class Main {
     final Lwjgl3ApplicationConfiguration lwjglApplicationConfiguration = new Lwjgl3ApplicationConfiguration();
     lwjglApplicationConfiguration.setTitle(config.name);
 
+//    lwjglApplicationConfiguration.disableAudio(true);
 
     if (config.fullscreen) {
       lwjglApplicationConfiguration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());

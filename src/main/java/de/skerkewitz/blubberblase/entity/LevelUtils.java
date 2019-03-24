@@ -6,7 +6,10 @@ import de.gierzahn.editor.map.EnemyBaseMapLayer;
 import de.gierzahn.editor.map.Map;
 import de.skerkewitz.blubberblase.GameContext;
 import de.skerkewitz.blubberblase.LevelScreenWorld;
-import de.skerkewitz.blubberblase.esc.*;
+import de.skerkewitz.blubberblase.esc.EnemyComponent;
+import de.skerkewitz.blubberblase.esc.RenderTextComponent;
+import de.skerkewitz.blubberblase.esc.StateBaseBubbleComponent;
+import de.skerkewitz.blubberblase.esc.TargetMoveComponent;
 import de.skerkewitz.enora2d.common.Point2f;
 import de.skerkewitz.enora2d.common.Point2i;
 import de.skerkewitz.enora2d.common.Rect2i;
@@ -28,41 +31,23 @@ import java.util.stream.Stream;
 
 public class LevelUtils {
 
+  public interface TileWorld {
+    Tile getTileAt(int tileX, int tileY);
+
+    Tile getTileAtPosition(int worldX, int worldY);
+
+    boolean isSolidAtPosition(int x, int y);
+  }
+
   public static final int PLAYER1_SPAWN_X = 32;
   public static final int PLAYER1_SPAWN_Y = ((Map.MAX_DOWN) * 8) - 1;
   public static final Point2i PLAYER_SPAWN_POINT2I = new Point2i(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y);
 
   public static final Point2f PLAYER1_SPAWN_POINT2F = new Point2f(PLAYER1_SPAWN_X, PLAYER1_SPAWN_Y);
+  public static final float MOVE_EPSILON = 0.0001f;
 
   public LevelUtils() {
     /* No instance allowed. */
-  }
-
-  public static boolean hasCollided(Entity entity, World world, int xa, int ya) {
-
-    final BoundingBoxComponent boundingBoxComponent = entity.getComponent(BoundingBoxComponent.class);
-    final Rect2i boundingBox = boundingBoxComponent.getBoundingBox();
-    int xMin = boundingBox.origin.x;
-    int xMax = boundingBox.size.width;
-    int yMin = boundingBox.origin.y;
-    int yMax = boundingBox.size.width;
-
-    TransformComponent transformComponent = entity.getComponent(TransformComponent.class);
-
-    if (world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMin, yMin)) {
-      return true;
-    }
-
-    if (world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMax, yMin)) {
-      return true;
-    }
-
-    if (world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMin, yMax)) {
-      return true;
-    }
-
-    return world.isSolidTile((int) transformComponent.position.x, (int) transformComponent.position.y, xa, ya, xMax, yMax);
-
   }
 
   public static World loadNextLevel(int tickTime, GameContext gameContext, GameConfig config, World previousWorld) {
@@ -176,10 +161,64 @@ public class LevelUtils {
   }
 
 
-  public static int clipMoveX(int moveX, Point2f position, Rect2i boundingBox, World world) {
+  /**
+   * @param moveY       the vertical move vector
+   * @param position    the current position
+   * @param boundingBox the bounding box of the moving object.
+   * @param world       the tile world.
+   * @return the clipped vertical move vector
+   */
+
+  public static int clipMoveY(float moveY, Point2f position, Rect2i boundingBox, TileWorld world) {
+
+    /* The minimum amount of movement. */
+    if (Math.abs(moveY) < MOVE_EPSILON) {
+      return 0;
+    }
+
+    /* Up movement is always unrestricted. */
+    if (moveY < 0) {
+      return Math.round(moveY);
+    }
+
+    /* For down movement we need to find the intersection points of the tile grid. */
+
+    /* First intersection point. */
+    var iStartX = Math.round(position.x);
+    var iStartY = Math.round(position.y);
+
+    var startTileX = iStartX / 8;
+    var startTileY = iStartY / 8;
+
+    var isInSolid = world.getTileAt(startTileX, startTileY).isSolid();
+
+    var iEndX = Math.round(position.x);
+    var iEndY = Math.round(position.y + moveY);
+
+    var endTileX = iEndX / 8;
+    var endTileY = iEndY / 8;
+
+    for (var curTileY = startTileY + 1; curTileY <= endTileY; curTileY += 1) {
+      var tile = world.getTileAt(startTileX, curTileY);
+      if (isInSolid && tile.isSolid()) {
+        continue;
+      }
+      isInSolid = false;
+
+      if (tile.isSolid()) {
+        return ((curTileY * 8) - iStartY) - 1; // last minus 1 because we want to be on the tile above the solid tile we just found.
+      }
+    }
+
+
+    return Math.round(moveY);
+  }
+
+
+  public static float clipMoveX(float moveX, Point2f position, Rect2i boundingBox, World world) {
 
     /* no horizontal movement. */
-    if (moveX == 0) {
+    if (Math.abs(moveX) < MOVE_EPSILON) {
       return 0;
     }
 
@@ -244,15 +283,20 @@ public class LevelUtils {
     var minX = (int) (position.x - (boundingBox.size.width / 2));
     var maxX = (int) (position.x + (boundingBox.size.width / 2));
 
-    if (minX < 16) {
-      position.x += (16 - minX);
-    } else if (maxX > 239) {
-      position.x -= (maxX - 239);
+    final var dw = 2 * StaticMapContent.TILE_WIDTH;
+
+    final var leftLimit = dw;
+    final var rightLimit = StaticMapContent.WIDTH - dw - 1;
+
+    if (minX < leftLimit) {
+      position.x += (leftLimit - minX);
+    } else if (maxX > rightLimit) {
+      position.x -= (maxX - rightLimit);
     }
 
     /* Wrap around if entity did fall through. */
-    if (position.y > StaticMapContent.HEIGHT + 16) {
-      position.y = -16;
+    if (position.y > StaticMapContent.HEIGHT + dw) {
+      position.y = -dw;
     }
   }
 
@@ -265,7 +309,7 @@ public class LevelUtils {
     return world.canJumpUp(tileX, tileY);
   }
 
-  public static boolean checkGround(Point2i position, World world) {
+  public static boolean checkGround(Point2i position, TileWorld world) {
     final boolean lastTile = world.isSolidAtPosition(position.x, position.y);
     final boolean newTile = world.isSolidAtPosition(position.x, position.y + 1);
     return !lastTile && newTile;

@@ -12,10 +12,10 @@ import de.skerkewitz.enora2d.core.game.world.World;
 /**
  * A common to render all SpriteComponents.
  */
-public class GroundDataSystemSystem extends BaseComponentSystem<GroundDataSystemSystem.Tuple, GroundDataSystemSystem.TupleFactory> {
+public class GroundDataSystem extends BaseComponentSystem<GroundDataSystem.Tuple, GroundDataSystem.TupleFactory> {
 
-  public GroundDataSystemSystem() {
-    super(new GroundDataSystemSystem.TupleFactory());
+  public GroundDataSystem() {
+    super(new GroundDataSystem.TupleFactory());
   }
 
   @Override

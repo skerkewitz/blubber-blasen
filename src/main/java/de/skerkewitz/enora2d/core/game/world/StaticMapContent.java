@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 public class StaticMapContent {
 
+  public static final int TILE_WIDTH = Map.TILE_WIDTH;
+  public static final int TILE_HEIGHT = Map.TILE_WIDTH;
+
   public static final int WIDTH = Map.NUM_TILES_HORIZONTAL * Map.TILE_WIDTH;
   public static final int HEIGHT = Map.NUM_TILES_VERTICAL * Map.TILE_HEIGHT;
   private final StaticMapContentLoader.SpriteTileset tilesetSprite;
@@ -31,7 +34,7 @@ public class StaticMapContent {
   /**
    * Get a tile in tile space.
    */
-  public Tile getTile(int x, int y) {
+  public Tile getTileAt(int x, int y) {
     if (0 > x || x >= tileWidth || 0 > y || y >= tileHeight) {
       return TileContainer.VOID;
     }
@@ -50,7 +53,7 @@ public class StaticMapContent {
       return false;
     }
 
-    return getTile(x, y).isSolid();
+    return getTileAt(x, y).isSolid();
   }
 
   public AirflowDirection getAirflowAt(Point2i p) {
